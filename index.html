@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Territory</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+<h1>New game</h1>
+<a @click="newPlayer">Start New game</a>
+<ol>
+  <li v-for="player in game.players">
+    {{ player }}
+  </li>
+</ol>
+<a @click="newPlayer" v-if="game.players.length && game.players.length < 4">Add player</a>
+<a @click="pickRoster" v-if="game.players.length && game.players.length < 4">Start game</a>
+
+{{rawRoster}}
+<hr/>
+<my-component></my-component>
+<small>{{game}}</small>
+</div>
+  <!-- JS -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

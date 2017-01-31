@@ -1,0 +1,34 @@
+[
+	{
+		"Name":"Test",
+		"Id":1,
+		"val":5,
+		"inc":0,
+		"isChamp":false,
+		"isWChamp":false,
+		"type":"singles",
+		"gender":"m",
+		"style":"technical",
+		"theme":"athlete",
+		"height":5.2,
+		"weight":320,
+		"charisma":5,
+		"ability":7
+		},
+	{
+		"Name":"Test 2",
+		"Id":2,
+		"val":5,
+		"inc":0,
+		"isChamp":false,
+		"isWChamp":false,
+		"type":"singles",
+		"gender":"m",
+		"style":"technical",
+		"theme":"athlete",
+		"height":5.2,
+		"weight":320,
+		"charisma":5,
+		"ability":7
+		}
+]
