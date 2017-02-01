@@ -30,9 +30,8 @@ var app = new Vue({
   this.getRoster();
   },
   methods: {
-    test: function(){
-      var datax = 'works';
-      this.$set(this,'events', datax);
+    nextPlayer: function(){
+      this.currentPlayer + 1 == this.game.players.length ? this.currentPlayer = 0 : this.currentPlayer++;
     },
     fetchEvents: function(){
       fetch('/data.json')
@@ -45,16 +44,31 @@ var app = new Vue({
     getRoster:function(){
       fetch('/roster.json')
       .then(blob => blob.json())
-      .then(data => this.$set(this,'rawRoster', data));
+      .then((data) => {this.$set(this,'rawRoster', data); localStorage.setItem('roster', JSON.stringify(data))});
     },
     pickRoster: function(){
-      this.game.roster = this.rawRoster;
+      this.game.roster = this.rawRoster.map(w => w.Id);
+    }
+  },
+  components: {
+    'wrestler': {
+      props: ['data'],
+      template: '<div class="box">\
+      <h2>{{data.Name}}</h2>\
+      ({{data.Val}}) <a v-on:click="increment()">Purchase</a>\
+      </div>',
+      methods: {
+        increment: function () {
+          console.log(this.data.Name)
+          app.$emit('nextPlayer', 'switch to' + this.data.Id);
+        }
+      }
     }
   }
 });
 
-Vue.component('my-component', {
-  template: '<div>A custom component!</div>'
+app.$on('nextPlayer', function (msg) {
+  this.nextPlayer();
 })
 
 /*

@@ -6,22 +6,34 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
+  <style type="text/css">
+  .box {
+    background: grey;
+    margin: 10px;
+        width: 200px;
+    display: inline-block;
+    }
+  .active {
+    border:1px red solid;
+  }
+  </style>
 </head>
 <body>
 <div id="app">
 <h1>New game</h1>
 <a @click="newPlayer">Start New game</a>
 <ol>
-  <li v-for="player in game.players">
-    {{ player }}
+  <li v-for="(player, index) in game.players" v-bind:class="{ active: currentPlayer == index }">
+    PLAYER - {{player.cash}} {{index}}
   </li>
 </ol>
 <a @click="newPlayer" v-if="game.players.length && game.players.length < 4">Add player</a>
 <a @click="pickRoster" v-if="game.players.length && game.players.length < 4">Start game</a>
 
-{{rawRoster}}
 <hr/>
-<my-component></my-component>
+<h2>Make selection: Player {{currentPlayer + 1}}</h2>
+<wrestler v-for="guy in game.roster" v-bind:data="rawRoster[guy - 1]"></wrestler>
+<hr/>
 <small>{{game}}</small>
 </div>
   <!-- JS -->
