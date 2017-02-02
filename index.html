@@ -16,6 +16,9 @@
   .active {
     border:1px red solid;
   }
+  .assigned {
+    opacity: 0.5;
+  }
   </style>
 </head>
 <body>
@@ -23,16 +26,18 @@
 <h1>New game</h1>
 <a @click="newPlayer">Start New game</a>
 <ol>
-  <li v-for="(player, index) in game.players" v-bind:class="{ active: currentPlayer == index }">
-    PLAYER - {{player.cash}} {{index}}
+  <li v-for="(player, index) in game.players" v-bind:class="{ active: currentPlayer == index, assigned: player.ready }">
+    PLAYER {{index}} (${{player.cash}}) - 
+    <span v-for="guy in player.roster">{{rawRoster[guy - 1].Name}}, </span>
+    <a @click="donePurchase()" v-if="!player.ready">Finished</a>
   </li>
 </ol>
 <a @click="newPlayer" v-if="game.players.length && game.players.length < 4">Add player</a>
-<a @click="pickRoster" v-if="game.players.length && game.players.length < 4">Start game</a>
+<a @click="pickRoster" v-if="game.players.length">Start game</a>
 
 <hr/>
 <h2>Make selection: Player {{currentPlayer + 1}}</h2>
-<wrestler v-for="guy in game.roster" v-bind:data="rawRoster[guy - 1]"></wrestler>
+<wrestler v-for="guy in game.roster" v-bind:data="rawRoster[guy - 1]" v-bind:cash="game.players[currentPlayer].cash >= rawRoster[guy - 1].val"></wrestler>
 <hr/>
 <small>{{game}}</small>
 </div>

@@ -13,7 +13,8 @@
 		"height":5.2,
 		"weight":320,
 		"charisma":5,
-		"ability":7
+		"ability":7,
+		"assigned":false
 		},
 	{
 		"Name":"Test 2",
@@ -29,6 +30,41 @@
 		"height":5.2,
 		"weight":320,
 		"charisma":5,
-		"ability":7
+		"ability":7,
+		"assigned":false
+		},
+	{
+		"Name":"Test 3",
+		"Id":3,
+		"val":7,
+		"inc":0,
+		"isChamp":false,
+		"isWChamp":false,
+		"type":"singles",
+		"gender":"m",
+		"style":"technical",
+		"theme":"athlete",
+		"height":5.2,
+		"weight":320,
+		"charisma":5,
+		"ability":7,
+		"assigned":false
+		},
+	{
+		"Name":"Test 4",
+		"Id":4,
+		"val":43,
+		"inc":0,
+		"isChamp":false,
+		"isWChamp":false,
+		"type":"singles",
+		"gender":"m",
+		"style":"technical",
+		"theme":"athlete",
+		"height":5.2,
+		"weight":320,
+		"charisma":5,
+		"ability":7,
+		"assigned":false
 		}
 ]
