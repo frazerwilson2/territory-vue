@@ -39,6 +39,7 @@
 <h2>Make selection: Player {{currentPlayer + 1}}</h2>
 <wrestler v-for="guy in game.roster" v-bind:data="rawRoster[guy - 1]" v-bind:cash="game.players[currentPlayer].cash >= rawRoster[guy - 1].val"></wrestler>
 <hr/>
+<div v-if="loading">LOADING!!!</div>
 <small>{{game}}</small>
 </div>
   <!-- JS -->

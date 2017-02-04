@@ -1,0 +1,44 @@
+[
+	{
+		"Name":"title change",
+		"Id":1,
+		"type":"TITLECHANGE",
+		"description": "test",
+		"setupnum": 3
+		},
+	{
+		"Name":"Heel/face turn",
+		"Id":2,
+		"type":"HEELFACE",
+		"description": "test",
+		"setupnum": 3
+		},
+	{
+		"Name":"cage",
+		"Id":3,
+		"type":"CAGE",
+		"description": "test",
+		"setupnum": 10
+		},
+	{
+		"Name":"Ladder",
+		"Id":4,
+		"type":"LADDER",
+		"description": "test",
+		"setupnum": 10
+		},
+	{
+		"Name":"No dq",
+		"Id":5,
+		"type":"WEAPONS",
+		"description": "test",
+		"setupnum": 10
+		},
+	{
+		"Name":"table",
+		"Id":6,
+		"type":"TABLE",
+		"description": "test",
+		"setupnum": 10
+		}
+]

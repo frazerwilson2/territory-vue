@@ -2,6 +2,9 @@ var app = new Vue({
   el: '#app',
   data: {
     rawRoster: [],
+    rawMissions: [],
+    rawStories: [],
+    rawGimmicks: [],
     events: '',
     // Base game setup
     game: {
@@ -15,7 +18,8 @@ var app = new Vue({
       arena:4,
       legends:[]
     },
-    currentPlayer:0
+    currentPlayer:0,
+    loading: false
   },
   mounted: function() {
   this.getRoster();
@@ -46,6 +50,10 @@ var app = new Vue({
     addToRoster: function(data){
       this.game.players[this.currentPlayer].roster.push(data.id);
       this.game.players[this.currentPlayer].cash -= data.val;
+      console.log(data);
+      for(var i=0;i<this.game.roster.length;i++){
+        if(this.game.roster[i] == data.id){this.game.roster.splice(i, 1)}
+      }
     },
     nextPlayer: function(){
       this.currentPlayer + 1 == this.game.players.length ? this.currentPlayer = 0 : this.currentPlayer++;
@@ -58,11 +66,94 @@ var app = new Vue({
         if (this.game.players[i].ready) {readyCount++}
       }
       if(readyCount == this.game.players.length) {
-        alert('lets play');
+        this.loading = true;
+        this.getMissions();
+        this.getStories();
+        this.getGimmicks();
       }
       else {
       this.nextPlayer();  
       }     
+    },
+    // Get data & assign
+    shuffle: function(a) {
+      var j, x, i;
+      for (i = a.length; i; i--) {
+          j = Math.floor(Math.random() * i);
+          x = a[i - 1];
+          a[i - 1] = a[j];
+          a[j] = x;
+      }
+    },
+    getMissions:function() {
+      fetch('/missions.json')
+      .then(blob => blob.json())
+      .then((data) => {this.$set(this,'rawMissions', data); localStorage.setItem('missions', JSON.stringify(data)); this.sortMissions()})
+    },
+    sortMissions: function(){
+      var playerMissions = this.rawMissions.filter(mission => mission.type == "player");
+      this.shuffle(playerMissions);
+      for(var i=0;i<this.game.players.length;i++){
+        this.game.players[i].goal = playerMissions[i].Id;
+      }
+      var gameMissions = this.rawMissions.filter(mission => mission.type == "game");
+      this.shuffle(gameMissions);
+      this.game.goal = gameMissions[0].Id;
+    },
+    getStories:function() {
+      fetch('/stories.json')
+      .then(blob => blob.json())
+      .then((data) => {this.$set(this,'rawStories', data); localStorage.setItem('stories', JSON.stringify(data)); this.sortStories()})
+    },
+    sortStories: function(){
+      this.shuffle(this.rawStories);
+      var pick = 0;
+      var eachCards = 3;
+      for(var i=0;i<this.game.players.length;i++){
+        for(var x=0;x<eachCards;x++){
+          this.game.players[i].stories.push(this.rawStories[pick + x].Id);
+        }
+        pick += eachCards;
+      }
+      for(var i=pick;i<this.rawStories.length;i++){
+        this.game.stories.push(this.rawStories[i].Id);
+      }
+    },
+    getGimmicks:function() {
+      fetch('/gimmicks.json')
+      .then(blob => blob.json())
+      .then((data) => {this.$set(this,'rawGimmicks', data); localStorage.setItem('gimmicks', JSON.stringify(data)); this.sortGimmicks()})
+    },
+    sortGimmicks: function(){
+      for(var i=0;i<this.rawGimmicks.length;i++){
+        switch(this.rawGimmicks[i].type){
+          case 'TITLECHANGE':
+            for(var x=0;x<this.game.players.length;x++){
+              for(var y=0;y<3;y++){
+                this.game.players[x].gimmicks.push(this.rawGimmicks[i].Id);
+              }
+            }
+            for(var y=0;y<3;y++){
+              this.game.gimmicks.push(this.rawGimmicks[i].Id);
+            }
+            break;
+          case 'HEELFACE':
+            for(var x=0;x<this.game.players.length;x++){
+              for(var y=0;y<3;y++){
+                this.game.players[x].gimmicks.push(this.rawGimmicks[i].Id);
+              }
+            }
+            for(var y=0;y<3;y++){
+              this.game.gimmicks.push(this.rawGimmicks[i].Id);
+            }
+            break;
+          default:
+            for(var y=0;y<10;y++){
+               this.game.gimmicks.push(this.rawGimmicks[i].Id);
+            }
+        }
+      }
+      this.shuffle(this.game.gimmicks);
     }
   },
   components: {
