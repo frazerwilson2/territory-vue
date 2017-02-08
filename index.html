@@ -19,6 +19,13 @@
   .assigned {
     opacity: 0.5;
   }
+  .loading {
+        background: hsla(0, 0%, 50%, 0.48);
+    top: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
   </style>
 </head>
 <body>
@@ -39,11 +46,14 @@
 <h2>Make selection: Player {{currentPlayer + 1}}</h2>
 <wrestler v-for="guy in game.roster" v-bind:data="rawRoster[guy - 1]" v-bind:cash="game.players[currentPlayer].cash >= rawRoster[guy - 1].val"></wrestler>
 <hr/>
-<div v-if="loading">LOADING!!!</div>
+<div class="loading" v-if="loading">LOADING!!!
+<a @click="saveData">Ready!</a>
+<a href="game.html">go!</a>
+</div>
 <small>{{game}}</small>
 </div>
   <!-- JS -->
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="vue.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -5,6 +5,8 @@ var app = new Vue({
     rawMissions: [],
     rawStories: [],
     rawGimmicks: [],
+    rawLegends: [],
+    rawNews:[],
     events: '',
     // Base game setup
     game: {
@@ -67,13 +69,22 @@ var app = new Vue({
       }
       if(readyCount == this.game.players.length) {
         this.loading = true;
-        this.getMissions();
-        this.getStories();
-        this.getGimmicks();
+        this.loadUpData();
       }
       else {
-      this.nextPlayer();  
+        this.nextPlayer();  
       }     
+    },
+    loadUpData: function(){
+      this.getMissions();
+      this.getStories();
+      this.getGimmicks();
+      this.getLegends();
+      this.getNews();
+    },
+    saveData: function(){
+        localStorage.setItem('gameData', JSON.stringify(this.game));
+        console.log(this.game);
     },
     // Get data & assign
     shuffle: function(a) {
@@ -99,6 +110,7 @@ var app = new Vue({
       var gameMissions = this.rawMissions.filter(mission => mission.type == "game");
       this.shuffle(gameMissions);
       this.game.goal = gameMissions[0].Id;
+      this.saveData();
     },
     getStories:function() {
       fetch('/stories.json')
@@ -118,6 +130,7 @@ var app = new Vue({
       for(var i=pick;i<this.rawStories.length;i++){
         this.game.stories.push(this.rawStories[i].Id);
       }
+      this.saveData();
     },
     getGimmicks:function() {
       fetch('/gimmicks.json')
@@ -154,6 +167,19 @@ var app = new Vue({
         }
       }
       this.shuffle(this.game.gimmicks);
+      this.saveData();
+    },
+    getLegends:function() {
+      fetch('/legends.json')
+      .then(blob => blob.json())
+      .then((data) => {this.$set(this,'rawLegends', data); localStorage.setItem('legends', JSON.stringify(data)); this.shuffle(data); this.game.legends = data.map(data => data.Id);})
+      this.saveData();
+    },
+    getNews:function() {
+      fetch('/news.json')
+      .then(blob => blob.json())
+      .then((data) => {this.$set(this,'rawNews', data); localStorage.setItem('news', JSON.stringify(data)); this.shuffle(data); this.game.news = data.map(data => data.Id);})
+      this.saveData();
     }
   },
   components: {
