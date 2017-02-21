@@ -5,15 +5,36 @@
   <title>Territory</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
- 
+  <link rel="stylesheet" href="css/style.css">
+ <style>
+small {
+	font-size: 9px;
+}
+ </style>
 </head>
 <body>
 <div id="game">
 <h1>Lets go</h1>
 
+Right, turn order
+<hr>
+<small>
+	<div v-for="player in game.players">{{player}}<br></div>
+<br>
+      goal: {{game.goal}}<br>
+      news: {{game.news}}<br>
+      roster: {{game.roster}}<br>
+      stories: {{game.stories}}<br>
+      gimmicks: {{game.gimmicks}}<br>
+      tv: {{game.tv}}<br>
+      arena: {{game.arena}}<br>
+      legends: {{game.legends}}
+</small>
+
+
+</div>
   <!-- JS -->
   <script src="vue.js"></script>
-  <script src="game.js"></script>
+  <script src="dist/game.js"></script>
 </body>
 </html>

@@ -1,0 +1,26 @@
+{
+  "name": "territory-board",
+  "version": "1.0.0",
+  "description": "na",
+  "main": "app.js",
+  "scripts": {
+    "test": "test",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frazerwilson2/territory-vue.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frazerwilson2/territory-vue/issues"
+  },
+  "homepage": "https://github.com/frazerwilson2/territory-vue#readme",
+  "devDependencies": {
+    "babel-preset-env": "^1.1.8",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-sass": "^3.1.0"
+  }
+}
