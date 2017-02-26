@@ -27,3 +27,29 @@ body {
   position: absolute;
   width: 100%;
   height: 100%; }
+
+#game > div {
+  display: inline-block;
+  float: left;
+  padding: 1%;
+  width: 30%; }
+  #game > div:nth-child(1) {
+    width: calc(20% - (1% * 2));
+    background: #a7a7a7; }
+  #game > div:nth-child(2) {
+    width: calc(70% - (1% * 2)); }
+  #game > div:nth-child(3) {
+    width: calc(10% - (1% * 2));
+    background: #a7a7a7; }
+    #game > div:nth-child(3) h3 {
+      font-size: 4em; }
+
+.actions {
+  text-align: right;
+  border-top: 1px black solid;
+  padding-top: 5px; }
+
+small {
+  clear: both;
+  float: none;
+  display: block; }

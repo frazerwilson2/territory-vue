@@ -3,13 +3,17 @@
 var game = new Vue({
   el: '#game',
   data: {
+    // Initialised data
     roster: [],
+    // No missions. Once set new ones cant be bought
     //missions: [],
     stories: [],
     gimmicks: [],
     legends: [],
     news: [],
-    game: []
+    game: [],
+    // In game values
+    turn: 0
   },
   mounted: function mounted() {
     this.loadRoster();
@@ -18,6 +22,7 @@ var game = new Vue({
     this.loadLegends();
     this.loadNews();
     this.loadGame();
+    //this.loadMissions();
   },
   methods: {
     // Lets get started
@@ -36,8 +41,31 @@ var game = new Vue({
     loadNews: function loadNews() {
       this.$set(this, 'news', JSON.parse(localStorage.getItem('news')));
     },
+    // loadMissions:function(){
+    //   this.$set(this,'missions', JSON.parse(localStorage.getItem('missions')));
+    //   console.log(this.missions);
+    // },
     loadGame: function loadGame() {
       this.$set(this, 'game', JSON.parse(localStorage.getItem('gameData')));
+    },
+    // IN GAME
+    nextTurn: function nextTurn() {
+      this.turn++;
+      if (this.turn == this.game.players.length) {
+        this.turn = 'REVIEW';
+      }
+    },
+    nextRound: function nextRound() {
+      this.game.round++;
+      this.turn = 0;
+      this.saveData();
+    },
+    saveData: function saveData() {
+      localStorage.setItem('gimmicks', JSON.stringify(this.roster));
+      localStorage.setItem('news', JSON.stringify(this.roster));
+      localStorage.setItem('roster', JSON.stringify(this.roster));
+      localStorage.setItem('gameData', JSON.stringify(this.game));
+      console.log('data saved');
     }
   }
 });

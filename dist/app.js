@@ -20,7 +20,8 @@ var app = new Vue({
       gimmicks: [],
       tv: 4,
       arena: 4,
-      legends: []
+      legends: [],
+      round: 1
     },
     currentPlayer: 0,
     loading: false

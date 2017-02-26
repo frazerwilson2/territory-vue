@@ -6,19 +6,31 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/style.css">
- <style>
-small {
-	font-size: 9px;
-}
- </style>
 </head>
 <body>
 <div id="game">
-<h1>Lets go</h1>
 
-Right, turn order
-<hr>
+<div>// menus</div>
+
+<div>
+  <div v-for="(player, index) in game.players" v-if="index == turn">
+    <h1>{{player.name}}</h1>
+    matchcard
+  </div>
+  <!-- Actions -->
+  <div class="actions">
+    <div v-if="turn == 'REVIEW'">SUMMARY <button @click="nextRound()">Next round</button></div>
+    <button @click="nextTurn()" v-if="turn != 'REVIEW'">Next</button>
+  </div>
+</div>
+
+<div>
+<h2>Round</h2>
+<h3>{{game.round}}</h3>
+</div>
+
 <small>
+  <hr>
 	<div v-for="player in game.players">{{player}}<br></div>
 <br>
       goal: {{game.goal}}<br>

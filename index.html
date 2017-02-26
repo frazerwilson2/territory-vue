@@ -14,7 +14,7 @@
 <a @click="newPlayer">Start New game</a>
 <ol>
   <li v-for="(player, index) in game.players" v-bind:class="{ active: currentPlayer == index, assigned: player.ready }">
-    PLAYER {{index}} (${{player.cash}}) - 
+    <input v-model="player.name" v-bind:placeholder="'Player ' + (index + 1)"> (${{player.cash}}) - 
     <span v-for="guy in player.roster">{{rawRoster[guy - 1].Name}}, </span>
     <a @click="donePurchase()" v-if="!player.ready">Finished</a>
   </li>
