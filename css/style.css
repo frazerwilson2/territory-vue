@@ -42,12 +42,36 @@ body {
     width: calc(10% - (1% * 2));
     background: #a7a7a7; }
     #game > div:nth-child(3) h3 {
-      font-size: 4em; }
+      font-size: 4em;
+      margin: 20px 0; }
+    #game > div:nth-child(3) h4 {
+      font-size: 2em;
+      margin: 0; }
 
 .actions {
   text-align: right;
   border-top: 1px black solid;
   padding-top: 5px; }
+
+.select-card {
+  padding: 5px;
+  text-align: center; }
+
+.card-holder {
+  display: inline-block;
+  border: 1px dashed;
+  width: 160px;
+  height: 200px; }
+
+.poproster {
+  position: absolute;
+  background: white;
+  transition: all 0.5s;
+  opacity: 0;
+  visibility: hidden; }
+  .poproster.active {
+    opacity: 1;
+    visibility: visible; }
 
 small {
   clear: both;

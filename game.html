@@ -15,7 +15,17 @@
 <div>
   <div v-for="(player, index) in game.players" v-if="index == turn">
     <h1>{{player.name}}</h1>
-    matchcard
+    <div v-for="(match, index) in player.matchcard">
+      <div class="select-card">
+      {{index}}
+      <div class="card-holder" @click="openRoster(index, 0)">+ <div v-if="match.competitors[0]">{{findWrestler(match.competitors[0]).Name}}</div></div>
+      <div class="card-holder" @click="openRoster(index, 1)">+ <div v-if="match.competitors[1]">{{findWrestler(match.competitors[1]).Name}}</div></div>
+      </div>
+    </div>
+      <div class="poproster" v-bind:class="{ active: popRoster }">
+        <a @click="closePop()">|x|</a>
+        <ul><li v-for="(wrestler, index) in player.temproster"><a @click="addToCard(index, wrestler)">{{findWrestler(wrestler).Name}}</a></li></ul>
+      </div>
   </div>
   <!-- Actions -->
   <div class="actions">
@@ -27,6 +37,7 @@
 <div>
 <h2>Round</h2>
 <h3>{{game.round}}</h3>
+<h4 v-for="(player, index) in game.players" v-if="index == turn">${{player.cash}}.00</h4>
 </div>
 
 <small>

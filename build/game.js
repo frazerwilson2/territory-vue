@@ -11,7 +11,19 @@ var game = new Vue({
     news:[],
     game:[],
     // In game values
-    turn: 0
+    turn: 0,
+    matchcard: [],
+    match: {
+      story: null,
+      gimmick: null,
+      gimmickAffect:null,
+      competitors:[],
+      winner: null,
+      loser: null
+    },
+    popRoster:false,
+    currentMatch:false,
+    currentPos:false
   },
   mounted: function() {
   this.loadRoster();
@@ -21,6 +33,7 @@ var game = new Vue({
   this.loadNews();
   this.loadGame();
   //this.loadMissions();
+  this.setMatchcard();
   },
   methods: {
     // Lets get started
@@ -49,7 +62,25 @@ var game = new Vue({
     // IN GAME
     nextTurn: function(){
       this.turn++;
-      if(this.turn == this.game.players.length){this.turn = 'REVIEW'}
+      if(this.turn == this.game.players.length){this.turn = 'REVIEW'; this.summarize()}
+    },
+    sumValues: function(val){
+      let totalGain = 0;
+      val.matchcard.forEach(function(match){
+        console.log(match);
+        if(match.competitors[0] && match.competitors[1]){
+          let matchSum = (game.findWrestler(match.competitors[0]).val + game.findWrestler(match.competitors[0]).inc) + (game.findWrestler(match.competitors[1]).val + game.findWrestler(match.competitors[1]).inc);
+          console.log(matchSum);
+          totalGain += matchSum;
+        }
+      });
+      val.cash += totalGain;
+    },
+    summarize: function(){
+      console.clear();
+       this.game.players.forEach(function(value) {
+        game.sumValues(value);
+       });
     },
     nextRound: function(){
      this.game.round++;
@@ -62,24 +93,51 @@ var game = new Vue({
       localStorage.setItem('roster', JSON.stringify(this.roster));
       localStorage.setItem('gameData', JSON.stringify(this.game));
       console.log('data saved');
+    },
+    setMatchcard: function(){
+      var match = Object.assign({}, this.match);
+      this.game.players.forEach(function (value) {
+        value.matchcard = [];
+        // 3 match default
+        value.matchcard.push(JSON.parse(JSON.stringify(match)));
+        value.matchcard.push(JSON.parse(JSON.stringify(match)));
+        value.matchcard.push(JSON.parse(JSON.stringify(match)));
+        value.temproster = Array.from(value.roster);
+      });
+    },
+    findWrestler: function(id){
+      var result = null;
+      this.roster.forEach(wrestler => {
+        if(wrestler.Id == id){
+          //console.log(wrestler)
+          result = wrestler;
+        }
+      });
+      if(!result){return}
+      return result;
+    },
+    openRoster: function (matchno, card) {
+      console.log('match ' + matchno + ', card ' + card);
+      this.currentMatch = matchno;
+      this.currentPos = card;
+      const poproster = document.querySelector('.poproster');
+      poproster.style.top = `${event.pageY + 10}px`;
+      poproster.style.left = `${event.pageX + 10}px`;
+      //console.log(event);
+      this.popRoster = true;
+    },
+    closePop: function(){
+      this.popRoster = false;
+      console.log('close');
+    },
+    addToCard: function(wrestler, id){
+      console.log(this.currentMatch, this.currentPos, wrestler, id);
+      this.game.players[this.turn].matchcard[this.currentMatch].competitors[this.currentPos] = id;
+      this.game.players[this.turn].temproster.splice(wrestler, 1);
+      game.$forceUpdate();
+      this.closePop();
     }
-  },
-  // components: {
-  //   'wrestler': {
-  //     props: ['data', 'cash'],
-  //     template: '<div class="box" v-bind:class="{ assigned: data.assigned || !cash }">\
-  //     <h2>{{data.Name}} ({{data.val}})</h2>\
-  //     ({{data.Val}}) <a v-on:click="purchaseRoster()" v-if="!data.assigned">Purchase</a>\
-  //     </div>',
-  //     methods: {
-  //       purchaseRoster: function () {
-  //         this.data.assigned = true;
-  //         app.$emit('addToRoster', {id:this.data.Id, val:this.data.val});
-  //         app.$emit('nextPlayer', 'switch to' + this.data.Id);
-  //       }
-  //     }
-  //   }
-  // }
+  }
 });
 
 /*

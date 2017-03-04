@@ -13,7 +13,19 @@ var game = new Vue({
     news: [],
     game: [],
     // In game values
-    turn: 0
+    turn: 0,
+    matchcard: [],
+    match: {
+      story: null,
+      gimmick: null,
+      gimmickAffect: null,
+      competitors: [],
+      winner: null,
+      loser: null
+    },
+    popRoster: false,
+    currentMatch: false,
+    currentPos: false
   },
   mounted: function mounted() {
     this.loadRoster();
@@ -23,6 +35,7 @@ var game = new Vue({
     this.loadNews();
     this.loadGame();
     //this.loadMissions();
+    this.setMatchcard();
   },
   methods: {
     // Lets get started
@@ -52,8 +65,26 @@ var game = new Vue({
     nextTurn: function nextTurn() {
       this.turn++;
       if (this.turn == this.game.players.length) {
-        this.turn = 'REVIEW';
+        this.turn = 'REVIEW';this.summarize();
       }
+    },
+    sumValues: function sumValues(val) {
+      var totalGain = 0;
+      val.matchcard.forEach(function (match) {
+        console.log(match);
+        if (match.competitors[0] && match.competitors[1]) {
+          var matchSum = game.findWrestler(match.competitors[0]).val + game.findWrestler(match.competitors[0]).inc + (game.findWrestler(match.competitors[1]).val + game.findWrestler(match.competitors[1]).inc);
+          console.log(matchSum);
+          totalGain += matchSum;
+        }
+      });
+      val.cash += totalGain;
+    },
+    summarize: function summarize() {
+      console.clear();
+      this.game.players.forEach(function (value) {
+        game.sumValues(value);
+      });
     },
     nextRound: function nextRound() {
       this.game.round++;
@@ -66,6 +97,51 @@ var game = new Vue({
       localStorage.setItem('roster', JSON.stringify(this.roster));
       localStorage.setItem('gameData', JSON.stringify(this.game));
       console.log('data saved');
+    },
+    setMatchcard: function setMatchcard() {
+      var match = Object.assign({}, this.match);
+      this.game.players.forEach(function (value) {
+        value.matchcard = [];
+        // 3 match default
+        value.matchcard.push(JSON.parse(JSON.stringify(match)));
+        value.matchcard.push(JSON.parse(JSON.stringify(match)));
+        value.matchcard.push(JSON.parse(JSON.stringify(match)));
+        value.temproster = Array.from(value.roster);
+      });
+    },
+    findWrestler: function findWrestler(id) {
+      var result = null;
+      this.roster.forEach(function (wrestler) {
+        if (wrestler.Id == id) {
+          //console.log(wrestler)
+          result = wrestler;
+        }
+      });
+      if (!result) {
+        return;
+      }
+      return result;
+    },
+    openRoster: function openRoster(matchno, card) {
+      console.log('match ' + matchno + ', card ' + card);
+      this.currentMatch = matchno;
+      this.currentPos = card;
+      var poproster = document.querySelector('.poproster');
+      poproster.style.top = event.pageY + 10 + 'px';
+      poproster.style.left = event.pageX + 10 + 'px';
+      //console.log(event);
+      this.popRoster = true;
+    },
+    closePop: function closePop() {
+      this.popRoster = false;
+      console.log('close');
+    },
+    addToCard: function addToCard(wrestler, id) {
+      console.log(this.currentMatch, this.currentPos, wrestler, id);
+      this.game.players[this.turn].matchcard[this.currentMatch].competitors[this.currentPos] = id;
+      this.game.players[this.turn].temproster.splice(wrestler, 1);
+      game.$forceUpdate();
+      this.closePop();
     }
   }
 });
