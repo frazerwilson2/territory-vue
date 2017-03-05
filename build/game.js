@@ -19,11 +19,14 @@ var game = new Vue({
       gimmickAffect:null,
       competitors:[],
       winner: null,
-      loser: null
+      loser: null,
+      ready:false
     },
     popRoster:false,
     currentMatch:false,
-    currentPos:false
+    currentPos:false,
+    summaryValues:[],
+    validate:false
   },
   mounted: function() {
   this.loadRoster();
@@ -61,25 +64,36 @@ var game = new Vue({
     },
     // IN GAME
     nextTurn: function(){
-      this.turn++;
-      if(this.turn == this.game.players.length){this.turn = 'REVIEW'; this.summarize()}
+      game.validate = false;
+      console.clear();
+      this.game.players[this.turn].matchcard.forEach(function(match){
+        // make sure matches are ready
+        console.log(match.ready)
+        if(!match.ready){game.validate = true;}
+      });
+      console.log(this.validate);
+      if(this.validate == true) {return;} 
+      else {
+        this.turn++;
+        if(this.turn == this.game.players.length){this.turn = 'REVIEW'; this.summarize()}
+      }
     },
-    sumValues: function(val){
+    sumValues: function(val, index){
       let totalGain = 0;
       val.matchcard.forEach(function(match){
-        console.log(match);
         if(match.competitors[0] && match.competitors[1]){
           let matchSum = (game.findWrestler(match.competitors[0]).val + game.findWrestler(match.competitors[0]).inc) + (game.findWrestler(match.competitors[1]).val + game.findWrestler(match.competitors[1]).inc);
-          console.log(matchSum);
+          game.summaryValues[index].matches.push(matchSum);
           totalGain += matchSum;
         }
       });
+      game.summaryValues[index].total = totalGain;
       val.cash += totalGain;
     },
     summarize: function(){
-      console.clear();
-       this.game.players.forEach(function(value) {
-        game.sumValues(value);
+       this.game.players.forEach(function(value, index) {
+        game.summaryValues.push({'matches':[],'bonus':[], 'total':0});
+        game.sumValues(value, index);
        });
     },
     nextRound: function(){
@@ -117,7 +131,6 @@ var game = new Vue({
       return result;
     },
     openRoster: function (matchno, card) {
-      console.log('match ' + matchno + ', card ' + card);
       this.currentMatch = matchno;
       this.currentPos = card;
       const poproster = document.querySelector('.poproster');
@@ -128,14 +141,28 @@ var game = new Vue({
     },
     closePop: function(){
       this.popRoster = false;
-      console.log('close');
     },
     addToCard: function(wrestler, id){
-      console.log(this.currentMatch, this.currentPos, wrestler, id);
       this.game.players[this.turn].matchcard[this.currentMatch].competitors[this.currentPos] = id;
       this.game.players[this.turn].temproster.splice(wrestler, 1);
       game.$forceUpdate();
       this.closePop();
+      this.game.players[this.turn].matchcard[this.currentMatch].ready = this.validateMatch(this.game.players[this.turn].matchcard[this.currentMatch]);
+    },
+    removeMatch: function(player, match){//
+      player.matchcard.splice(match, 1);
+    },
+    validateMatch: function(match){
+      let ready = false;
+      if(match.competitors.length > 1){ready = true};
+      match.winner ? ready = true : ready = false;
+      console.log(ready);
+      return ready;
+    },
+    setWinner: function(match, winner){
+      console.log(match, winner);
+      match.winner = winner;
+      this.game.players[this.turn].matchcard[this.currentMatch].ready = this.validateMatch(this.game.players[this.turn].matchcard[this.currentMatch]);
     }
   }
 });
@@ -143,15 +170,15 @@ var game = new Vue({
 /*
 //
 SETUP
-- Json files for each data list get
-- Store to localstorage if not found (browser based game)
-- Intro page for setting up game. set num players (with names), 
-divide up roster purchase, share cards and missions. When game setup go
+*- Json files for each data list get
+*- Store to localstorage if not found (browser based game)
+*- Intro page for setting up game. set num players (with names), 
+*divide up roster purchase, share cards and missions. When game setup go
 to main game page.
 
 MAIN
 - If no storage token revert to setup
-- do not copy data and keep records, use lookup functions to find data
+*- do not copy data and keep records, use lookup functions to find data
 from storage and use ids in references.
 - 4 phase
   - purchases/plans (vote for hosting wchamp, buy extra cards)
@@ -161,4 +188,43 @@ from storage and use ids in references.
   x 12 rounds (1 year)
 Following final round tally all $ and award winner
 //
+
+
+NEXT STEPS
+// SETUP
+*- summary display values (per match breakdown)
+- validate choices (match with 1 wrestler, type mismatch, select winner)
+- winner inc, loser inc reset
+- reset temproster and matchcard for next round
+- award round winner with token
+
+// GIMMICK
+- add to match (remove from users set)
+- remove (return to users set)
+- count value in match rating
+- add card to players discard gimmick pile
+
+// STORIES
+
+// NEWS
+
+// STORE
+- buy gimmick
+- buy roster
+- buy story
+- buy legend
+- buy tv time (extra match)
+- buy stadium (double value)
+
+// WCHAMP (awards based on scores, vote for hire, use tokens to switch)
+
+// MISSIONS
+
+// END GAME (end after 12, tally totals(with missions) and announce winner)
+
+// WRAP UP
+- remove from card (re-add to temproster)
+- if no data of any kind reload from storage (if no storage note error then return to index)
+
+
 */

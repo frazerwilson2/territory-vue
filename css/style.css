@@ -56,12 +56,21 @@ body {
 .select-card {
   padding: 5px;
   text-align: center; }
+  .select-card.ready {
+    border: 2px green solid; }
 
 .card-holder {
   display: inline-block;
   border: 1px dashed;
   width: 160px;
   height: 200px; }
+  .card-holder div {
+    float: left; }
+
+.summary > div {
+  width: 25%;
+  display: inline-block;
+  float: left; }
 
 .poproster {
   position: absolute;
@@ -72,6 +81,25 @@ body {
   .poproster.active {
     opacity: 1;
     visibility: visible; }
+
+.errors {
+  position: fixed;
+  color: white;
+  background: rebeccapurple;
+  width: calc(100% - 20px);
+  left: 0;
+  top: 0;
+  height: 50px;
+  padding: 10px; }
+
+.win {
+  border: 2px #58b3b5 solid;
+  display: block;
+  border-radius: 100%;
+  height: 40px;
+  width: 40px;
+  line-height: 4;
+  margin: auto; }
 
 small {
   clear: both;
