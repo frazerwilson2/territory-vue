@@ -10,12 +10,21 @@
 <body>
 <div id="game">
 
-<div>// menus</div>
+<div>
+  // menus
+<div v-for="(player, index) in game.players" v-if="index == turn">
+<!-- Roster list -->
+    <ul>
+      <li v-for="(wrestler, index) in player.roster">{{findWrestler(wrestler).Name}} ({{findWrestler(wrestler).val}}) +{{findWrestler(wrestler).inc}}</li>
+    </ul>
+</div>
+</div>
 
 <div>
   <div v-for="(player, index) in game.players" v-if="index == turn">
     <div v-if="validate" class="errors">Errors</div>
-    <h1>{{player.name}}</h1>
+    <h1>{{player.name}}</h1>{{player.tokens + ' token'}}
+    
     <div v-for="(match, index) in player.matchcard">
       <div class="select-card" v-bind:class="{ ready: match.ready}">
       {{index}} {{match.ready}}
@@ -24,7 +33,7 @@
         <div v-if="match.competitors[0]">
           {{findWrestler(match.competitors[0]).Name}}
           <span v-if="match.competitors[0] == match.winner" class="win">WIN</span>
-          <a v-if="!match.winner || match.competitors[0] != match.winner" @click="setWinner(match, match.competitors[0])">Winner?</a>
+          <a v-if="!match.winner || match.competitors[0] != match.winner" @click="setWinner(match, match.competitors[0], index)">Winner?</a>
         </div>
       </div>
       <div class="card-holder">
@@ -32,7 +41,7 @@
         <div v-if="match.competitors[1]">
           {{findWrestler(match.competitors[1]).Name}}
           <span v-if="match.competitors[1] == match.winner" class="win">WIN</span>
-          <a v-if="!match.winner || match.competitors[1] != match.winner" @click="setWinner(match, match.competitors[1])">Winner?</a>
+          <a v-if="!match.winner || match.competitors[1] != match.winner" @click="setWinner(match, match.competitors[1], index)">Winner?</a>
         </div>
       </div>
       <a @click="removeMatch(player, index)">Remove match</a>

@@ -90,16 +90,58 @@ var game = new Vue({
       game.summaryValues[index].total = totalGain;
       val.cash += totalGain;
     },
+    incWinners: function(val, index){
+      val.matchcard.forEach(function(match){
+        if(match.winner == match.competitors[0]){
+          game.findWrestler(match.competitors[0]).inc >= 3 ? game.findWrestler(match.competitors[0]).inc = 3 : game.findWrestler(match.competitors[0]).inc++;
+          game.findWrestler(match.competitors[1]).inc = 0;
+          console.log(game.findWrestler(match.competitors[0]).Name + ' wins + 1');
+        }
+        else {
+          game.findWrestler(match.competitors[1]).inc >= 3 ? game.findWrestler(match.competitors[1]).inc = 3 : game.findWrestler(match.competitors[1]).inc++;
+          game.findWrestler(match.competitors[0]).inc = 0;
+          console.log(game.findWrestler(match.competitors[1]).Name + ' wins + 1');
+        }
+      });
+    },
     summarize: function(){
-       this.game.players.forEach(function(value, index) {
+        game.summaryValues = [];
+        this.game.players.forEach(function(value, index) {
         game.summaryValues.push({'matches':[],'bonus':[], 'total':0});
         game.sumValues(value, index);
+        game.incWinners(value, index);
        });
+        game.awardTopDraw();
+    },
+    indexOfMax: function(arr) {
+    if (arr.length === 0) {
+        return -1;
+    }
+
+    var max = arr[0];
+    var maxIndex = 0;
+
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+            maxIndex = i;
+            max = arr[i];
+        }
+    }
+    return maxIndex;
+    },
+    awardTopDraw: function(){
+      let drawTotals = [];
+      game.summaryValues.forEach(val=>drawTotals.push(val.total));
+      console.log(drawTotals);
+      var i = this.indexOfMax(drawTotals);
+      console.log('highest - ' + i);
+      this.game.players[i].tokens++;
     },
     nextRound: function(){
-     this.game.round++;
-     this.turn = 0;
-     this.saveData();
+      this.setMatchcard();
+      this.game.round++;
+      this.turn = 0;
+      this.saveData();
     },
     saveData: function(){
       localStorage.setItem('gimmicks', JSON.stringify(this.roster));
@@ -156,13 +198,15 @@ var game = new Vue({
       let ready = false;
       if(match.competitors.length > 1){ready = true};
       match.winner ? ready = true : ready = false;
-      console.log(ready);
+      console.log(match, ready);
       return ready;
     },
-    setWinner: function(match, winner){
-      console.log(match, winner);
+    setWinner: function(match, winner, matchno){
+      //console.log(match, winner);
+      this.currentMatch = matchno;
       match.winner = winner;
-      this.game.players[this.turn].matchcard[this.currentMatch].ready = this.validateMatch(this.game.players[this.turn].matchcard[this.currentMatch]);
+      console.log(match);
+      this.game.players[this.turn].matchcard[this.currentMatch].ready = this.validateMatch(match);
     }
   }
 });
@@ -194,9 +238,9 @@ NEXT STEPS
 // SETUP
 *- summary display values (per match breakdown)
 - validate choices (match with 1 wrestler, type mismatch, select winner)
-- winner inc, loser inc reset
-- reset temproster and matchcard for next round
-- award round winner with token
+*- winner inc, loser inc reset
+*- reset temproster and matchcard for next round
+*- award round winner with token
 
 // GIMMICK
 - add to match (remove from users set)
