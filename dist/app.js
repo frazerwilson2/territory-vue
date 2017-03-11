@@ -39,6 +39,9 @@ var app = new Vue({
         gimmicks: [],
         goal: 0,
         tokens: 0,
+        arena: 0,
+        tv: 0,
+        legends: [],
         ready: false
       };
       this.game.players.push(nextup);

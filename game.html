@@ -14,13 +14,50 @@
   // menus
 <div v-for="(player, index) in game.players" v-if="index == turn">
 <!-- Roster list -->
+    // Roster
     <ul>
       <li v-for="(wrestler, index) in player.roster">{{findWrestler(wrestler).Name}} ({{findWrestler(wrestler).val}}) +{{findWrestler(wrestler).inc}}</li>
     </ul>
+    // Gimmicks
+    <ul>
+      <li v-for="(gimmick, index) in player.gimmicks">{{findGimmick(gimmick).Name}}</li>
+    </ul>
+    // Stories
+    <ul>
+      <li v-for="(story, index) in player.stories">{{findStory(story).Name}}</li>
+    </ul>
+    // Legends 
+    <ul>
+      <li v-for="(legend, index) in player.legends">{{legend.Name}}</li>
+    </ul>
+    // TV {{player.tv}}
+    // Arena {{player.arena}}
 </div>
 </div>
 
 <div>
+
+<div id="store" v-bind:class="{'show':showStore}">
+  <a @click="openStore(false)">|X|</a>
+  store<br>
+  <h3>Roster</h3> 
+  <ul><li v-for="wrestler in game.roster"><a @click="purchaseRoster(wrestler, findWrestler(wrestler).val)">{{findWrestler(wrestler).Name}} {{findWrestler(wrestler).val}}</a></li></ul>
+  <h3>Story</h3>
+  <div class="card" @click="purchaseStory()">Take story</div>
+<!--   <ul><li v-for="story in game.stories">{{story}}</li></ul> -->
+  <h3>Gimmicks</h3>
+  <div v-show="game.gimmicks" class="card" @click="purchaseGimmick()">Take gimmick</div>
+<!--   <ul><li v-for="gimmick in game.gimmicks">{{findGimmick(gimmick).Name}}</li></ul> -->
+  <h3>TV</h3>
+  <div v-if="game.tv" class="card"><a @click="getTv()">TV CARDS ({{game.tv}} left)</a></div>
+  <h3>Arena</h3>
+  <div v-if="game.arena" class="card"><a @click="getArena()">ARENA ({{game.arena}} left)</a></div>
+  <h3>Legends</h3>
+  <ul><li v-for="legend in legendRoster"><a @click="purchaseLegend(legend, legend.val)">{{legend}}</a></li></ul>
+</div>
+
+<a @click="openStore(true)">store</a>
+
   <div v-for="(player, index) in game.players" v-if="index == turn">
     <div v-if="validate" class="errors">Errors</div>
     <h1>{{player.name}}</h1>{{player.tokens + ' token'}}
@@ -28,6 +65,10 @@
     <div v-for="(match, index) in player.matchcard">
       <div class="select-card" v-bind:class="{ ready: match.ready}">
       {{index}} {{match.ready}}
+      <div class="card-holder" v-if="match.ready" style="float:left;">
+        <div @click="openGimmick(index)">add gimmick</div>
+      </div>
+      
       <div class="card-holder">
         <div @click="openRoster(index, 0)">+</div> 
         <div v-if="match.competitors[0]">
@@ -44,12 +85,21 @@
           <a v-if="!match.winner || match.competitors[1] != match.winner" @click="setWinner(match, match.competitors[1], index)">Winner?</a>
         </div>
       </div>
+
       <a @click="removeMatch(player, index)">Remove match</a>
       </div>
     </div>
-      <div class="poproster" v-bind:class="{ active: popRoster }">
+
+      <div class="pop poproster" v-bind:class="{ active: popRoster }">
         <a @click="closePop()">|x|</a>
         <ul><li v-for="(wrestler, index) in player.temproster"><a @click="addToCard(index, wrestler)">{{findWrestler(wrestler).Name}}</a></li></ul>
+      </div>
+
+      <div class="pop popgimmick" v-bind:class="{ active: popGimmick }">
+        {{titleCards}}
+        <ul>
+          <li v-for="(gimmick, index) in player.gimmicks" v-bind:class="{ hide: findGimmick(gimmick).type == 'TITLECHANGE' && titleCards == false }">{{findGimmick(gimmick).Name}}</li>
+        </ul>
       </div>
   </div>
   <div v-if="turn == 'REVIEW'" class="summary">
@@ -86,7 +136,7 @@
       gimmicks: {{game.gimmicks}}<br>
       tv: {{game.tv}}<br>
       arena: {{game.arena}}<br>
-      legends: {{game.legends}}
+      legends: {{legendRoster}}
 </small>
 
 

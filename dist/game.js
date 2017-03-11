@@ -9,7 +9,8 @@ var game = new Vue({
     //missions: [],
     stories: [],
     gimmicks: [],
-    legends: [],
+    legends: '',
+    legendRoster: '',
     news: [],
     game: [],
     // In game values
@@ -25,16 +26,20 @@ var game = new Vue({
       ready: false
     },
     popRoster: false,
+    popGimmick: false,
     currentMatch: false,
     currentPos: false,
     summaryValues: [],
-    validate: false
+    validate: false,
+    titleCards: false,
+    showStore: false
   },
   mounted: function mounted() {
     this.loadRoster();
     this.loadStories();
     this.loadGimmicks();
     this.loadLegends();
+    //this.createData('x');
     this.loadNews();
     this.loadGame();
     //this.loadMissions();
@@ -52,7 +57,14 @@ var game = new Vue({
       this.$set(this, 'gimmicks', JSON.parse(localStorage.getItem('gimmicks')));
     },
     loadLegends: function loadLegends() {
-      this.$set(this, 'legends', JSON.parse(localStorage.getItem('legends')));
+      var legendlist = JSON.parse(localStorage.getItem('legends'));
+      // legendlist.forEach(leg => {this.legends.push(leg.Id)});
+      this.legends = [1, 2, 3];
+      // console.log(this.data);
+      this.createData(legendlist);
+    },
+    createData: function createData(data) {
+      this.legendRoster = data;
     },
     loadNews: function loadNews() {
       this.$set(this, 'news', JSON.parse(localStorage.getItem('news')));
@@ -182,6 +194,30 @@ var game = new Vue({
       }
       return result;
     },
+    findGimmick: function findGimmick(id) {
+      var result = null;
+      this.gimmicks.forEach(function (gimmick) {
+        if (gimmick.Id == id) {
+          result = gimmick;
+        }
+      });
+      if (!result) {
+        return;
+      }
+      return result;
+    },
+    findStory: function findStory(id) {
+      var result = null;
+      this.stories.forEach(function (story) {
+        if (story.Id == id) {
+          result = story;
+        }
+      });
+      if (!result) {
+        return;
+      }
+      return result;
+    },
     openRoster: function openRoster(matchno, card) {
       this.currentMatch = matchno;
       this.currentPos = card;
@@ -191,6 +227,19 @@ var game = new Vue({
       //console.log(event);
       this.popRoster = true;
     },
+    openGimmick: function openGimmick(matchno) {
+      this.currentMatch = matchno;
+      var selectedMatch = this.game.players[this.turn].matchcard[this.currentMatch];
+      if (this.findWrestler(selectedMatch.competitors[0]).isChamp || this.findWrestler(selectedMatch.competitors[1]).isChamp) {
+        this.titleCards = true;
+      } else {
+        this.titleCards = false;
+      }
+      var popgimmick = document.querySelector('.popgimmick');
+      popgimmick.style.top = event.pageY + 10 + 'px';
+      popgimmick.style.left = event.pageX + 10 + 'px';
+      this.popGimmick = true;
+    }, //
     closePop: function closePop() {
       this.popRoster = false;
     },
@@ -211,15 +260,76 @@ var game = new Vue({
         ready = true;
       };
       match.winner ? ready = true : ready = false;
-      console.log(match, ready);
+      //console.log(match, ready);
       return ready;
     },
     setWinner: function setWinner(match, winner, matchno) {
       //console.log(match, winner);
       this.currentMatch = matchno;
       match.winner = winner;
+      game.game.players[this.turn].matchcard[this.currentMatch].ready = this.validateMatch(match);
       console.log(match);
-      this.game.players[this.turn].matchcard[this.currentMatch].ready = this.validateMatch(match);
+      game.$forceUpdate();
+    },
+    // store
+    openStore: function openStore(show) {
+      this.showStore = show; //
+    },
+    purchaseRoster: function purchaseRoster(wrestler, cost) {
+      if (game.game.players[this.turn].cash <= cost) {
+        return;
+      }
+      game.game.players[this.turn].roster.push(wrestler);
+      game.game.players[this.turn].cash -= cost;
+      game.game.roster.forEach(function (val, index) {
+        if (wrestler == val) {
+          game.game.roster.splice(index, 1);
+        }
+      });
+    },
+    purchaseLegend: function purchaseLegend(legend, cost) {
+      if (game.game.players[this.turn].cash <= cost) {
+        return;
+      }
+      game.game.players[this.turn].legends.push(legend);
+      game.game.players[this.turn].cash -= cost;
+      game.legendRoster.forEach(function (val, index) {
+        if (legend == val) {
+          game.legendRoster.splice(index, 1);
+        }
+      });
+    },
+    purchaseGimmick: function purchaseGimmick() {
+      if (game.game.players[this.turn].cash <= 5) {
+        return;
+      }
+      game.game.players[this.turn].cash -= 5;
+      game.game.players[this.turn].gimmicks.push(game.game.gimmicks[0]);
+      game.game.gimmicks.splice(0, 1);
+    },
+    purchaseStory: function purchaseStory() {
+      if (game.game.players[this.turn].cash <= 5) {
+        return;
+      }
+      game.game.players[this.turn].cash -= 5;
+      game.game.players[this.turn].stories.push(game.game.stories[0]);
+      game.game.stories.splice(0, 1);
+    },
+    getTv: function getTv() {
+      if (game.game.players[this.turn].cash <= 20) {
+        return;
+      }
+      game.game.players[this.turn].cash -= 20;
+      game.game.players[this.turn].tv++;
+      game.game.tv--;
+    },
+    getArena: function getArena() {
+      if (game.game.players[this.turn].cash <= 50) {
+        return;
+      }
+      game.game.players[this.turn].cash -= 50;
+      game.game.players[this.turn].arena++;
+      game.game.arena--;
     }
   }
 });
@@ -260,18 +370,19 @@ NEXT STEPS
 - remove (return to users set)
 - count value in match rating
 - add card to players discard gimmick pile
+- enact actions (change title, heel/face turns)
 
 // STORIES
 
 // NEWS
 
 // STORE
-- buy gimmick
-- buy roster
-- buy story
-- buy legend
-- buy tv time (extra match)
-- buy stadium (double value)
+*- buy gimmick
+*- buy roster
+*- buy story
+*- buy legend
+*- buy tv time (extra match)
+*- buy stadium (double value)
 
 // WCHAMP (awards based on scores, vote for hire, use tokens to switch)
 

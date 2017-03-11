@@ -72,15 +72,17 @@ body {
   display: inline-block;
   float: left; }
 
-.poproster {
+.pop {
   position: absolute;
   background: white;
   transition: all 0.5s;
   opacity: 0;
   visibility: hidden; }
-  .poproster.active {
+  .pop.active {
     opacity: 1;
     visibility: visible; }
+  .pop .hide {
+    opacity: 0.5; }
 
 .errors {
   position: fixed;
@@ -100,6 +102,27 @@ body {
   width: 40px;
   line-height: 4;
   margin: auto; }
+
+#store {
+  background: white;
+  position: absolute;
+  top: 5%;
+  top: -100%;
+  height: calc(90% - 20px);
+  width: calc(67% - 20px);
+  padding: 10px;
+  border-radius: 2px;
+  transition: top 0.5s; }
+  #store.show {
+    top: 5%; }
+  #store ul {
+    padding: 0;
+    margin: 0; }
+  #store li, #store .card {
+    display: inline-block;
+    width: 100px;
+    border: 1px black solid;
+    margin: 0 3px; }
 
 small {
   clear: both;

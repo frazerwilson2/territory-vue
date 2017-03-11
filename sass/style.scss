@@ -87,7 +87,7 @@ height: 100%;
 		float:left;
 	}
 }
-.poproster {
+.pop {
     position: absolute;
     background: white;
     transition:all 0.5s;
@@ -97,6 +97,9 @@ height: 100%;
     	opacity:1;
     	visibility:visible;
     }
+    .hide {
+	opacity:0.5;
+	}
 }
 .errors {
     position: fixed;
@@ -116,6 +119,30 @@ height: 100%;
     width: 40px;
     line-height: 4;
     margin: auto;
+}
+#store {
+    background: white;
+    position: absolute;
+    top: 5%;
+    top:-100%;
+    height: calc(90% - 20px);
+    width: calc(67% - 20px);
+    padding: 10px;
+    border-radius: 2px;
+    transition:top 0.5s;
+    &.show {
+    	top:5%;
+    }
+    ul {
+    	padding:0;
+    	margin:0;
+    }
+    li, .card {
+		    display: inline-block;
+		    width: 100px;
+		    border: 1px black solid;
+		    margin: 0 3px;
+    	}
 }
 small {
 	clear:both;
