@@ -4,41 +4,47 @@
 		"Id":1,
 		"type":"TITLECHANGE",
 		"description": "test",
-		"setupnum": 3
+		"setupnum": 3,
+		"affect":"true"
 		},
 	{
 		"Name":"Heel/face turn",
 		"Id":2,
 		"type":"HEELFACE",
 		"description": "test",
-		"setupnum": 3
+		"setupnum": 3,
+		"affect":"true"
 		},
 	{
 		"Name":"cage",
 		"Id":3,
 		"type":"CAGE",
 		"description": "test",
-		"setupnum": 10
+		"setupnum": 10,
+		"affect":"false"
 		},
 	{
 		"Name":"Ladder",
 		"Id":4,
 		"type":"LADDER",
 		"description": "test",
-		"setupnum": 10
+		"setupnum": 10,
+		"affect":"false"
 		},
 	{
 		"Name":"No dq",
 		"Id":5,
 		"type":"WEAPONS",
 		"description": "test",
-		"setupnum": 10
+		"setupnum": 10,
+		"affect":"false"
 		},
 	{
 		"Name":"table",
 		"Id":6,
 		"type":"TABLE",
 		"description": "test",
-		"setupnum": 10
+		"setupnum": 10,
+		"affect":"false"
 		}
 ]

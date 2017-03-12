@@ -124,6 +124,18 @@ body {
     border: 1px black solid;
     margin: 0 3px; }
 
+.heel {
+  background: #b18a8a; }
+
+.face {
+  background: #649d9e; }
+
+.champ:before {
+  content: 'champ';
+  background: yellow;
+  display: block;
+  border-radius: 100%; }
+
 small {
   clear: both;
   float: none;

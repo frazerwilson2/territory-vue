@@ -58,9 +58,6 @@ var game = new Vue({
     },
     loadLegends: function loadLegends() {
       var legendlist = JSON.parse(localStorage.getItem('legends'));
-      // legendlist.forEach(leg => {this.legends.push(leg.Id)});
-      this.legends = [1, 2, 3];
-      // console.log(this.data);
       this.createData(legendlist);
     },
     createData: function createData(data) {
@@ -79,15 +76,12 @@ var game = new Vue({
     // IN GAME
     nextTurn: function nextTurn() {
       game.validate = false;
-      console.clear();
       this.game.players[this.turn].matchcard.forEach(function (match) {
         // make sure matches are ready
-        console.log(match.ready);
         if (!match.ready) {
           game.validate = true;
         }
       });
-      console.log(this.validate);
       if (this.validate == true) {
         return;
       } else {
@@ -102,7 +96,13 @@ var game = new Vue({
       val.matchcard.forEach(function (match) {
         if (match.competitors[0] && match.competitors[1]) {
           var matchSum = game.findWrestler(match.competitors[0]).val + game.findWrestler(match.competitors[0]).inc + (game.findWrestler(match.competitors[1]).val + game.findWrestler(match.competitors[1]).inc);
+          if (match.gimmick) {
+            matchSum += 5;
+          }
           game.summaryValues[index].matches.push(matchSum);
+          if (match.gimmickAffect) {
+            game.affectGimmick(match);
+          }
           totalGain += matchSum;
         }
       });
@@ -114,13 +114,36 @@ var game = new Vue({
         if (match.winner == match.competitors[0]) {
           game.findWrestler(match.competitors[0]).inc >= 3 ? game.findWrestler(match.competitors[0]).inc = 3 : game.findWrestler(match.competitors[0]).inc++;
           game.findWrestler(match.competitors[1]).inc = 0;
-          console.log(game.findWrestler(match.competitors[0]).Name + ' wins + 1');
         } else {
           game.findWrestler(match.competitors[1]).inc >= 3 ? game.findWrestler(match.competitors[1]).inc = 3 : game.findWrestler(match.competitors[1]).inc++;
           game.findWrestler(match.competitors[0]).inc = 0;
-          console.log(game.findWrestler(match.competitors[1]).Name + ' wins + 1');
         }
       });
+    },
+    affectGimmick: function affectGimmick(matchdet) {
+      var gimmickdetail = this.findGimmick(matchdet.gimmick);
+      switch (gimmickdetail.type) {
+        case 'HEELFACE':
+          console.log('switch the gimmick affect heelface');
+          game.roster.forEach(function (val, key) {
+            if (val.Id == matchdet.gimmickAffect) {
+              console.log(game.roster[key].Name + game.roster[key].heelface + ' turns!');
+              game.roster[key].heelface === 'H' ? game.roster[key].heelface = 'F' : game.roster[key].heelface = 'H';
+            }
+          });
+          break;
+        case 'TITLECHANGE':
+          game.roster.forEach(function (val, key) {
+            if (val.Id == matchdet.competitors[0] || val.Id == matchdet.competitors[1]) {
+              game.roster[key].isChamp = false;
+            }
+            if (val.Id == matchdet.gimmickAffect) {
+              game.roster[key].isChamp = true;
+              alert(game.roster[key].Name + ' is new champ!');
+            }
+          });
+          break;
+      }
     },
     summarize: function summarize() {
       game.summaryValues = [];
@@ -152,9 +175,7 @@ var game = new Vue({
       game.summaryValues.forEach(function (val) {
         return drawTotals.push(val.total);
       });
-      console.log(drawTotals);
       var i = this.indexOfMax(drawTotals);
-      console.log('highest - ' + i);
       this.game.players[i].tokens++;
     },
     nextRound: function nextRound() {
@@ -164,8 +185,8 @@ var game = new Vue({
       this.saveData();
     },
     saveData: function saveData() {
-      localStorage.setItem('gimmicks', JSON.stringify(this.roster));
-      localStorage.setItem('news', JSON.stringify(this.roster));
+      //localStorage.setItem('gimmicks', JSON.stringify(this.gimmicks));
+      //localStorage.setItem('news', JSON.stringify(this.news));
       localStorage.setItem('roster', JSON.stringify(this.roster));
       localStorage.setItem('gameData', JSON.stringify(this.game));
       console.log('data saved');
@@ -219,6 +240,7 @@ var game = new Vue({
       return result;
     },
     openRoster: function openRoster(matchno, card) {
+      //game.roster[0].isChamp = true;
       this.currentMatch = matchno;
       this.currentPos = card;
       var poproster = document.querySelector('.poproster');
@@ -239,20 +261,39 @@ var game = new Vue({
       popgimmick.style.top = event.pageY + 10 + 'px';
       popgimmick.style.left = event.pageX + 10 + 'px';
       this.popGimmick = true;
-    }, //
+    },
     closePop: function closePop() {
       this.popRoster = false;
+      this.popGimmick = false;
     },
     addToCard: function addToCard(wrestler, id) {
       this.game.players[this.turn].matchcard[this.currentMatch].competitors[this.currentPos] = id;
       this.game.players[this.turn].temproster.splice(wrestler, 1);
-      game.$forceUpdate();
       this.closePop();
       this.game.players[this.turn].matchcard[this.currentMatch].ready = this.validateMatch(this.game.players[this.turn].matchcard[this.currentMatch]);
+      game.$forceUpdate();
+    },
+    addGimmickCard: function addGimmickCard(gimmick, index) {
+      this.game.players[this.turn].matchcard[this.currentMatch].gimmick = gimmick;
+      this.game.players[this.turn].gimmicks.splice(index, 1);
+      this.closePop();
+      if (this.findGimmick(gimmick).affect == 'true') {
+        this.game.players[this.turn].matchcard[this.currentMatch].gimmickAffect = this.game.players[this.turn].matchcard[this.currentMatch].competitors[0];
+      }
+      if (this.findGimmick(gimmick).type == 'TITLECHANGE') {
+        if (this.findWrestler(this.game.players[this.turn].matchcard[this.currentMatch].competitors[0]).isChamp == true) {
+          this.game.players[this.turn].matchcard[this.currentMatch].gimmickAffect = this.game.players[this.turn].matchcard[this.currentMatch].competitors[1];
+          this.game.players[this.turn].matchcard[this.currentMatch].winner = this.game.players[this.turn].matchcard[this.currentMatch].competitors[1];
+        } else {
+          this.game.players[this.turn].matchcard[this.currentMatch].gimmickAffect = this.game.players[this.turn].matchcard[this.currentMatch].competitors[0];
+          this.game.players[this.turn].matchcard[this.currentMatch].winner = this.game.players[this.turn].matchcard[this.currentMatch].competitors[0];
+        }
+      }
     },
     removeMatch: function removeMatch(player, match) {
-      //
-      player.matchcard.splice(match, 1);
+      console.log(match);
+      this.game.players[this.turn].matchcard.splice(match, 1);
+      game.$forceUpdate();
     },
     validateMatch: function validateMatch(match) {
       var ready = false;
@@ -366,11 +407,11 @@ NEXT STEPS
 *- award round winner with token
 
 // GIMMICK
-- add to match (remove from users set)
+*- add to match (remove from users set)
 - remove (return to users set)
-- count value in match rating
+*- count value in match rating
 - add card to players discard gimmick pile
-- enact actions (change title, heel/face turns)
+*- enact actions (change title, heel/face turns)
 
 // STORIES
 

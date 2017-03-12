@@ -164,6 +164,7 @@ var app = new Vue({
     getGimmicks: function getGimmicks() {
       var _this4 = this;
 
+      console.log('run');
       fetch('/gimmicks.json').then(function (blob) {
         return blob.json();
       }).then(function (data) {

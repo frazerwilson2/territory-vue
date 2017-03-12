@@ -137,6 +137,7 @@ var app = new Vue({
       this.saveData();
     },
     getGimmicks:function() {
+      console.log('run');
       fetch('/gimmicks.json')
       .then(blob => blob.json())
       .then((data) => {this.$set(this,'rawGimmicks', data); localStorage.setItem('gimmicks', JSON.stringify(data)); this.sortGimmicks()})
