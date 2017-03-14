@@ -32,7 +32,9 @@ var game = new Vue({
     summaryValues: [],
     validate: false,
     titleCards: false,
-    showStore: false
+    showStore: false,
+    dS: [{ 'name': 'one', height: 80, ability: 80, type: 'strong' }, { 'name': 'two', height: 10, ability: 90, type: 'big' }],
+    ex: ['height:>10', 'type:=strong']
   },
   mounted: function mounted() {
     this.loadRoster();
@@ -44,8 +46,13 @@ var game = new Vue({
     this.loadGame();
     //this.loadMissions();
     this.setMatchcard();
+    this.summRes(this.dS, this.ex);
   },
   methods: {
+    detailX: function detailX(x, y, z) {
+      console.log(this.listReqs(x)); //
+      var data = [y, z];
+    },
     // Lets get started
     loadRoster: function loadRoster() {
       this.$set(this, 'roster', JSON.parse(localStorage.getItem('roster')));
@@ -97,7 +104,7 @@ var game = new Vue({
         if (match.competitors[0] && match.competitors[1]) {
           var matchSum = game.findWrestler(match.competitors[0]).val + game.findWrestler(match.competitors[0]).inc + (game.findWrestler(match.competitors[1]).val + game.findWrestler(match.competitors[1]).inc);
           if (match.gimmick) {
-            matchSum += 5;
+            matchSum += 5;game.game.players[index].discards.gimmicks.push(match.gimmick);
           }
           game.summaryValues[index].matches.push(matchSum);
           if (match.gimmickAffect) {
@@ -262,6 +269,9 @@ var game = new Vue({
       popgimmick.style.left = event.pageX + 10 + 'px';
       this.popGimmick = true;
     },
+    openStory: function openStory(matchno) {
+      console.log(matchno);
+    },
     closePop: function closePop() {
       this.popRoster = false;
       this.popGimmick = false;
@@ -371,6 +381,47 @@ var game = new Vue({
       game.game.players[this.turn].cash -= 50;
       game.game.players[this.turn].arena++;
       game.game.arena--;
+    },
+    rC: function rC(input, check) {
+      var comp = check.split(':');
+      var pars = parseInt(comp[1].substring(1));
+      var result;
+      if (comp[1][0] == '>') {
+        result = input[comp[0]] >= pars;
+      } else if (comp[1][0] == '<') {
+        result = input[comp[0]] <= pars;
+      } else {
+        result = input[comp[0]] == comp[1].substring(1);
+      }
+      return result;
+    },
+    summRes: function summRes(data, check) {
+      if (this.rC(data[0], check[0]) && this.rC(data[1], check[1]) || this.rC(data[1], check[0]) && this.rC(data[0], check[1])) {
+        console.log('its a go');
+      } else {
+        console.log('its not a go!');
+      }
+    },
+    listReqs: function listReqs(input) {
+      var msg = this.textReq(input[0]);
+      msg += ', ';
+      msg += this.textReq(input[1]);
+      return msg;
+    },
+    textReq: function textReq(r) {
+      var split = r.split(':');
+      var msg = 'guy with ';
+      msg += split[0];
+      if (split[1][0] == '>') {
+        msg += ' more than ' + split[1].substring(1);
+      }
+      if (split[1][0] == '<') {
+        msg += ' less than ' + split[1].substring(1);
+      }
+      if (split[1][0] == '=') {
+        msg += ': ' + split[1].substring(1);
+      }
+      return msg;
     }
   }
 });
@@ -410,12 +461,16 @@ NEXT STEPS
 *- add to match (remove from users set)
 - remove (return to users set)
 *- count value in match rating
-- add card to players discard gimmick pile
+*- add card to players discard gimmick pile
 *- enact actions (change title, heel/face turns)
 
 // STORIES
 
 // NEWS
+
+// legends
+
+// arena / tv
 
 // STORE
 *- buy gimmick
@@ -433,6 +488,7 @@ NEXT STEPS
 
 // WRAP UP
 - remove from card (re-add to temproster)
+- remove gimmick from matchcard
 - if no data of any kind reload from storage (if no storage note error then return to index)
 
 

@@ -42,6 +42,7 @@ var app = new Vue({
         arena: 0,
         tv: 0,
         legends: [],
+        discards: { gimmicks: [], stories: [], tv: 0, arena: 0, tokens: 0, spend: 0 },
         ready: false
       };
       this.game.players.push(nextup);

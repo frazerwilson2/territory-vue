@@ -2,73 +2,73 @@
 	{
 		"Name":"test story 1",
 		"Id":1,
-		"requires":["technical"],
+		"requires":["charisma:>10","theme:=jobber"],
 		"length":3
 		},
 	{
 		"Name":"test story 2",
 		"Id":2,
-		"requires":["technical"],
+		"requires":["charisma:>15","theme:=athlete"],
 		"length":3
 		},
 	{
 		"Name":"test story 3",
 		"Id":3,
-		"requires":["technical"],
+		"requires":["charisma:>10","theme:=jobber"],
 		"length":3
 		},
 	{
 		"Name":"test story 4",
 		"Id":4,
-		"requires":["technical"],
+		"requires":["charisma:>5","theme:=athlete"],
 		"length":3
 		},
 	{
 		"Name":"test story 5",
 		"Id":5,
-		"requires":["technical"],
+		"requires":["charisma:>15","theme:=jobber"],
 		"length":3
 		},
 	{
 		"Name":"test story 6",
 		"Id":6,
-		"requires":["technical"],
+		"requires":["charisma:>10","theme:=athlete"],
 		"length":3
 		},
 	{
 		"Name":"test story 7",
 		"Id":7,
-		"requires":["technical"],
+		"requires":["charisma:>5","theme:=jobber"],
 		"length":3
 		},
 	{
 		"Name":"test story 8",
 		"Id":8,
-		"requires":["technical"],
+		"requires":["charisma:>10","theme:=athlete"],
 		"length":3
 		},
 	{
 		"Name":"test story 9",
 		"Id":9,
-		"requires":["technical"],
+		"requires":["charisma:>15","theme:=jobber"],
 		"length":3
 		},
 	{
 		"Name":"test story 10",
 		"Id":10,
-		"requires":["technical"],
+		"requires":["charisma:>5","theme:=athlete"],
 		"length":3
 		},
 	{
 		"Name":"test story 11",
 		"Id":11,
-		"requires":["technical"],
+		"requires":["charisma:>10","theme:=athlete"],
 		"length":3
 		},
 	{
 		"Name":"test story 12",
 		"Id":12,
-		"requires":["technical"],
+		"requires":["charisma:>5","theme:=jobber"],
 		"length":3
 		}
 ]

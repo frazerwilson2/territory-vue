@@ -24,7 +24,7 @@
     </ul>
     // Stories
     <ul>
-      <li v-for="(story, index) in player.stories">{{findStory(story).Name}}</li>
+      <li v-for="(story, index) in player.stories" @click="detailX(findStory(story).requires, findWrestler(player.roster[0]), findWrestler(player.roster[1]))">{{findStory(story).Name}}</li>
     </ul>
     // Legends 
     <ul>
@@ -85,6 +85,11 @@
           <span v-if="match.competitors[1] == match.winner" class="win">WIN</span>
           <a v-if="!match.winner || match.competitors[1] != match.winner" @click="setWinner(match, match.competitors[1], index)">Winner?</a>
         </div>
+      </div>
+
+      <div class="card-holder" v-if="match.ready" style="float:right;">
+        <div @click="openStory(index)" v-show="!match.gimmick">add story</div>
+<!--  <div v-if="match.gimmick">{{findGimmick(match.gimmick).Name}} {{findWrestler(match.gimmickAffect).Name}}</div> -->
       </div>
 
       <a @click="removeMatch(player, index)">Remove match</a>
