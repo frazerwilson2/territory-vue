@@ -20,7 +20,7 @@ display: inline-block;
 .active {
 border:1px red solid;
 }
-.assigned {
+.assigned, .hide {
 opacity: 0.5;
 }
 .loading {
@@ -67,6 +67,8 @@ height: 100%;
 //	border-bottom:1px black solid;
 	padding:5px;
 	text-align:center;
+    width:800px;
+    margin:auto;
 	&.ready {
 		border:2px green solid;
 	}
@@ -76,6 +78,10 @@ height: 100%;
     border: 1px dashed;
     width: 160px;
     height: 200px;
+    &.setup {
+        background:#fff;
+        border:1px solid;
+    }
     div {
     	float:left;
     }
@@ -97,9 +103,6 @@ height: 100%;
     	opacity:1;
     	visibility:visible;
     }
-    .hide {
-	opacity:0.5;
-	}
 }
 .errors {
     position: fixed;

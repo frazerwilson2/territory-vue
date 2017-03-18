@@ -25,6 +25,7 @@ var game = new Vue({
     },
     popRoster:false,
     popGimmick:false,
+    popStory:false,
     currentMatch:false,
     currentPos:false,
     summaryValues:[],
@@ -51,8 +52,8 @@ var game = new Vue({
   },
   methods: {
     detailX: function(x, y, z){
-console.log(this.listReqs(x));//
-var data = [y,z];
+      console.log(this.listReqs(x));
+      var data = [y,z];
     },
     // Lets get started
     loadRoster:function(){
@@ -100,8 +101,21 @@ var data = [y,z];
         if(match.competitors[0] && match.competitors[1]){
           let matchSum = (game.findWrestler(match.competitors[0]).val + game.findWrestler(match.competitors[0]).inc) + (game.findWrestler(match.competitors[1]).val + game.findWrestler(match.competitors[1]).inc);
           if (match.gimmick){matchSum += 5; game.game.players[index].discards.gimmicks.push(match.gimmick)}
-          game.summaryValues[index].matches.push(matchSum);
           if(match.gimmickAffect){game.affectGimmick(match)}
+          if(match.story){
+            const matchStoryDetail = game.findStory(match.story);
+            if(matchStoryDetail.current == matchStoryDetail.lengthDur){
+              matchSum += 5;
+              game.game.players[index].discards.stories.push(match.story);
+              game.game.players[index].stories.forEach(function(val,key){
+                if(val == match.story){game.game.players[index].stories.splice(key,1)}
+              })
+            }
+            else {
+              matchStoryDetail.current++;
+            }
+          }
+          game.summaryValues[index].matches.push(matchSum);
           totalGain += matchSum;
         }
       });
@@ -185,6 +199,7 @@ var data = [y,z];
     saveData: function(){
       //localStorage.setItem('gimmicks', JSON.stringify(this.gimmicks));
       //localStorage.setItem('news', JSON.stringify(this.news));
+      localStorage.setItem('stories', JSON.stringify(this.stories));
       localStorage.setItem('roster', JSON.stringify(this.roster));
       localStorage.setItem('gameData', JSON.stringify(this.game));
       console.log('data saved');
@@ -252,11 +267,17 @@ var data = [y,z];
       this.popGimmick = true;
     },
     openStory:function(matchno){
-console.log(matchno);
+      this.currentMatch = matchno;
+      const selectedMatch = this.game.players[this.turn].matchcard[this.currentMatch];
+      const popstory = document.querySelector('.popstory');
+      popstory.style.top = `${event.pageY + 10}px`;
+      popstory.style.left = `${event.pageX + 10}px`;
+      this.popStory = true;
     },
     closePop: function(){
       this.popRoster = false;
       this.popGimmick = false;
+      this.popStory = false;
     },
     addToCard: function(wrestler, id){
       this.game.players[this.turn].matchcard[this.currentMatch].competitors[this.currentPos] = id;
@@ -280,8 +301,14 @@ console.log(matchno);
         }
       }  
     },
+    addStoryCard: function(story, index){
+      this.game.players[this.turn].matchcard[this.currentMatch].story = story;
+      const storyDetail = this.findStory(story);
+      storyDetail.active = true;
+      storyDetail.competitors = this.game.players[this.turn].matchcard[this.currentMatch].competitors;
+      this.closePop();
+    },
     removeMatch: function(player, match){
-      console.log(match);
       this.game.players[this.turn].matchcard.splice(match, 1);
       game.$forceUpdate();
     },
@@ -297,7 +324,6 @@ console.log(matchno);
       this.currentMatch = matchno;
       match.winner = winner;
       game.game.players[this.turn].matchcard[this.currentMatch].ready = this.validateMatch(match);
-      console.log(match);
       game.$forceUpdate();
     },
     // store
@@ -344,6 +370,11 @@ console.log(matchno);
       game.game.players[this.turn].arena++;
       game.game.arena--;
     },
+    checkNum: function(thing){
+      if(thing){var result = thing.length}
+      if(result) {return false}
+      else {return true}
+    },
     rC: function(input, check){
       var comp = check.split(':');
       var pars = parseInt(comp[1].substring(1));
@@ -360,10 +391,26 @@ console.log(matchno);
       return result;
     },
     summRes: function(data, check){
-      if(this.rC(data[0], check[0]) && this.rC(data[1], check[1]) || this.rC(data[1], check[0]) && this.rC(data[0], check[1])){
-        console.log('its a go');
+      if(this.rC(data[0], check[0]) && this.rC(data[1], check[1]) || this.rC(data[1], check[0]) && this.rC(data[0], check[1])){        
+        return true;
       } else {
-        console.log('its not a go!');
+        return false;
+      }
+    },
+    myStory: function(story, competitors){
+      // story is active and does not contain these two guys => true
+      let storyDetail = this.findStory(story);
+      if(storyDetail.active){
+        if(storyDetail.competitors[0] == competitors[0] || storyDetail.competitors[0] == competitors[1]){
+          if(storyDetail.competitors[1] == competitors[0] || storyDetail.competitors[1] == competitors[1]){
+            return false;
+          }
+          else {return true;}
+        }
+        else {return true;}
+      }
+      else {
+        return false;
       }
     },
     listReqs: function(input){
@@ -423,12 +470,22 @@ NEXT STEPS
 *- enact actions (change title, heel/face turns)
 
 // STORIES
+*- add story to match (if applicable)
+*- increment length in summary
+*- end if reached payoff, payoff added to match, card added to discard
 
-// NEWS
+// LEGENDS
+- added to matchcard roster (distinguish type to avoid id clash)
+- prevent story or title switch/heelface gimmick
+- check values tracked
+- inc amount used on players record (eqiv of added to discard pile)
 
-// legends
-
-// arena / tv
+// ARENA / TV
+- increment arena when bought (equiv of discard)
+- flag to double in summary
+- add bonus double the total of matches
+- increment tv when bought (equiv of discard)
+- add additional match
 
 // STORE
 *- buy gimmick
@@ -439,6 +496,15 @@ NEXT STEPS
 *- buy stadium (double value)
 
 // WCHAMP (awards based on scores, vote for hire, use tokens to switch)
+- begin with question, then vote (return true/false) (unless has champ)
+- rules for getting champ on loan, goes to matchcard, pay 10 (to owner if owned)
+- rules for award: everyone gets 10 when on highest.
+- rules for switch: use 3 tokens (to discard) then autofix the match/opponent/winner
+- setting for champowner to navigate other functions
+
+// NEWS
+- draw news card beginning of each player switch
+- enact based on name (each has specific rules)
 
 // MISSIONS
 

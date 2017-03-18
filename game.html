@@ -24,7 +24,17 @@
     </ul>
     // Stories
     <ul>
-      <li v-for="(story, index) in player.stories" @click="detailX(findStory(story).requires, findWrestler(player.roster[0]), findWrestler(player.roster[1]))">{{findStory(story).Name}}</li>
+      <li v-for="(story, index) in player.stories" 
+        @click="detailX(findStory(story).requires, findWrestler(player.roster[0]), findWrestler(player.roster[1]))">
+        {{findStory(story).Name}}
+        <ul v-if="findStory(story).active" style="background:#c0c2c3;">
+        <li><em>({{listReqs(findStory(story).requires)}})</em></li>
+        <li v-show="findStory(story).active"><span>Part {{findStory(story).current}} of {{findStory(story).lengthDur}}</span></li>
+        <li v-if="findStory(story).competitors[0]">
+          {{findWrestler(findStory(story).competitors[0]).Name}} / {{findWrestler(findStory(story).competitors[1]).Name}}
+        </li>
+        </ul>
+      </li>
     </ul>
     // Legends 
     <ul>
@@ -43,10 +53,10 @@
   <h3>Roster</h3> 
   <ul><li v-for="wrestler in game.roster"><a @click="purchaseRoster(wrestler, findWrestler(wrestler).val)">{{findWrestler(wrestler).Name}} {{findWrestler(wrestler).val}}</a></li></ul>
   <h3>Story</h3>
-  <div class="card" @click="purchaseStory()">Take story</div>
+  <div class="card" @click="purchaseStory()" v-bind:class="{'hide':checkNum(game.stories)}">Take story</div>
 <!--   <ul><li v-for="story in game.stories">{{story}}</li></ul> -->
   <h3>Gimmicks</h3>
-  <div v-show="game.gimmicks" class="card" @click="purchaseGimmick()">Take gimmick</div>
+  <div v-show="game.gimmicks" class="card" @click="purchaseGimmick()" v-bind:class="{'hide':checkNum(game.gimmicks)}">Take gimmick</div>
 <!--   <ul><li v-for="gimmick in game.gimmicks">{{findGimmick(gimmick).Name}}</li></ul> -->
   <h3>TV</h3>
   <div v-if="game.tv" class="card"><a @click="getTv()">TV CARDS ({{game.tv}} left)</a></div>
@@ -63,14 +73,15 @@
     <h1>{{player.name}}</h1>{{player.tokens + ' token'}}
     
     <div v-for="(match, index) in player.matchcard">
-      <div class="select-card" v-bind:class="{ ready: match.ready}">
       {{index}} {{match.ready}}
-      <div class="card-holder" v-if="match.ready" style="float:left;">
+      <div class="select-card" v-bind:class="{ ready: match.ready}">
+       <a @click="removeMatch(player, index)" style="float:right;">Remove M</a>
+      <div class="card-holder" v-if="match.ready" style="float:left;" v-bind:class="{ setup: match.gimmick}">
         <div @click="openGimmick(index)" v-show="!match.gimmick">add gimmick</div>
         <div v-if="match.gimmick">{{findGimmick(match.gimmick).Name}} {{findWrestler(match.gimmickAffect).Name}}</div>
       </div>
       
-      <div class="card-holder">
+      <div class="card-holder" v-bind:class="{ setup: match.competitors[0]}">
         <div @click="openRoster(index, 0)">+</div> 
         <div v-if="match.competitors[0]" v-bind:class="{'heel':findWrestler(match.competitors[0]).heelface === 'H', 'face':findWrestler(match.competitors[0]).heelface == 'F', 'champ':findWrestler(match.competitors[0]).isChamp}">
           {{findWrestler(match.competitors[0]).Name}}
@@ -78,7 +89,7 @@
           <a v-if="!match.winner || match.competitors[0] != match.winner" @click="setWinner(match, match.competitors[0], index)">Winner?</a>
         </div>
       </div>
-      <div class="card-holder">
+      <div class="card-holder" v-bind:class="{ setup: match.competitors[1]}">
       <div @click="openRoster(index, 1)">+</div> 
         <div v-if="match.competitors[1]" v-bind:class="{'heel':findWrestler(match.competitors[1]).heelface === 'H', 'face':findWrestler(match.competitors[1]).heelface == 'F', 'champ':findWrestler(match.competitors[1]).isChamp}">
           {{findWrestler(match.competitors[1]).Name}}
@@ -87,12 +98,11 @@
         </div>
       </div>
 
-      <div class="card-holder" v-if="match.ready" style="float:right;">
-        <div @click="openStory(index)" v-show="!match.gimmick">add story</div>
-<!--  <div v-if="match.gimmick">{{findGimmick(match.gimmick).Name}} {{findWrestler(match.gimmickAffect).Name}}</div> -->
+      <div class="card-holder" v-if="match.ready" style="float:right;" v-bind:class="{ setup: match.story}">
+        <div @click="openStory(index)" v-show="!match.story">add story</div>
+        <div v-if="match.story">{{findStory(match.story).Name}}</div>
       </div>
 
-      <a @click="removeMatch(player, index)">Remove match</a>
       </div>
     </div>
 
@@ -105,6 +115,18 @@
         <a @click="closePop()">|x|</a>
         <ul>
           <li v-for="(gimmick, index) in player.gimmicks" v-bind:class="{ hide: findGimmick(gimmick).type == 'TITLECHANGE' && titleCards == false }"><a @click="addGimmickCard(gimmick, index)">{{findGimmick(gimmick).Name}}</a></li>
+        </ul>
+      </div>
+
+      <div class="pop popstory" v-bind:class="{ active: popStory }" v-if="player.matchcard[currentMatch]">
+        <a @click="closePop()">|x|</a>
+        <ul>
+          <li 
+          v-if="player.matchcard[currentMatch].ready" 
+          v-for="(story, index) in player.stories"
+          v-bind:class="{'hide':!summRes([findWrestler(player.matchcard[currentMatch].competitors[0]),findWrestler(player.matchcard[currentMatch].competitors[1])], findStory(story).requires) || myStory(story, player.matchcard[currentMatch].competitors)}">
+          <a @click="addStoryCard(story, index)">{{findStory(story).Name}}</a>
+          </li>
         </ul>
       </div>
   </div>

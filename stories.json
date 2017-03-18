@@ -3,72 +3,108 @@
 		"Name":"test story 1",
 		"Id":1,
 		"requires":["charisma:>10","theme:=jobber"],
-		"length":3
+		"lengthDur":3,
+		"current":1,
+		"competitors":[],
+		"active":false
 		},
 	{
 		"Name":"test story 2",
 		"Id":2,
 		"requires":["charisma:>15","theme:=athlete"],
-		"length":3
+		"lengthDur":3,
+		"current":1,
+		"competitors":[],
+		"active":false
 		},
 	{
 		"Name":"test story 3",
 		"Id":3,
 		"requires":["charisma:>10","theme:=jobber"],
-		"length":3
+		"lengthDur":3,
+		"current":1,
+		"competitors":[],
+		"active":false
 		},
 	{
 		"Name":"test story 4",
 		"Id":4,
 		"requires":["charisma:>5","theme:=athlete"],
-		"length":3
+		"lengthDur":3,
+		"current":1,
+		"competitors":[],
+		"active":false
 		},
 	{
 		"Name":"test story 5",
 		"Id":5,
 		"requires":["charisma:>15","theme:=jobber"],
-		"length":3
+		"lengthDur":3,
+		"current":1,
+		"competitors":[],
+		"active":false
 		},
 	{
 		"Name":"test story 6",
 		"Id":6,
 		"requires":["charisma:>10","theme:=athlete"],
-		"length":3
+		"lengthDur":3,
+		"current":1,
+		"competitors":[],
+		"active":false
 		},
 	{
 		"Name":"test story 7",
 		"Id":7,
 		"requires":["charisma:>5","theme:=jobber"],
-		"length":3
+		"lengthDur":3,
+		"current":1,
+		"competitors":[],
+		"active":false
 		},
 	{
 		"Name":"test story 8",
 		"Id":8,
 		"requires":["charisma:>10","theme:=athlete"],
-		"length":3
+		"lengthDur":3,
+		"current":1,
+		"competitors":[],
+		"active":false
 		},
 	{
 		"Name":"test story 9",
 		"Id":9,
 		"requires":["charisma:>15","theme:=jobber"],
-		"length":3
+		"lengthDur":3,
+		"current":1,
+		"competitors":[],
+		"active":false
 		},
 	{
 		"Name":"test story 10",
 		"Id":10,
 		"requires":["charisma:>5","theme:=athlete"],
-		"length":3
+		"lengthDur":3,
+		"current":1,
+		"competitors":[],
+		"active":false
 		},
 	{
 		"Name":"test story 11",
 		"Id":11,
 		"requires":["charisma:>10","theme:=athlete"],
-		"length":3
+		"lengthDur":3,
+		"current":1,
+		"competitors":[],
+		"active":false
 		},
 	{
 		"Name":"test story 12",
 		"Id":12,
 		"requires":["charisma:>5","theme:=jobber"],
-		"length":3
+		"lengthDur":3,
+		"current":1,
+		"competitors":[],
+		"active":false
 		}
 ]

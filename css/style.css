@@ -18,7 +18,7 @@ body {
 .active {
   border: 1px red solid; }
 
-.assigned {
+.assigned, .hide {
   opacity: 0.5; }
 
 .loading {
@@ -55,7 +55,9 @@ body {
 
 .select-card {
   padding: 5px;
-  text-align: center; }
+  text-align: center;
+  width: 800px;
+  margin: auto; }
   .select-card.ready {
     border: 2px green solid; }
 
@@ -64,6 +66,9 @@ body {
   border: 1px dashed;
   width: 160px;
   height: 200px; }
+  .card-holder.setup {
+    background: #fff;
+    border: 1px solid; }
   .card-holder div {
     float: left; }
 
@@ -81,8 +86,6 @@ body {
   .pop.active {
     opacity: 1;
     visibility: visible; }
-  .pop .hide {
-    opacity: 0.5; }
 
 .errors {
   position: fixed;
