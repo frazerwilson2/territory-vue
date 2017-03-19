@@ -34,8 +34,9 @@ var game = new Vue({
     validate: false,
     titleCards: false,
     showStore: false,
-    dS: [{ 'name': 'one', height: 80, ability: 80, type: 'strong' }, { 'name': 'two', height: 10, ability: 90, type: 'big' }],
-    ex: ['height:>10', 'type:=strong']
+    showModal: false,
+    setChampNow: false,
+    showChampRoster: false
   },
   mounted: function mounted() {
     this.loadRoster();
@@ -47,7 +48,7 @@ var game = new Vue({
     this.loadGame();
     //this.loadMissions();
     this.setMatchcard();
-    this.summRes(this.dS, this.ex);
+    this.checkForChamp(this.game.players[0]);
   },
   methods: {
     detailX: function detailX(x, y, z) {
@@ -84,6 +85,7 @@ var game = new Vue({
     // IN GAME
     nextTurn: function nextTurn() {
       game.validate = false;
+      this.closeOverlay();
       this.game.players[this.turn].matchcard.forEach(function (match) {
         // make sure matches are ready
         if (!match.ready) {
@@ -96,14 +98,40 @@ var game = new Vue({
         this.turn++;
         if (this.turn == this.game.players.length) {
           this.turn = 'REVIEW';this.summarize();
+        } else {
+          this.checkForChamp(this.game.players[this.turn]);
         }
       }
+    },
+    checkForChamp: function checkForChamp(player) {
+      if (!player.champSet) {
+        this.showModal = true;
+        this.setChampNow = true;
+      }
+    },
+    closeOverlay: function closeOverlay() {
+      this.showModal = false;
+      this.setChampNow = false;
+      this.showChampRoster = false;
+    },
+    showChampRosterFunc: function showChampRosterFunc() {
+      this.showChampRoster = true;
+    },
+    makeChamp: function makeChamp(wrest) {
+      this.game.players[this.turn].champSet = wrest;
+      this.game.players[this.turn].roster.forEach(function (guy) {
+        game.findWrestler(guy).isChamp = false;
+      });
+      this.findWrestler(wrest).isChamp = true;
+      this.closeOverlay();
     },
     sumValues: function sumValues(val, index) {
       var totalGain = 0;
       val.matchcard.forEach(function (match) {
         if (match.competitors[0] && match.competitors[1]) {
-          var matchSum = game.findWrestler(match.competitors[0]).val + game.findWrestler(match.competitors[0]).inc + (game.findWrestler(match.competitors[1]).val + game.findWrestler(match.competitors[1]).inc);
+          var matchSum = game.findWrestler(match.competitors[0]).val + game.findWrestler(match.competitors[1]).val;
+          game.findWrestler(match.competitors[0]).isChamp ? matchSum += 4 : matchSum += game.findWrestler(match.competitors[0]).inc;
+          game.findWrestler(match.competitors[1]).isChamp ? matchSum += 4 : matchSum += game.findWrestler(match.competitors[1]).inc;
           if (match.gimmick) {
             matchSum += 5;game.game.players[index].discards.gimmicks.push(match.gimmick);
           }
@@ -204,6 +232,7 @@ var game = new Vue({
       this.setMatchcard();
       this.game.round++;
       this.turn = 0;
+      this.checkForChamp(this.game.players[this.turn]);
       this.saveData();
     },
     saveData: function saveData() {
@@ -351,7 +380,7 @@ var game = new Vue({
     },
     // store
     openStore: function openStore(show) {
-      this.showStore = show; //
+      this.showStore = show;
     },
     purchaseRoster: function purchaseRoster(wrestler, cost) {
       if (game.game.players[this.turn].cash <= cost) {
@@ -522,6 +551,12 @@ NEXT STEPS
 *- add story to match (if applicable)
 *- increment length in summary
 *- end if reached payoff, payoff added to match, card added to discard
+
+// TERRITORY CHAMP
+*- set on game start
+- switch title (no payoff) option
+- list on player details
+*- +4 on champ in matches
 
 // LEGENDS
 - added to matchcard roster (distinguish type to avoid id clash)

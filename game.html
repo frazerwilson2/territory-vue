@@ -16,7 +16,7 @@
 <!-- Roster list -->
     // Roster
     <ul>
-      <li v-for="(wrestler, index) in player.roster">{{findWrestler(wrestler).Name}} ({{findWrestler(wrestler).val}}) +{{findWrestler(wrestler).inc}}</li>
+      <li v-for="(wrestler, index) in player.roster">{{findWrestler(wrestler).Name}} ({{findWrestler(wrestler).val}}) +{{findWrestler(wrestler).inc}} <div v-if="findWrestler(wrestler).isChamp" class="champ_belt">-</div></li>
     </ul>
     // Gimmicks
     <ul>
@@ -51,7 +51,9 @@
   <a @click="openStore(false)">|X|</a>
   store<br>
   <h3>Roster</h3> 
-  <ul><li v-for="wrestler in game.roster"><a @click="purchaseRoster(wrestler, findWrestler(wrestler).val)">{{findWrestler(wrestler).Name}} {{findWrestler(wrestler).val}}</a></li></ul>
+  <ul><li v-for="wrestler in game.roster">
+    <a @click="purchaseRoster(wrestler, findWrestler(wrestler).val)">{{findWrestler(wrestler).Name}} {{findWrestler(wrestler).val}}</a> 
+  </li></ul>
   <h3>Story</h3>
   <div class="card" @click="purchaseStory()" v-bind:class="{'hide':checkNum(game.stories)}">Take story</div>
 <!--   <ul><li v-for="story in game.stories">{{story}}</li></ul> -->
@@ -71,6 +73,11 @@
   <div v-for="(player, index) in game.players" v-if="index == turn">
     <div v-if="validate" class="errors">Errors</div>
     <h1>{{player.name}}</h1>{{player.tokens + ' token'}}
+
+    <p>Current champ: 
+      <span v-if="!player.champSet">VACANT</span>
+      <span v-if="player.champSet">{{findWrestler(player.champSet).Name}}</span>
+    </p>
     
     <div v-for="(match, index) in player.matchcard">
       {{index}} {{match.ready}}
@@ -108,7 +115,10 @@
 
       <div class="pop poproster" v-bind:class="{ active: popRoster }">
         <a @click="closePop()">|x|</a>
-        <ul><li v-for="(wrestler, index) in player.temproster"><a @click="addToCard(index, wrestler)">{{findWrestler(wrestler).Name}} {{findWrestler(wrestler).heelface}}</a></li></ul>
+        <ul><li v-for="(wrestler, index) in player.temproster">
+          <a @click="addToCard(index, wrestler)">{{findWrestler(wrestler).Name}} {{findWrestler(wrestler).heelface}}</a>
+          <div v-if="findWrestler(wrestler).isChamp" class="champ_belt">-</div>
+        </li></ul>
       </div>
 
       <div class="pop popgimmick" v-bind:class="{ active: popGimmick }">
@@ -129,6 +139,19 @@
           </li>
         </ul>
       </div>
+
+      <div v-if="showModal" class="overlay">
+        <a @click="closeOverlay()">|x|</a>
+        <div v-if="setChampNow">
+          <h2>YOU NEED TO SET A CHAMP</h2>
+          <button @click="showChampRosterFunc()" v-if="!showChampRoster">Set Champ</button>
+          <button @click="closeOverlay()" v-if="!showChampRoster">Nope</button>
+          <ul v-if="showChampRoster">
+            <li v-for="w in player.roster" v-if="findWrestler(w).type == 'singles'">{{findWrestler(w).Name}} <a @click="makeChamp(w)">babing</a></li>
+          </ul>
+        </div>
+      </div>
+
   </div>
   <div v-if="turn == 'REVIEW'" class="summary">
     <h2>SUMMARY</h2> 
