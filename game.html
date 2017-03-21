@@ -38,7 +38,7 @@
     </ul>
     // Legends 
     <ul>
-      <li v-for="(legend, index) in player.legends">{{legend.Name}}</li>
+      <li v-for="(legend, index) in player.legends">{{findWrestler(legend).Name}}</li>
     </ul>
     // TV {{player.tv}}
     // Arena {{player.arena}}
@@ -65,7 +65,7 @@
   <h3>Arena</h3>
   <div v-if="game.arena" class="card"><a @click="getArena()">ARENA ({{game.arena}} left)</a></div>
   <h3>Legends</h3>
-  <ul><li v-for="legend in legendRoster"><a @click="purchaseLegend(legend, legend.val)">{{legend}}</a></li></ul>
+  <ul><li v-for="(legend, index) in game.legends"><a @click="purchaseLegend(legend, index)">{{findWrestler(legend).Name}}</a></li></ul>
 </div>
 
 <a @click="openStore(true)">store</a>
@@ -178,7 +178,8 @@
 
 <small>
   <hr>
-	<div v-for="player in game.players">{{player}}<br></div>
+  {{game}}
+<!-- 	<div v-for="player in game.players">{{player}}<br></div> -->
 <br>
       goal: {{game.goal}}<br>
       news: {{game.news}}<br>

@@ -7,8 +7,8 @@ var game = new Vue({
     //missions: [],
     stories: [],
     gimmicks: [],
-    legends: '',
-    legendRoster:'',
+    legends: [],
+    legendRoster:[],
     news:[],
     game:[],
     // In game values
@@ -64,11 +64,12 @@ var game = new Vue({
       this.$set(this,'gimmicks', JSON.parse(localStorage.getItem('gimmicks')));
     },
     loadLegends:function(){
-       const legendlist = JSON.parse(localStorage.getItem('legends'));
-      this.createData(legendlist);
+      this.$set(this,'legendRoster', JSON.parse(localStorage.getItem('legends')));
+      this.createData(this.legendRoster);
     },
     createData: function(data){
-      this.legendRoster = data;
+      console.log(this.game.legends);
+//      data.forEach(val=>game.game.legends.push(val.Id));
     },
     loadNews:function(){
       this.$set(this,'news', JSON.parse(localStorage.getItem('news')));
@@ -242,12 +243,23 @@ var game = new Vue({
     },
     findWrestler: function(id){
       var result = null;
-      this.roster.forEach(wrestler => {
-        if(wrestler.Id == id){
-          //console.log(wrestler)
-          result = wrestler;
+      let isLegend = false;
+      if(id % 1 != 0){isLegend = true}
+        if(isLegend){         
+          this.legendRoster.forEach(wrestler => {
+            if(wrestler.Id == id){
+              result = wrestler;
+            }
+          });
         }
-      });
+        else {
+          this.roster.forEach(wrestler => {
+            if(wrestler.Id == id){
+              //console.log(wrestler)
+              result = wrestler;
+            }
+          });
+        }
       if(!result){return}
       return result;
     },
@@ -363,12 +375,14 @@ var game = new Vue({
         if(wrestler == val){game.game.roster.splice(index, 1);}
       });
     },
-    purchaseLegend:function(legend, cost){
-      if(game.game.players[this.turn].cash <= cost){return}
+    purchaseLegend:function(legend, index){
+      var cost = this.findWrestler(legend).val;
+      if(game.game.players[this.turn].cash < cost){return}
       game.game.players[this.turn].legends.push(legend);
+      game.game.players[this.turn].temproster.push(legend);
       game.game.players[this.turn].cash -= cost;
-      game.legendRoster.forEach(function(val, index){
-        if(legend == val){game.legendRoster.splice(index, 1);}
+      game.game.legends.forEach(function(val, index){
+        if(legend == val){game.game.legends.splice(index, 1);}
       });
     },
     purchaseGimmick:function(){
@@ -506,7 +520,7 @@ NEXT STEPS
 *- +4 on champ in matches
 
 // LEGENDS
-- added to matchcard roster (distinguish type to avoid id clash)
+*- added to matchcard roster (distinguish type to avoid id clash)
 - prevent story or title switch/heelface gimmick
 - check values tracked
 - inc amount used on players record (eqiv of added to discard pile)

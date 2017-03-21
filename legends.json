@@ -1,27 +1,92 @@
 [
 	{
+		"Name":"Gal Prof",
+		"desc": "flashy but kind",
+		"Id":1.1,
+		"val":9,
+	   "inc": 0,
+	   "isChamp": false,
+	   "isWChamp": false,
+	   "type": "singles",
+	   "gender": "m",
+	   "style": "technical",
+	   "theme": "legend",
+	   "height": 5.2,
+	   "weight": 320,
+	   "charisma": 9,
+	   "ability": 4,
+	   "heelface": "F"
+		},
+	{
+		"Name":"Mr Muscles",
+		"desc": "flashy but kind",
+		"Id":1.2,
+		"val":9,
+	   "inc": 0,
+	   "isChamp": false,
+	   "isWChamp": false,
+	   "type": "singles",
+	   "gender": "m",
+	   "style": "technical",
+	   "theme": "legend",
+	   "height": 5.2,
+	   "weight": 320,
+	   "charisma": 9,
+	   "ability": 4,
+	   "heelface": "F"
+		},
+	{
+		"Name":"Bill Killer",
+		"desc": "flashy but kind",
+		"Id":1.3,
+		"val":9,
+	   "inc": 0,
+	   "isChamp": false,
+	   "isWChamp": false,
+	   "type": "singles",
+	   "gender": "m",
+	   "style": "technical",
+	   "theme": "legend",
+	   "height": 5.2,
+	   "weight": 320,
+	   "charisma": 9,
+	   "ability": 4,
+	   "heelface": "F"
+		},
+	{
+		"Name":"Ultimate Puke",
+		"desc": "flashy but kind",
+		"Id":1.4,
+		"val":8,
+	   "inc": 0,
+	   "isChamp": false,
+	   "isWChamp": false,
+	   "type": "singles",
+	   "gender": "m",
+	   "style": "technical",
+	   "theme": "legend",
+	   "height": 5.2,
+	   "weight": 320,
+	   "charisma": 9,
+	   "ability": 4,
+	   "heelface": "F"
+		},
+	{
 		"Name":"Leg 1",
-		"Id":1,
-		"val":9
-		},
-	{
-		"Name":"Leg 2",
-		"Id":2,
-		"val":9
-		},
-	{
-		"Name":"Leg 3",
-		"Id":3,
-		"val":9
-		},
-	{
-		"Name":"Leg 4",
-		"Id":4,
-		"val":9
-		},
-	{
-		"Name":"Leg 5",
-		"Id":5,
-		"val":9
+		"desc": "flashy but kind",
+		"Id":1.5,
+		"val":8,
+	   "inc": 0,
+	   "isChamp": false,
+	   "isWChamp": false,
+	   "type": "singles",
+	   "gender": "m",
+	   "style": "technical",
+	   "theme": "legend",
+	   "height": 5.2,
+	   "weight": 320,
+	   "charisma": 9,
+	   "ability": 4,
+	   "heelface": "F"
 		}
 ]

@@ -66,7 +66,6 @@ var app = new Vue({
     addToRoster: function addToRoster(data) {
       this.game.players[this.currentPlayer].roster.push(data.id);
       this.game.players[this.currentPlayer].cash -= data.val;
-      console.log(data);
       for (var i = 0; i < this.game.roster.length; i++) {
         if (this.game.roster[i] == data.id) {
           this.game.roster.splice(i, 1);
@@ -95,15 +94,15 @@ var app = new Vue({
       }
     },
     loadUpData: function loadUpData() {
+      this.getLegends();
       this.getMissions();
       this.getStories();
       this.getGimmicks();
-      this.getLegends();
       this.getNews();
     },
     saveData: function saveData() {
-      localStorage.setItem('gameData', JSON.stringify(this.game));
       console.log(this.game);
+      localStorage.setItem('gameData', JSON.stringify(this.game));
     },
     // Get data & assign
     shuffle: function shuffle(a) {
@@ -166,7 +165,6 @@ var app = new Vue({
     getGimmicks: function getGimmicks() {
       var _this4 = this;
 
-      console.log('run');
       fetch('/gimmicks.json').then(function (blob) {
         return blob.json();
       }).then(function (data) {
@@ -211,7 +209,9 @@ var app = new Vue({
       fetch('/legends.json').then(function (blob) {
         return blob.json();
       }).then(function (data) {
-        _this5.$set(_this5, 'rawLegends', data);localStorage.setItem('legends', JSON.stringify(data));_this5.shuffle(data);_this5.game.legends = data.map(function (data) {
+        _this5.$set(_this5, 'rawLegends', data);
+        localStorage.setItem('legends', JSON.stringify(data));_this5.shuffle(data);
+        _this5.game.legends = data.map(function (data) {
           return data.Id;
         });
       });
