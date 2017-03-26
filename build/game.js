@@ -144,7 +144,13 @@ var game = new Vue({
           totalGain += matchSum;
         }
       });
-      game.summaryValues[index].total = totalGain;
+      // check for arena
+      console.log(val);
+      if(val.arena){
+        game.summaryValues[index].bonus = totalGain;
+        val.arena = false;
+      }
+      game.summaryValues[index].total = totalGain + game.summaryValues[index].bonus;
       val.cash += totalGain;
     },
     incWinners: function(val, index){
@@ -184,12 +190,16 @@ var game = new Vue({
         break;
       }
     },
+    checkArena: function(value, index){
+
+    },
     summarize: function(){
         game.summaryValues = [];
         this.game.players.forEach(function(value, index) {
-        game.summaryValues.push({'matches':[],'bonus':[], 'total':0});
+        game.summaryValues.push({'matches':[],'bonus':0, 'total':0});
         game.sumValues(value, index);
         game.incWinners(value, index);
+        game.checkArena(value, index);
        });
         game.awardTopDraw();
     },
@@ -400,14 +410,17 @@ var game = new Vue({
     getTv:function(){
       if(game.game.players[this.turn].cash <= 20){return}
       game.game.players[this.turn].cash -= 20;
-      game.game.players[this.turn].tv++;
+      game.game.players[this.turn].discards.tv++;
       game.game.tv--;
+      var match = Object.assign({}, this.match);
+      game.game.players[this.turn].matchcard.push(JSON.parse(JSON.stringify(match)));
     },
     getArena:function(){
       if(game.game.players[this.turn].cash <= 50){return}
       game.game.players[this.turn].cash -= 50;
-      game.game.players[this.turn].arena++;
+      game.game.players[this.turn].discards.arena++;
       game.game.arena--;
+      game.game.players[this.turn].arena = true;
     },
     checkNum: function(thing){
       if(thing){var result = thing.length}
@@ -522,15 +535,15 @@ NEXT STEPS
 // LEGENDS
 *- added to matchcard roster (distinguish type to avoid id clash)
 - prevent story or title switch/heelface gimmick
-- check values tracked
-- inc amount used on players record (eqiv of added to discard pile)
+*- check values tracked
+*- inc amount used on players record (eqiv of added to discard pile)
 
 // ARENA / TV
-- increment arena when bought (equiv of discard)
-- flag to double in summary
-- add bonus double the total of matches
-- increment tv when bought (equiv of discard)
-- add additional match
+*- increment arena when bought (equiv of discard)
+*- flag to double in summary
+*- add bonus double the total of matches
+*- increment tv when bought (equiv of discard)
+*- add additional match
 
 // STORE
 *- buy gimmick

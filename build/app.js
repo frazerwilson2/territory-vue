@@ -37,7 +37,7 @@ var app = new Vue({
         gimmicks:[],
         goal:0,
         tokens: 0,
-        arena: 0,
+        arena: false,
         tv: 0,
         legends:[],
         discards:{gimmicks:[],stories:[],tv:0,arena:0,tokens:0,spend:0},
