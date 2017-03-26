@@ -24,7 +24,7 @@
 
 <hr/>
 <h2>Make selection: Player {{currentPlayer + 1}}</h2>
-<wrestler v-for="guy in game.roster" v-bind:data="rawRoster[guy - 1]" v-bind:cash="game.players[currentPlayer].cash >= rawRoster[guy - 1].val"></wrestler>
+<wrestler v-for="guy in game.roster" v-bind:data="rawRoster[guy - 1]" v-bind:cash="game.players[currentPlayer].cash >= rawRoster[guy - 1].val" v-if="!rawRoster[guy - 1].isWChamp"></wrestler>
 <hr/>
 <div class="loading" v-if="loading">LOADING!!!
 <a @click="saveData">Ready!</a>

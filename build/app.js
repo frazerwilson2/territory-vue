@@ -16,10 +16,12 @@ var app = new Vue({
       roster:[],
       stories: [],
       gimmicks:[],
+      wChamp:1,
       tv:4,
       arena:4,
       legends:[],
-      round: 1
+      round: 1,
+      champLoan: null
     },
     currentPlayer:0,
     loading: false
@@ -42,7 +44,8 @@ var app = new Vue({
         legends:[],
         discards:{gimmicks:[],stories:[],tv:0,arena:0,tokens:0,spend:0},
         ready: false,
-        champSet: false
+        champSet: false,
+        hasWChamp: false
       };
       this.game.players.push(nextup);
     },
@@ -196,6 +199,7 @@ var app = new Vue({
       template: '<div class="box" v-bind:class="{ assigned: data.assigned || !cash }">\
       <h2>{{data.Name}} ({{data.val}})</h2>\
       ({{data.Val}}) <a v-on:click="purchaseRoster()" v-if="!data.assigned">Purchase</a>\
+      {{data.isWChamp}}\
       </div>',
       methods: {
         purchaseRoster: function () {

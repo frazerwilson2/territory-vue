@@ -43,6 +43,10 @@
     // TV {{player.tv}}
     // Arena {{player.arena}}
     // Discards {{player.discards}}
+    <div>loan: {{game.champLoan}}</div>
+    <div class="world-champion">
+      <h2>World Champion - {{findWrestler(game.wChamp).Name}}</h2>
+    </div>
 </div>
 </div>
 
@@ -73,7 +77,7 @@
 
   <div v-for="(player, index) in game.players" v-if="index == turn">
     <div v-if="validate" class="errors">Errors</div>
-    <h1>{{player.name}}</h1>{{player.tokens + ' token'}}
+    <h1>{{player.name}} {{player.hasWChamp}}</h1>{{player.tokens + ' token'}}
 
     <p>Current champ: 
       <span v-if="!player.champSet">VACANT</span>
@@ -119,6 +123,7 @@
         <ul><li v-for="(wrestler, index) in player.temproster">
           <a @click="addToCard(index, wrestler)">{{findWrestler(wrestler).Name}} {{findWrestler(wrestler).heelface}}</a>
           <div v-if="findWrestler(wrestler).isChamp" class="champ_belt">-</div>
+          <div v-if="findWrestler(wrestler).isWChamp" class="champ_belt w_champ">-</div>
         </li></ul>
       </div>
 
@@ -140,6 +145,26 @@
           </li>
         </ul>
       </div>
+
+<div v-if="showWModal" class="overlay wchamp-overlay">
+  <a @click="wChampVoteNo()">|x|</a>
+    <div v-if="wChampQ && !voteCard.length">
+      do you want to set w wchamp?
+      <button @click="wChampVoteNo()">No</button>
+      <button @click="wChampVoteYes()">Yes</button>
+    </div>
+  <div class="vote-card" v-if="voteCard.length">
+    <ul>
+      <li v-for="(vote, index) in voteCard">
+        <span v-if="vote.vote == true">YES</span>
+        <span v-if="vote.vote == false">NO</span>
+        <span v-if="vote.vote == null"><a @click="voteThis(true, index)">Yeah</a> <a @click="voteThis(false, index)">Na</a></span>
+      </li>
+    </ul>
+  </div>
+  <div v-if="voteRejectedMsg">Your request has been declined <button @click="wChampVoteNo()">OK</button></div>
+  <div v-if="voteApprovedMsg">{{player.name}} will host the world champion {{findWrestler(game.wChamp).Name}}! <button @click="wChampVoteNo()">OK</button></div>
+</div>
 
       <div v-if="showModal" class="overlay">
         <a @click="closeOverlay()">|x|</a>

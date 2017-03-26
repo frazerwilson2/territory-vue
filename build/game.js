@@ -33,8 +33,13 @@ var game = new Vue({
     titleCards: false,
     showStore:false,
     showModal: false,
+    showWModal: false,
     setChampNow: false,
-    showChampRoster: false
+    showChampRoster: false,
+    wChampQ: false,
+    voteCard: [],
+    voteRejectedMsg: false,
+    voteApprovedMsg: false
   },
   mounted: function() {
   this.loadRoster();
@@ -46,6 +51,7 @@ var game = new Vue({
   this.loadGame();
   //this.loadMissions();
   this.setMatchcard();
+  this.wChampVote(this.game.players[0]);
   this.checkForChamp(this.game.players[0]);
   },
   methods: {
@@ -65,11 +71,7 @@ var game = new Vue({
     },
     loadLegends:function(){
       this.$set(this,'legendRoster', JSON.parse(localStorage.getItem('legends')));
-      this.createData(this.legendRoster);
-    },
-    createData: function(data){
-      console.log(this.game.legends);
-//      data.forEach(val=>game.game.legends.push(val.Id));
+      //this.createData(this.legendRoster);
     },
     loadNews:function(){
       this.$set(this,'news', JSON.parse(localStorage.getItem('news')));
@@ -93,12 +95,78 @@ var game = new Vue({
       else {
         this.turn++;
         if(this.turn == this.game.players.length){this.turn = 'REVIEW'; this.summarize()}
-        else {this.checkForChamp(this.game.players[this.turn]);}
+        else {this.wChampVote(this.game.players[this.turn]); this.checkForChamp(this.game.players[this.turn]);}
       }
+    },
+    resetModal: function(){
+        this.showModal = true;
+        this.setChampNow = false;
+        this.showChampRoster = false;
+    },
+    wChampVote: function(player){
+      if(!player.hasWChamp){
+        if(this.game.champLoan == null){
+          this.showWModal = true;
+          this.wChampQ = true;
+        }
+      }
+    },
+    wChampVoteNo: function(){
+        this.showWModal = false;
+        this.wChampQ = false;
+        this.voteRejectedMsg = false;
+        this.voteApprovedMsg = false;
+        this.voteCard = [];
+    },
+    wChampVoteYes: function(){
+      this.game.players.forEach(function(){
+        game.voteCard.push({vote:null});
+      });
+      game.voteCard[this.turn].vote = true;
+    },
+    voteThis: function(vote, index){
+      game.voteCard[index].vote = vote;
+      let voteCount = 0;
+      let sum = game.voteCard.reduce(function(acc, val) {
+        voteCount += (val.vote !== null ? 1 : 0); 
+        return acc + (val.vote == true ? 1 : 0);
+      }, 0);
+      if(voteCount >= this.game.players.length){
+        switch(this.game.players.length){
+          case 2:
+            sum > 1 ? this.voteApproved() : this.voteRejected();
+            break;
+          case 3:
+            sum >= 2 ? this.voteApproved() : this.voteRejected();
+            break;
+          case 4:
+            sum >= 3 ? this.voteApproved() : this.voteRejected();
+            break;
+        }
+      }
+    },
+    voteApproved: function(){
+      console.log('vote approved');
+      this.voteApprovedMsg = true;
+      this.game.champLoan = this.turn;
+      this.game.players[this.turn].temproster.push(this.game.wChamp);
+      this.game.players.forEach(function(val, key){
+        if(val.hasWChamp){
+           // remove champ from owners temproster
+           val.temproster.forEach(function(wrest, index){
+              if(wrest == game.game.wChamp){
+                val.temproster.splice(index, 1);
+              }
+           }); 
+        }
+      });
+    },
+    voteRejected: function(){
+      this.voteRejectedMsg = true;
     },
     checkForChamp: function(player){
       if(!player.champSet){
-        this.showModal = true;
+        this.resetModal();
         this.setChampNow = true;
       }
     },
@@ -106,6 +174,7 @@ var game = new Vue({
         this.showModal = false;
         this.setChampNow = false;
         this.showChampRoster = false;
+        this.wChampQ = false;
     },
     showChampRosterFunc: function(){
       this.showChampRoster = true;
@@ -224,11 +293,41 @@ var game = new Vue({
       game.summaryValues.forEach(val=>drawTotals.push(val.total));
       var i = this.indexOfMax(drawTotals);
       this.game.players[i].tokens++;
+      if(this.game.champLoan != null){
+        if(i == this.game.champLoan){
+          alert('champ on top show, everyone wins!!');
+          this.game.players.forEach(function(val, key){
+            val.cash += 10;
+          });
+          game.summaryValues.forEach(function(val, key){
+            val.bonus += 10;
+            val.total += 10;
+          });
+        } 
+      }
+      else {
+        this.game.players.forEach(function(val, key){
+            if(val.hasWChamp){
+              if(i == key){
+                alert('champ on top show, everyone wins!!');
+                game.game.players.forEach(function(val, key){
+                  val.cash += 10;
+                });
+                game.summaryValues.forEach(function(val, key){
+                  val.bonus += 10;
+                  val.total += 10;
+                });
+              }
+            }
+        });
+      }
+      this.game.champLoan = null;
     },
     nextRound: function(){
       this.setMatchcard();
       this.game.round++;
       this.turn = 0;
+      this.wChampVote(this.game.players[this.turn]);
       this.checkForChamp(this.game.players[this.turn]);
       this.saveData();
     },
@@ -360,6 +459,13 @@ var game = new Vue({
       game.$forceUpdate();
     },
     validateMatch: function(match){
+      if(match.competitors.length >1){
+        match.competitors.forEach(function(val, key){
+          if(game.findWrestler(val).isWChamp){
+            match.winner = match.competitors[key];
+          }
+        });
+      }
       let ready = false;
       if(match.competitors.length > 1){ready = true};
       match.winner ? ready = true : ready = false;
@@ -559,6 +665,14 @@ NEXT STEPS
 - rules for award: everyone gets 10 when on highest.
 - rules for switch: use 3 tokens (to discard) then autofix the match/opponent/winner
 - setting for champowner to navigate other functions
+
+    *click yes and open vote panel, with length of users, current user select defaulted yes
+    *once vote tally equals all votes, count and return true or false
+    *if true, set champloan to player index(turn), (check champloan to stop others getting vote),
+    *find hasWChamp and remove wchamp from temproster, add to loaners temproster (where used, if wchamp they win)
+    *in summary, check for champloan, if yes check if matches highest earner (if so all get 10)
+    *if no champloan, check for champowner, if yes check if matches highest earner (if so all get 10)
+    *set champloan to null
 
 // NEWS
 - draw news card beginning of each player switch
