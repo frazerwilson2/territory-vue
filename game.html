@@ -16,7 +16,10 @@
 <!-- Roster list -->
     // Roster
     <ul>
-      <li v-for="(wrestler, index) in player.roster">{{findWrestler(wrestler).Name}} ({{findWrestler(wrestler).val}}) +{{findWrestler(wrestler).inc}} <div v-if="findWrestler(wrestler).isChamp" class="champ_belt">-</div></li>
+      <li v-for="(wrestler, index) in player.roster">{{findWrestler(wrestler).Name}} ({{findWrestler(wrestler).val}}) +{{findWrestler(wrestler).inc}} 
+        <div v-if="findWrestler(wrestler).isChamp" class="champ_belt">-</div>
+        <div v-if="findWrestler(wrestler).isWChamp" class="champ_belt w_champ">-</div>
+      </li>
     </ul>
     // Gimmicks
     <ul>
@@ -46,6 +49,7 @@
     <div>loan: {{game.champLoan}}</div>
     <div class="world-champion">
       <h2>World Champion - {{findWrestler(game.wChamp).Name}}</h2>
+      <a v-if="!player.hasWChamp" @click="switchWChamp()">Title match</a>
     </div>
 </div>
 </div>
@@ -77,7 +81,7 @@
 
   <div v-for="(player, index) in game.players" v-if="index == turn">
     <div v-if="validate" class="errors">Errors</div>
-    <h1>{{player.name}} {{player.hasWChamp}}</h1>{{player.tokens + ' token'}}
+    <h1>{{player.name}} <div v-if="player.hasWChamp" class="champ_belt w_champ">-</div></h1> {{player.tokens + ' token'}}
 
     <p>Current champ: 
       <span v-if="!player.champSet">VACANT</span>
@@ -149,7 +153,7 @@
 <div v-if="showWModal" class="overlay wchamp-overlay">
   <a @click="wChampVoteNo()">|x|</a>
     <div v-if="wChampQ && !voteCard.length">
-      do you want to set w wchamp?
+      do you want to loan the world champion?
       <button @click="wChampVoteNo()">No</button>
       <button @click="wChampVoteYes()">Yes</button>
     </div>
@@ -175,6 +179,16 @@
           <ul v-if="showChampRoster">
             <li v-for="w in player.roster" v-if="findWrestler(w).type == 'singles'">{{findWrestler(w).Name}} <a @click="makeChamp(w)">babing</a></li>
           </ul>
+        </div>
+        <div v-if="switchWChampMsg">
+          so, you want the wchamp?
+          <div v-if="player.hasWChamp">You already have the champ :)</div>
+          <div v-if="player.tokens < 3">You need 3 tokens to claim world champ</div>
+          <div v-if="player.tokens >= 3">Who?
+<ul>
+  <li v-for="(wrestler, index) in player.temproster">{{wrestler}}</li>
+</ul>
+          </div>
         </div>
       </div>
 

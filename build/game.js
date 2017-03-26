@@ -39,7 +39,8 @@ var game = new Vue({
     wChampQ: false,
     voteCard: [],
     voteRejectedMsg: false,
-    voteApprovedMsg: false
+    voteApprovedMsg: false,
+    switchWChampMsg: false
   },
   mounted: function() {
   this.loadRoster();
@@ -102,6 +103,7 @@ var game = new Vue({
         this.showModal = true;
         this.setChampNow = false;
         this.showChampRoster = false;
+        this.switchWChampMsg = false;
     },
     wChampVote: function(player){
       if(!player.hasWChamp){
@@ -175,6 +177,10 @@ var game = new Vue({
         this.setChampNow = false;
         this.showChampRoster = false;
         this.wChampQ = false;
+    },
+    switchWChamp: function(){
+      this.resetModal();
+      this.switchWChampMsg = true;
     },
     showChampRosterFunc: function(){
       this.showChampRoster = true;

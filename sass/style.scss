@@ -174,10 +174,12 @@ small {
 }
 .wchamp-overlay {
     top: 15%;
-    width: 70%;
-    left: 15%;
+    width: 40%;
+    left: 30%;
     z-index: 99;
     border-radius: 10px;
+    min-height: 200px;
+    box-shadow: 0 0 10px 800px rgba(0, 0, 0, 0.36);
 }
 .champ_belt {
     background:yellow;
