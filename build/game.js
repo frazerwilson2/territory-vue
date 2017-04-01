@@ -151,9 +151,13 @@ var game = new Vue({
       console.log('vote approved');
       this.voteApprovedMsg = true;
       this.game.champLoan = this.turn;
+      this.game.players[this.turn].cash -= 10;
+      alert('its costs 10');
       this.game.players[this.turn].temproster.push(this.game.wChamp);
       this.game.players.forEach(function(val, key){
         if(val.hasWChamp){
+          val.cash += 10;
+          alert('you got paid');
            // remove champ from owners temproster
            val.temproster.forEach(function(wrest, index){
               if(wrest == game.game.wChamp){
@@ -182,6 +186,16 @@ var game = new Vue({
       this.resetModal();
       this.switchWChampMsg = true;
     },
+    isWChampAble: function(w){
+      let prospect = this.findWrestler(w);
+      console.log((prospect.val + prospect.inc) < 8);
+      if(prospect.type !== 'singles'){return false}
+      if((prospect.val + prospect.inc) < 8){return false}
+      return true;
+    },
+    setWChampMatch: function(w){
+console.log(w);
+    },
     showChampRosterFunc: function(){
       this.showChampRoster = true;
     },
@@ -198,8 +212,10 @@ var game = new Vue({
       val.matchcard.forEach(function(match){
         if(match.competitors[0] && match.competitors[1]){
           let matchSum = game.findWrestler(match.competitors[0]).val + game.findWrestler(match.competitors[1]).val;
-          game.findWrestler(match.competitors[0]).isChamp ? matchSum += 4 : matchSum += game.findWrestler(match.competitors[0]).inc;
-          game.findWrestler(match.competitors[1]).isChamp ? matchSum += 4 : matchSum += game.findWrestler(match.competitors[1]).inc;
+          matchSum += game.findWrestler(match.competitors[0]).inc;
+          matchSum += game.findWrestler(match.competitors[1]).inc;
+          game.findWrestler(match.competitors[0]).isChamp ? matchSum += 1 : matchSum += 0;
+          game.findWrestler(match.competitors[1]).isChamp ? matchSum += 1 : matchSum += 0;
           if(match.gimmick){matchSum += 5; game.game.players[index].discards.gimmicks.push(match.gimmick)}
           if(match.gimmickAffect){game.affectGimmick(match)}
           if(match.story){
@@ -666,9 +682,9 @@ NEXT STEPS
 *- buy stadium (double value)
 
 // WCHAMP (awards based on scores, vote for hire, use tokens to switch)
-- begin with question, then vote (return true/false) (unless has champ)
-- rules for getting champ on loan, goes to matchcard, pay 10 (to owner if owned)
-- rules for award: everyone gets 10 when on highest.
+*- begin with question, then vote (return true/false) (unless has champ)
+*- rules for getting champ on loan, goes to matchcard, pay 10 (to owner if owned)
+*- rules for award: everyone gets 10 when on highest.
 - rules for switch: use 3 tokens (to discard) then autofix the match/opponent/winner
 - setting for champowner to navigate other functions
 
