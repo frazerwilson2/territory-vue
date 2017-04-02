@@ -186,7 +186,7 @@
           <div v-if="player.tokens < 3">You need 3 tokens to claim world champ</div>
           <div v-if="player.tokens >= 3">Who?
             <ul>
-              <li v-for="(wrestler, index) in player.temproster" v-if="isWChampAble(wrestler)"><a @click="setWChampMatch(wrestler)">{{findWrestler(wrestler).Name}}</a></li>
+              <li v-for="(wrestler, index) in player.temproster" v-if="isWChampAble(wrestler)"><a @click="setWChampMatch(wrestler, index)">{{findWrestler(wrestler).Name}}</a></li>
             </ul>
           </div>
         </div>

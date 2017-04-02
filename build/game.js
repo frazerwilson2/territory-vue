@@ -40,7 +40,9 @@ var game = new Vue({
     voteCard: [],
     voteRejectedMsg: false,
     voteApprovedMsg: false,
-    switchWChampMsg: false
+    switchWChampMsg: false,
+    prospectWChamp: null,
+    prospectWChampHolder: null
   },
   mounted: function() {
   this.loadRoster();
@@ -153,11 +155,16 @@ var game = new Vue({
       this.game.champLoan = this.turn;
       this.game.players[this.turn].cash -= 10;
       alert('its costs 10');
+      this.loanWChampTravels();
+    },
+    loanWChampTravels: function(changeover){
       this.game.players[this.turn].temproster.push(this.game.wChamp);
       this.game.players.forEach(function(val, key){
         if(val.hasWChamp){
-          val.cash += 10;
-          alert('you got paid');
+          if(!changeover){
+            val.cash += 10;
+            alert('you got paid');
+          }
            // remove champ from owners temproster
            val.temproster.forEach(function(wrest, index){
               if(wrest == game.game.wChamp){
@@ -193,8 +200,14 @@ var game = new Vue({
       if((prospect.val + prospect.inc) < 8){return false}
       return true;
     },
-    setWChampMatch: function(w){
-console.log(w);
+    setWChampMatch: function(w, i){
+      this.game.players[this.turn].tokens -= 3;
+      this.addToCard(i, w, true, 0);
+      this.loanWChampTravels(true);
+      this.addToCard(this.game.players[this.turn].temproster.length, this.game.wChamp, true, 1);
+      this.closeOverlay();
+      this.prospectWChamp = w;
+      this.prospectWChampHolder = this.turn;
     },
     showChampRosterFunc: function(){
       this.showChampRoster = true;
@@ -292,6 +305,18 @@ console.log(w);
         game.incWinners(value, index);
         game.checkArena(value, index);
        });
+        if(this.prospectWChamp){
+          this.game.players.forEach(function(value, index) {
+            value.hasWChamp = false;
+          });
+          this.findWrestler(this.game.wChamp).isWChamp = false;
+          this.game.wChamp = this.prospectWChamp;
+          this.findWrestler(this.game.wChamp).isWChamp = true;
+          this.game.players[this.prospectWChampHolder].hasWChamp = true;
+          this.prospectWChamp = null;
+          this.prospectWChampHolder = null;
+          alert('New world champ');
+        }
         game.awardTopDraw();
     },
     indexOfMax: function(arr) {
@@ -447,11 +472,21 @@ console.log(w);
       this.popGimmick = false;
       this.popStory = false;
     },
-    addToCard: function(wrestler, id){
-      this.game.players[this.turn].matchcard[this.currentMatch].competitors[this.currentPos] = id;
+    addToCard: function(wrestler, id, first, firstIndex){
+      if(first){
+        this.game.players[this.turn].matchcard[0].competitors[firstIndex] = id;
+      }
+      else {
+        this.game.players[this.turn].matchcard[this.currentMatch].competitors[this.currentPos] = id;        
+      }
       this.game.players[this.turn].temproster.splice(wrestler, 1);      
       this.closePop();
-      this.game.players[this.turn].matchcard[this.currentMatch].ready = this.validateMatch(this.game.players[this.turn].matchcard[this.currentMatch]);
+      if(first){
+        this.game.players[this.turn].matchcard[0].ready = this.validateMatch(this.game.players[this.turn].matchcard[0], 'switch');        
+      }
+      else {
+        this.game.players[this.turn].matchcard[this.currentMatch].ready = this.validateMatch(this.game.players[this.turn].matchcard[this.currentMatch]);
+      }
       game.$forceUpdate();
     },
     addGimmickCard:function(gimmick, index){
@@ -480,18 +515,19 @@ console.log(w);
       this.game.players[this.turn].matchcard.splice(match, 1);
       game.$forceUpdate();
     },
-    validateMatch: function(match){
+    validateMatch: function(match, titleswitch){
       if(match.competitors.length >1){
         match.competitors.forEach(function(val, key){
           if(game.findWrestler(val).isWChamp){
             match.winner = match.competitors[key];
           }
         });
+        if(titleswitch == 'switch'){
+          match.winner = match.competitors[0];
+        }
       }
       let ready = false;
-      if(match.competitors.length > 1){ready = true};
-      match.winner ? ready = true : ready = false;
-      //console.log(match, ready);
+      match.competitors[0] && match.competitors[1] && match.winner ? ready = true : ready = false;
       return ready;
     },
     setWinner: function(match, winner, matchno){
@@ -685,8 +721,8 @@ NEXT STEPS
 *- begin with question, then vote (return true/false) (unless has champ)
 *- rules for getting champ on loan, goes to matchcard, pay 10 (to owner if owned)
 *- rules for award: everyone gets 10 when on highest.
-- rules for switch: use 3 tokens (to discard) then autofix the match/opponent/winner
-- setting for champowner to navigate other functions
+*- rules for switch: use 3 tokens (to discard) then autofix the match/opponent/winner
+*- setting for champowner to navigate other functions
 
     *click yes and open vote panel, with length of users, current user select defaulted yes
     *once vote tally equals all votes, count and return true or false
