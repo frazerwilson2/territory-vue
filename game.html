@@ -49,7 +49,6 @@
     <div>loan: {{game.champLoan}}</div>
     <div class="world-champion">
       <h2>World Champion - {{findWrestler(game.wChamp).Name}}</h2>
-      <a v-if="!player.hasWChamp" @click="switchWChamp()">Title match</a>
     </div>
 </div>
 </div>
@@ -60,7 +59,7 @@
   <a @click="openStore(false)">|X|</a>
   store<br>
   <h3>Roster</h3> 
-  <ul><li v-for="wrestler in game.roster">
+  <ul><li v-for="wrestler in game.roster" v-if="!findWrestler(wrestler).isWChamp">
     <a @click="purchaseRoster(wrestler, findWrestler(wrestler).val)">{{findWrestler(wrestler).Name}} {{findWrestler(wrestler).val}}</a> 
   </li></ul>
   <h3>Story</h3>
@@ -150,26 +149,6 @@
         </ul>
       </div>
 
-<div v-if="showWModal" class="overlay wchamp-overlay">
-  <a @click="wChampVoteNo()">|x|</a>
-    <div v-if="wChampQ && !voteCard.length">
-      do you want to loan the world champion?
-      <button @click="wChampVoteNo()">No</button>
-      <button @click="wChampVoteYes()">Yes</button>
-    </div>
-  <div class="vote-card" v-if="voteCard.length">
-    <ul>
-      <li v-for="(vote, index) in voteCard">
-        <span v-if="vote.vote == true">YES</span>
-        <span v-if="vote.vote == false">NO</span>
-        <span v-if="vote.vote == null"><a @click="voteThis(true, index)">Yeah</a> <a @click="voteThis(false, index)">Na</a></span>
-      </li>
-    </ul>
-  </div>
-  <div v-if="voteRejectedMsg">Your request has been declined <button @click="wChampVoteNo()">OK</button></div>
-  <div v-if="voteApprovedMsg">{{player.name}} will host the world champion {{findWrestler(game.wChamp).Name}}! <button @click="wChampVoteNo()">OK</button></div>
-</div>
-
       <div v-if="showModal" class="overlay">
         <a @click="closeOverlay()">|x|</a>
         <div v-if="setChampNow">
@@ -179,16 +158,6 @@
           <ul v-if="showChampRoster">
             <li v-for="w in player.roster" v-if="findWrestler(w).type == 'singles'">{{findWrestler(w).Name}} <a @click="makeChamp(w)">babing</a></li>
           </ul>
-        </div>
-        <div v-if="switchWChampMsg">
-          so, you want the wchamp?
-          <div v-if="player.hasWChamp">You already have the champ :)</div>
-          <div v-if="player.tokens < 3">You need 3 tokens to claim world champ</div>
-          <div v-if="player.tokens >= 3">Who?
-            <ul>
-              <li v-for="(wrestler, index) in player.temproster" v-if="isWChampAble(wrestler)"><a @click="setWChampMatch(wrestler, index)">{{findWrestler(wrestler).Name}}</a></li>
-            </ul>
-          </div>
         </div>
       </div>
 
@@ -203,10 +172,43 @@
   </div>
   <!-- Actions -->
   <div class="actions">
+    {{turn}}
     <div v-if="turn == 'REVIEW'">
       <button @click="nextRound()">Next round</button>
     </div>
-    <button @click="nextTurn()" v-if="turn != 'REVIEW'">Next</button>
+    <div v-if="turn == 'WCHAMP'">
+      Do votez and token claim
+      <div class="wchamp_round">
+        <div v-for="(player, index) in game.players">
+          {{player.name}} ({{player.tokens}})<br>
+          <button @click="wChampVoteYes(index)" v-if="!player.hasWChamp">loan</button> 
+          <button v-if="player.tokens >= 3" @click="switchWChamp(index)">switch</button>
+        </div>
+          <div class="vote-card" v-if="voteCard.length">
+        <ul>
+          <li v-for="(vote, index) in voteCard">
+            <span v-if="vote.vote == true">YES</span>
+            <span v-if="vote.vote == false">NO</span>
+            <span v-if="vote.vote == null"><a @click="voteThis(true, index)">Yeah</a> <a @click="voteThis(false, index)">Na</a></span>
+          </li>
+        </ul>
+      </div>
+      <div v-if="voteRejectedMsg">Your request has been declined <button @click="wChampVoteNo()">OK</button></div>
+      <div v-if="voteApprovedMsg">{{game.players[tempIndex].name}} will host the world champion {{findWrestler(game.wChamp).Name}}! <button @click="wChampVoteNo()">OK</button></div>
+      <div v-if="switchWChampMsg">
+          Arrange a new world champion
+          <div v-if="game.players[tempIndex].hasWChamp">You already have the champ :)</div>
+          <div v-if="game.players[tempIndex].tokens < 3">You need 3 tokens to claim world champ</div>
+          <div v-if="game.players[tempIndex].tokens >= 3">Who?
+            <ul>
+              <li v-for="(wrestler, index) in game.players[tempIndex].temproster" v-if="isWChampAble(wrestler)"><a @click="setWChampMatch(wrestler, index)">{{findWrestler(wrestler).Name}}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <button @click="goToRegularRounds()">Go to rounds</button>
+    </div>
+    <button @click="nextTurn()" v-if="turn !== 'REVIEW' && turn !== 'WCHAMP'">Next</button>
   </div>
 </div>
 

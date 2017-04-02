@@ -14,7 +14,7 @@ var game = new Vue({
     news: [],
     game: [],
     // In game values
-    turn: 0,
+    turn: 'WCHAMP', // 'WCHAMP', 'REVIEW'
     matchcard: [],
     match: {
       story: null,
@@ -42,6 +42,7 @@ var game = new Vue({
     voteCard: [],
     voteRejectedMsg: false,
     voteApprovedMsg: false,
+    tempIndex: null,
     switchWChampMsg: false,
     prospectWChamp: null,
     prospectWChampHolder: null
@@ -105,7 +106,7 @@ var game = new Vue({
         if (this.turn == this.game.players.length) {
           this.turn = 'REVIEW';this.summarize();
         } else {
-          this.wChampVote(this.game.players[this.turn]);this.checkForChamp(this.game.players[this.turn]);
+          this.checkForChamp(this.game.players[this.turn]);
         }
       }
     },
@@ -130,11 +131,12 @@ var game = new Vue({
       this.voteApprovedMsg = false;
       this.voteCard = [];
     },
-    wChampVoteYes: function wChampVoteYes() {
+    wChampVoteYes: function wChampVoteYes(index) {
       this.game.players.forEach(function () {
         game.voteCard.push({ vote: null });
       });
-      game.voteCard[this.turn].vote = true;
+      this.tempIndex = index;
+      game.voteCard[index].vote = true;
     },
     voteThis: function voteThis(vote, index) {
       game.voteCard[index].vote = vote;
@@ -160,13 +162,13 @@ var game = new Vue({
     voteApproved: function voteApproved() {
       console.log('vote approved');
       this.voteApprovedMsg = true;
-      this.game.champLoan = this.turn;
-      this.game.players[this.turn].cash -= 10;
+      this.game.champLoan = this.tempIndex;
+      this.game.players[this.tempIndex].cash -= 10;
       alert('its costs 10');
       this.loanWChampTravels();
     },
     loanWChampTravels: function loanWChampTravels(changeover) {
-      this.game.players[this.turn].temproster.push(this.game.wChamp);
+      this.game.players[this.tempIndex].temproster.push(this.game.wChamp);
       this.game.players.forEach(function (val, key) {
         if (val.hasWChamp) {
           if (!changeover) {
@@ -197,13 +199,12 @@ var game = new Vue({
       this.showChampRoster = false;
       this.wChampQ = false;
     },
-    switchWChamp: function switchWChamp() {
-      this.resetModal();
+    switchWChamp: function switchWChamp(index) {
+      this.tempIndex = index;
       this.switchWChampMsg = true;
     },
     isWChampAble: function isWChampAble(w) {
       var prospect = this.findWrestler(w);
-      console.log(prospect.val + prospect.inc < 8);
       if (prospect.type !== 'singles') {
         return false;
       }
@@ -266,7 +267,6 @@ var game = new Vue({
         }
       });
       // check for arena
-      console.log(val);
       if (val.arena) {
         game.summaryValues[index].bonus = totalGain;
         val.arena = false;
@@ -337,10 +337,8 @@ var game = new Vue({
       if (arr.length === 0) {
         return -1;
       }
-
       var max = arr[0];
       var maxIndex = 0;
-
       for (var i = 1; i < arr.length; i++) {
         if (arr[i] > max) {
           maxIndex = i;
@@ -388,10 +386,12 @@ var game = new Vue({
     nextRound: function nextRound() {
       this.setMatchcard();
       this.game.round++;
-      this.turn = 0;
-      this.wChampVote(this.game.players[this.turn]);
-      this.checkForChamp(this.game.players[this.turn]);
+      this.turn = 'WCHAMP';
       this.saveData();
+    },
+    goToRegularRounds: function goToRegularRounds() {
+      this.turn = 0;
+      this.checkForChamp(this.game.players[this.turn]);
     },
     saveData: function saveData() {
       //localStorage.setItem('gimmicks', JSON.stringify(this.gimmicks));
@@ -782,6 +782,12 @@ NEXT STEPS
     *in summary, check for champloan, if yes check if matches highest earner (if so all get 10)
     *if no champloan, check for champowner, if yes check if matches highest earner (if so all get 10)
     *set champloan to null
+
+// Reimplement champloan/switch
+- new step between summary and first step
+- each user listed, click to open loan vote or perform switch
+- multiple votes can be taken, once 1 vote accepted or switch stage over
+- set current stuff (matchcard and temproster must be done before)
 
 // NEWS
 - draw news card beginning of each player switch

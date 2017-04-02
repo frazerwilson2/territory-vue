@@ -178,3 +178,12 @@ small {
   padding: 10px;
   margin: 10px;
   font-size: 14px; }
+
+.wchamp_round {
+  background: white;
+  padding: 10px;
+  text-align: center; }
+  .wchamp_round div {
+    display: inline-block;
+    width: calc(25% - 2px);
+    border: 1px black solid; }
