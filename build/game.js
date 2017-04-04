@@ -201,14 +201,14 @@ var game = new Vue({
       if((prospect.val + prospect.inc) < 8){return false}
       return true;
     },
-    setWChampMatch: function(w, i){
-      this.game.players[this.turn].tokens -= 3;
+    setWChampMatch: function(w, i, index){
+      this.game.players[index].tokens -= 3;
       this.addToCard(i, w, true, 0);
       this.loanWChampTravels(true);
-      this.addToCard(this.game.players[this.turn].temproster.length, this.game.wChamp, true, 1);
+      this.addToCard(this.game.players[index].temproster.length, this.game.wChamp, true, 1);
       this.closeOverlay();
       this.prospectWChamp = w;
-      this.prospectWChampHolder = this.turn;
+      this.prospectWChampHolder = index;
     },
     showChampRosterFunc: function(){
       this.showChampRoster = true;
@@ -474,15 +474,16 @@ var game = new Vue({
     },
     addToCard: function(wrestler, id, first, firstIndex){
       if(first){
-        this.game.players[this.turn].matchcard[0].competitors[firstIndex] = id;
+        this.game.players[this.tempIndex].matchcard[0].competitors[firstIndex] = id;
+        this.game.players[this.tempIndex].temproster.splice(wrestler, 1);  
       }
       else {
         this.game.players[this.turn].matchcard[this.currentMatch].competitors[this.currentPos] = id;        
+        this.game.players[this.turn].temproster.splice(wrestler, 1);      
       }
-      this.game.players[this.turn].temproster.splice(wrestler, 1);      
       this.closePop();
       if(first){
-        this.game.players[this.turn].matchcard[0].ready = this.validateMatch(this.game.players[this.turn].matchcard[0], 'switch');        
+        this.game.players[this.tempIndex].matchcard[0].ready = this.validateMatch(this.game.players[this.tempIndex].matchcard[0], 'switch');        
       }
       else {
         this.game.players[this.turn].matchcard[this.currentMatch].ready = this.validateMatch(this.game.players[this.turn].matchcard[this.currentMatch]);

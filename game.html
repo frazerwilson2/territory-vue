@@ -47,10 +47,13 @@
     // Arena {{player.arena}}
     // Discards {{player.discards}}
     <div>loan: {{game.champLoan}}</div>
-    <div class="world-champion">
-      <h2>World Champion - {{findWrestler(game.wChamp).Name}}</h2>
-    </div>
 </div>
+    <div class="world-champion" v-if="game.wChamp">
+      <h2>World Champion - {{findWrestler(game.wChamp).Name}}</h2>
+      <div v-for="(player, index) in game.players" v-if="player.hasWChamp">
+          {{player.name}}
+      </div>
+    </div>
 </div>
 
 <div>
@@ -180,7 +183,7 @@
       Do votez and token claim
       <div class="wchamp_round">
         <div v-for="(player, index) in game.players">
-          {{player.name}} ({{player.tokens}})<br>
+          {{player.name}} ({{player.tokens}})<br> - {{player.hasWChamp}}
           <button @click="wChampVoteYes(index)" v-if="!player.hasWChamp">loan</button> 
           <button v-if="player.tokens >= 3" @click="switchWChamp(index)">switch</button>
         </div>
@@ -201,7 +204,7 @@
           <div v-if="game.players[tempIndex].tokens < 3">You need 3 tokens to claim world champ</div>
           <div v-if="game.players[tempIndex].tokens >= 3">Who?
             <ul>
-              <li v-for="(wrestler, index) in game.players[tempIndex].temproster" v-if="isWChampAble(wrestler)"><a @click="setWChampMatch(wrestler, index)">{{findWrestler(wrestler).Name}}</a></li>
+              <li v-for="(wrestler, index) in game.players[tempIndex].temproster" v-if="isWChampAble(wrestler)"><a @click="setWChampMatch(wrestler, index, tempIndex)">{{findWrestler(wrestler).Name}}</a></li>
             </ul>
           </div>
         </div>
