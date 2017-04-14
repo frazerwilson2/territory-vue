@@ -1,21 +1,37 @@
+// Import Bulma
+@import "../node_modules/bulma/bulma";
+
+// overwrites
+.section {
+    background:none;
+}
+
 $grey: #a7a7a7;
 
-* {
-	font-family:sans-serif;
-}
-a {
-	color:white;
-	background: red;
-}
-body {
-	background:#ccc;
-	font-size:10px;
-}
-.box {
-background: grey;
-margin: 10px;
-    width: 200px;
-display: inline-block;
+.chara_box {
+    background: #eaeaea;
+    margin: 1%;
+    width: 18%;
+    display: inline-block;
+    padding: 1%;
+    border-radius: 4px;
+    color: #333;
+    .num {
+        float:right;
+        background: white;
+        width: 25px;
+        text-align: center;
+        border-radius: 100%;
+        height: 25px;
+    }
+    img {
+        width: 100%;
+        border: 1px black solid;
+        margin: 0 0 10px;
+    }
+    .hero.is-success & a {
+        color:white;
+    }
 }
 .active {
 border:1px red solid;
@@ -201,7 +217,7 @@ small {
     background: white;
     padding: 10px;
     text-align: center;
-    div{
+    div.player{
         display: inline-block;
         width: calc(25% - 2px);
         border: 1px black solid;

@@ -42,6 +42,7 @@ var game = new Vue({
     voteCard: [],
     voteRejectedMsg: false,
     voteApprovedMsg: false,
+    confirmNewWChamp: false,
     tempIndex: null,
     switchWChampMsg: false,
     prospectWChamp: null,
@@ -115,6 +116,8 @@ var game = new Vue({
       this.setChampNow = false;
       this.showChampRoster = false;
       this.switchWChampMsg = false;
+      this.voteApprovedMsg = false;
+      this.confirmNewWChamp = false;
     },
     wChampVote: function wChampVote(player) {
       if (!player.hasWChamp) {
@@ -221,6 +224,7 @@ var game = new Vue({
       this.closeOverlay();
       this.prospectWChamp = w;
       this.prospectWChampHolder = index;
+      this.confirmNewWChamp = true;
     },
     showChampRosterFunc: function showChampRosterFunc() {
       this.showChampRoster = true;
@@ -332,6 +336,9 @@ var game = new Vue({
         alert('New world champ');
       }
       game.awardTopDraw();
+      this.game.players.forEach(function (value, index) {
+        game.enactNewsItem(index);
+      });
     },
     indexOfMax: function indexOfMax(arr) {
       if (arr.length === 0) {
@@ -383,11 +390,18 @@ var game = new Vue({
       }
       this.game.champLoan = null;
     },
+    enactNewsItem: function enactNewsItem(index) {
+      console.log('enact news for player ' + index + ' with news item ' + this.game.news[0]);
+      news.acessNews(this.game.news[0], this.game.players[index]);
+      this.game.news.splice(0, 1);
+    },
     nextRound: function nextRound() {
       this.setMatchcard();
       this.game.round++;
       this.turn = 'WCHAMP';
       this.saveData();
+      this.resetModal();
+      this.showModal = false;
     },
     goToRegularRounds: function goToRegularRounds() {
       this.turn = 0;
@@ -785,10 +799,10 @@ NEXT STEPS
     *set champloan to null
 
 // Reimplement champloan/switch
-- new step between summary and first step
-- each user listed, click to open loan vote or perform switch
+*- new step between summary and first step
+*- each user listed, click to open loan vote or perform switch
 - multiple votes can be taken, once 1 vote accepted or switch stage over
-- set current stuff (matchcard and temproster must be done before)
+*- set current stuff (matchcard and temproster must be done before)
 
 // NEWS
 - draw news card beginning of each player switch

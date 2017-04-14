@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <div id="news"></div>
 <div id="game">
 
 <div>
@@ -182,7 +183,7 @@
     <div v-if="turn == 'WCHAMP'">
       Do votez and token claim
       <div class="wchamp_round">
-        <div v-for="(player, index) in game.players">
+        <div v-for="(player, index) in game.players" class="player">
           {{player.name}} ({{player.tokens}})<br> - {{player.hasWChamp}}
           <button @click="wChampVoteYes(index)" v-if="!player.hasWChamp">loan</button> 
           <button v-if="player.tokens >= 3" @click="switchWChamp(index)">switch</button>
@@ -197,11 +198,13 @@
         </ul>
       </div>
       <div v-if="voteRejectedMsg">Your request has been declined <button @click="wChampVoteNo()">OK</button></div>
-      <div v-if="voteApprovedMsg">{{game.players[tempIndex].name}} will host the world champion {{findWrestler(game.wChamp).Name}}! <button @click="wChampVoteNo()">OK</button></div>
+      <div v-if="voteApprovedMsg">{{game.players[tempIndex].name}} will host the world champion {{findWrestler(game.wChamp).Name}}! <button @click="goToRegularRounds()">OK</button></div>
       <div v-if="switchWChampMsg">
           Arrange a new world champion
           <div v-if="game.players[tempIndex].hasWChamp">You already have the champ :)</div>
           <div v-if="game.players[tempIndex].tokens < 3">You need 3 tokens to claim world champ</div>
+            <div v-if="confirmNewWChamp">New World Champ will be {{findWrestler(prospectWChamp).Name}} 
+              <button @click="goToRegularRounds()">OK</button></div>
           <div v-if="game.players[tempIndex].tokens >= 3">Who?
             <ul>
               <li v-for="(wrestler, index) in game.players[tempIndex].temproster" v-if="isWChampAble(wrestler)"><a @click="setWChampMatch(wrestler, index, tempIndex)">{{findWrestler(wrestler).Name}}</a></li>
@@ -240,6 +243,7 @@
 </div>
   <!-- JS -->
   <script src="vue.js"></script>
+  <script src="dist/news.js"></script>
   <script src="dist/game.js"></script>
 </body>
 </html>

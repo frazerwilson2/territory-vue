@@ -10,6 +10,9 @@ var app = new Vue({
     rawLegends: [],
     rawNews: [],
     events: '',
+    titleScreen: true,
+    addPlayers: false,
+    pickRosterView: false,
     // Base game setup
     game: {
       players: [],
@@ -39,6 +42,7 @@ var app = new Vue({
         roster: [],
         stories: [],
         gimmicks: [],
+        news: [],
         goal: 0,
         tokens: 0,
         arena: false,
@@ -50,6 +54,8 @@ var app = new Vue({
         hasWChamp: false
       };
       this.game.players.push(nextup);
+      this.titleScreen = false;
+      this.addPlayers = true;
     },
     getRoster: function getRoster() {
       var _this = this;
@@ -64,6 +70,8 @@ var app = new Vue({
       this.game.roster = this.rawRoster.map(function (w) {
         return w.Id;
       });
+      this.pickRosterView = true;
+      this.addPlayers = false;
     },
     // The setup roster pick
     addToRoster: function addToRoster(data) {
@@ -106,6 +114,7 @@ var app = new Vue({
     saveData: function saveData() {
       console.log(this.game);
       localStorage.setItem('gameData', JSON.stringify(this.game));
+      setTimeout(window.location = '/game.html', 5000);
     },
     // Get data & assign
     shuffle: function shuffle(a) {
@@ -139,7 +148,7 @@ var app = new Vue({
       });
       this.shuffle(gameMissions);
       this.game.goal = gameMissions[0].Id;
-      this.saveData();
+      //this.saveData();
     },
     getStories: function getStories() {
       var _this3 = this;
@@ -163,7 +172,7 @@ var app = new Vue({
       for (var i = pick; i < this.rawStories.length; i++) {
         this.game.stories.push(this.rawStories[i].Id);
       }
-      this.saveData();
+      //this.saveData();
     },
     getGimmicks: function getGimmicks() {
       var _this4 = this;
@@ -204,7 +213,7 @@ var app = new Vue({
         }
       }
       this.shuffle(this.game.gimmicks);
-      this.saveData();
+      //this.saveData();
     },
     getLegends: function getLegends() {
       var _this5 = this;
@@ -218,7 +227,7 @@ var app = new Vue({
           return data.Id;
         });
       });
-      this.saveData();
+      //this.saveData();
     },
     getNews: function getNews() {
       var _this6 = this;
@@ -230,22 +239,29 @@ var app = new Vue({
           return data.Id;
         });
       });
-      this.saveData();
+      console.log(this.game);
+      //this.saveData();
     }
   },
   components: {
     'wrestler': {
       props: ['data', 'cash'],
-      template: '<div class="box" v-bind:class="{ assigned: data.assigned || !cash }">\
-      <h2>{{data.Name}} ({{data.val}})</h2>\
-      ({{data.Val}}) <a v-on:click="purchaseRoster()" v-if="!data.assigned">Purchase</a>\
-      {{data.isWChamp}}\
+      template: '<div class="chara_box" v-bind:class="{ assigned: data.assigned || !cash }">\
+      <div class="num">{{data.val}}</div>\
+      <h2>{{data.Name}}</h2>\
+      <img v-bind:src="\'images/\' + imgPath(data.Name) + \'.jpg\'" />\
+      <a class="button is-dark" v-on:click="purchaseRoster()" v-if="!data.assigned">Purchase</a>\
+      <span v-if="data.type == \'tag\'">TAG</span>\
+      <span>{{data.gender}}</span>\
       </div>',
       methods: {
         purchaseRoster: function purchaseRoster() {
           this.data.assigned = true;
           app.$emit('addToRoster', { id: this.data.Id, val: this.data.val });
           app.$emit('nextPlayer', 'switch to' + this.data.Id);
+        },
+        imgPath: function imgPath(path) {
+          return path.replace(/ /g, '');
         }
       }
     }

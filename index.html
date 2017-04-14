@@ -6,31 +6,76 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
 
 </head>
 <body>
 <div id="app">
-<h1>New game</h1>
-<a @click="newPlayer">Start New game</a>
-<ol>
-  <li v-for="(player, index) in game.players" v-bind:class="{ active: currentPlayer == index, assigned: player.ready }">
-    <input v-model="player.name" v-bind:placeholder="'Player ' + (index + 1)"> (${{player.cash}}) - 
-    <span v-for="guy in player.roster">{{rawRoster[guy - 1].Name}}, </span>
-    <a @click="donePurchase()" v-if="!player.ready">Finished</a>
-  </li>
-</ol>
-<a @click="newPlayer" v-if="game.players.length && game.players.length < 4">Add player</a>
-<a @click="pickRoster" v-if="game.players.length">Start game</a>
 
-<hr/>
-<h2>Make selection: Player {{currentPlayer + 1}}</h2>
-<wrestler v-for="guy in game.roster" v-bind:data="rawRoster[guy - 1]" v-bind:cash="game.players[currentPlayer].cash >= rawRoster[guy - 1].val" v-if="!rawRoster[guy - 1].isWChamp"></wrestler>
-<hr/>
-<div class="loading" v-if="loading">LOADING!!!
-<a @click="saveData">Ready!</a>
-<a href="game.html">go!</a>
+<section class="hero is-success is-fullheight" v-if="titleScreen">
+  <div class="hero-body">
+
+    <div class="container has-text-centered">
+      <h1 class="title">
+      Was your territory?
+      </h1>
+      <div><button @click="newPlayer" class="button">Begin</button></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="hero is-success is-fullheight" v-if="addPlayers">
+  <div class="section container">
+    <div class="columns">
+      <div class="column is-two-thirds">
+        <h1 class="title">Set players</h1>
+  <ol class="block">
+    <li v-for="(player, index) in game.players" class="block"> 
+      <div class="field">
+        <p class="control">
+          <input class="input" type="text" v-model="player.name" v-bind:placeholder="'Player ' + (index + 1)">
+        </p>
+      </div>
+    </li>
+  </ol>
+  <div class="block">
+  <a @click="newPlayer" class="button is-dark" v-if="game.players.length && game.players.length < 4"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add player</a>
+  </div>
+
+  </div>
+  </div>
+
+  <a @click="pickRoster" class="button is-dark" v-if="game.players.length">Start game</a>
+  </div>
 </div>
-<small>{{game}}</small>
+
+<div v-if="pickRosterView" class="hero is-success is-fullheight">
+<div class="container">
+<h1 class="title">Pick Roster</h1>
+<hr>
+<div class="columns">
+    <div v-for="(player, index) in game.players" class="column" v-bind:class="{ active: currentPlayer == index, assigned: player.ready }"> 
+          <p><strong>{{player.name}}</strong>
+          ${{player.cash}}</p> 
+          <span v-for="guy in player.roster">{{rawRoster[guy - 1].Name}}, </span>
+          <a class="button is-dark" @click="donePurchase()" v-if="!player.ready">Finished</a>
+    </div>
+</div>
+
+  <h2>Make selection: Player {{currentPlayer + 1}}</h2>
+  <div>
+  <wrestler v-for="guy in game.roster" v-bind:data="rawRoster[guy - 1]" v-bind:cash="game.players[currentPlayer].cash >= rawRoster[guy - 1].val" v-if="!rawRoster[guy - 1].isWChamp"></wrestler>
+  </div>
+  <hr/>
+<!--   <small>{{game}}</small> -->
+</div>
+</div>
+  <div class="loading" v-if="loading">
+    <h1 class="title">Rosters Loaded</h1>
+  <a @click="saveData" class="button is-dark">Start</a>
+  </div>
+
 </div>
   <!-- JS -->
   <script src="vue.js"></script>

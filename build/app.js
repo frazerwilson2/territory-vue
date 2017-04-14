@@ -8,6 +8,9 @@ var app = new Vue({
     rawLegends: [],
     rawNews:[],
     events: '',
+    titleScreen: true,
+    addPlayers: false,
+    pickRosterView: false,
     // Base game setup
     game: {
       players:[],
@@ -24,7 +27,7 @@ var app = new Vue({
       champLoan: null
     },
     currentPlayer:0,
-    loading: false
+    loading: false,
   },
   mounted: function() {
   this.getRoster();
@@ -37,6 +40,7 @@ var app = new Vue({
         roster:[],
         stories:[],
         gimmicks:[],
+        news: [],
         goal:0,
         tokens: 0,
         arena: false,
@@ -48,6 +52,8 @@ var app = new Vue({
         hasWChamp: false
       };
       this.game.players.push(nextup);
+      this.titleScreen = false;
+      this.addPlayers = true;
     },
     getRoster:function(){
       fetch('/roster.json')
@@ -56,6 +62,8 @@ var app = new Vue({
     },
     pickRoster: function(){
       this.game.roster = this.rawRoster.map(w => w.Id);
+      this.pickRosterView = true;
+      this.addPlayers = false;
     },
     // The setup roster pick
     addToRoster: function(data){
@@ -93,6 +101,7 @@ var app = new Vue({
     saveData: function(){
       console.log(this.game);
         localStorage.setItem('gameData', JSON.stringify(this.game));
+        setTimeout(window.location = '/game.html', 5000);
     },
     // Get data & assign
     shuffle: function(a) {
@@ -118,7 +127,7 @@ var app = new Vue({
       var gameMissions = this.rawMissions.filter(mission => mission.type == "game");
       this.shuffle(gameMissions);
       this.game.goal = gameMissions[0].Id;
-      this.saveData();
+      //this.saveData();
     },
     getStories:function() {
       fetch('/stories.json')
@@ -138,7 +147,7 @@ var app = new Vue({
       for(var i=pick;i<this.rawStories.length;i++){
         this.game.stories.push(this.rawStories[i].Id);
       }
-      this.saveData();
+      //this.saveData();
     },
     getGimmicks:function() {
       fetch('/gimmicks.json')
@@ -175,7 +184,7 @@ var app = new Vue({
         }
       }
       this.shuffle(this.game.gimmicks);
-      this.saveData();
+      //this.saveData();
     },
     getLegends:function() {
       fetch('/legends.json')
@@ -184,28 +193,35 @@ var app = new Vue({
         this.$set(this,'rawLegends', data); 
         localStorage.setItem('legends', JSON.stringify(data)); this.shuffle(data); 
         this.game.legends = data.map(data => data.Id);})
-      this.saveData();
+      //this.saveData();
     },
     getNews:function() {
       fetch('/news.json')
       .then(blob => blob.json())
       .then((data) => {this.$set(this,'rawNews', data); localStorage.setItem('news', JSON.stringify(data)); this.shuffle(data); this.game.news = data.map(data => data.Id);})
-      this.saveData();
+      console.log(this.game);
+      //this.saveData();
     }
   },
   components: {
     'wrestler': {
       props: ['data', 'cash'],
-      template: '<div class="box" v-bind:class="{ assigned: data.assigned || !cash }">\
-      <h2>{{data.Name}} ({{data.val}})</h2>\
-      ({{data.Val}}) <a v-on:click="purchaseRoster()" v-if="!data.assigned">Purchase</a>\
-      {{data.isWChamp}}\
+      template: '<div class="chara_box" v-bind:class="{ assigned: data.assigned || !cash }">\
+      <div class="num">{{data.val}}</div>\
+      <h2>{{data.Name}}</h2>\
+      <img v-bind:src="\'images/\' + imgPath(data.Name) + \'.jpg\'" />\
+      <a class="button is-dark" v-on:click="purchaseRoster()" v-if="!data.assigned">Purchase</a>\
+      <span v-if="data.type == \'tag\'">TAG</span>\
+      <span>{{data.gender}}</span>\
       </div>',
       methods: {
         purchaseRoster: function () {
           this.data.assigned = true;
           app.$emit('addToRoster', {id:this.data.Id, val:this.data.val});
           app.$emit('nextPlayer', 'switch to' + this.data.Id);
+        },
+        imgPath: function (path) {
+          return path.replace(/ /g,'');
         }
       }
     }
