@@ -43,6 +43,8 @@ var game = new Vue({
     voteRejectedMsg: false,
     voteApprovedMsg: false,
     confirmNewWChamp: false,
+    newsTitle: false,
+    newsDetail: false,
     tempIndex: null,
     switchWChampMsg: false,
     prospectWChamp: null,
@@ -107,7 +109,7 @@ var game = new Vue({
         if (this.turn == this.game.players.length) {
           this.turn = 'REVIEW';this.summarize();
         } else {
-          this.checkForChamp(this.game.players[this.turn]);
+          this.checkForChamp(this.game.players[this.turn]);this.checkNews(this.game.players[this.turn]);
         }
       }
     },
@@ -195,6 +197,17 @@ var game = new Vue({
         this.resetModal();
         this.setChampNow = true;
       }
+    },
+    checkNews: function checkNews(player) {
+      if (player.news.length) {
+        this.newsTitle = this.news[player.news[0]].title;
+        this.newsDetail = this.news[player.news[0]].detail;
+      }
+    },
+    removeNews: function removeNews(turn) {
+      this.game.players[turn].news.splice(0, 1);
+      this.newsTitle = false;
+      this.newsDetail = false;
     },
     closeOverlay: function closeOverlay() {
       this.showModal = false;
@@ -392,7 +405,19 @@ var game = new Vue({
     },
     enactNewsItem: function enactNewsItem(index) {
       console.log('enact news for player ' + index + ' with news item ' + this.game.news[0]);
-      news.acessNews(this.game.news[0], this.game.players[index]);
+      var newsResult = news.acessNews(this.news[this.game.news[0] - 1], this.game.players[index]);
+      console.log(newsResult);
+      if (newsResult) {
+        console.log('enact the gift/punishment');
+        switch (newsResult.type) {
+          case 'money':
+            this.game.players[index].cash += newsResult.money;
+        }
+      } else {
+        console.log('doesnt affect this time');
+      }
+      // add to players news then remove from pile
+      this.game.players[index].news.push(this.game.news[0]);
       this.game.news.splice(0, 1);
     },
     nextRound: function nextRound() {
@@ -406,6 +431,7 @@ var game = new Vue({
     goToRegularRounds: function goToRegularRounds() {
       this.turn = 0;
       this.checkForChamp(this.game.players[this.turn]);
+      this.checkNews(this.game.players[this.turn]);
     },
     saveData: function saveData() {
       //localStorage.setItem('gimmicks', JSON.stringify(this.gimmicks));

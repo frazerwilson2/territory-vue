@@ -143,7 +143,7 @@ height: 100%;
     background: white;
     position: absolute;
     top: 5%;
-    top:-100%;
+    top:-200%;
     height: calc(90% - 20px);
     width: calc(67% - 20px);
     padding: 10px;
@@ -222,4 +222,14 @@ small {
         width: calc(25% - 2px);
         border: 1px black solid;
     }
+}
+.news_card {
+    position: fixed;
+    top: 10%;
+    background: white;
+    width: 200px;
+    border: 1px black solid;
+    padding: 10px;
+    left: calc(50% - 100px);
+    height: 250px;
 }

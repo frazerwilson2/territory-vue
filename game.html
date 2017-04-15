@@ -6,7 +6,7 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/style.css">
-</head>
+</head> 
 <body>
   <div id="news"></div>
 <div id="game">
@@ -83,6 +83,7 @@
 <a @click="openStore(true)">store</a>
 
   <div v-for="(player, index) in game.players" v-if="index == turn">
+
     <div v-if="validate" class="errors">Errors</div>
     <h1>{{player.name}} <div v-if="player.hasWChamp" class="champ_belt w_champ">-</div></h1> {{player.tokens + ' token'}}
 
@@ -164,6 +165,12 @@
           </ul>
         </div>
       </div>
+
+        <div class="news_card" v-if="newsTitle">
+          <a @click="removeNews(turn)">close</a>
+          <h2>{{newsTitle}}</h2>
+          <p>{{newsDetail}}</p>
+        </div>
 
   </div>
   <div v-if="turn == 'REVIEW'" class="summary">

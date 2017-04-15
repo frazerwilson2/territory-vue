@@ -1,47 +1,182 @@
 [
-	{
-		"Id":1,
-		"type":"GIVE",
-		"detail":"gimmick"
-		},
-	{
-		"Id":2,
-		"type":"INJURY",
-		"detail":2
-		},
-	{
-		"Id":3,
-		"type":"BONUS",
-		"detail":2
-		},
-	{
-		"Id":4,
-		"type":"HEELFACE",
-		"detail":1
-		},
-	{
-		"Id":5,
-		"type":"TOOMANY",
-		"detail":"gimmick"
-		},
-	{
-		"Id":6,
-		"type":"GIVE",
-		"detail":"gimmick"
-		},
-	{
-		"Id":7,
-		"type":"GIVE",
-		"detail":"gimmick"
-		},
-	{
-		"Id":8,
-		"type":"GIVE",
-		"detail":"gimmick"
-		},
-	{
-		"Id":9,
-		"type":"GIVE",
-		"detail":"gimmick"
-		}
+ {
+   "Id": 1,
+   "type": "HEELFACE1",
+   "title": "Good guys facing bad guys?",
+   "detail": "If any of your matches do not contain HEEL vs FACE, lose $10"
+ },
+ {
+   "Id": 2,
+   "type": "HEELFACEME",
+   "title": "Is your main event engaging?",
+   "detail": "if your main event does not feature HEEL vs FACE, lose $10"
+ },
+ {
+   "Id": 3,
+   "type": "HEELHEEL",
+   "title": "Boring bad guys",
+   "detail": "If your matchcard contains a HEEL vs HEEL, lose $15"
+ },
+ {
+   "Id": 4,
+   "type": "FACEFACE",
+   "title": "No bad guys?",
+   "detail": "if your matchcard contains a FACE vs FACE, lose $5"
+ },
+ {
+   "Id": 5,
+   "type": "TOOMANYFACE",
+   "title": "Too many good guys?",
+   "detail": "if you have 3 more FACE than HEEL, lose $10"
+ },
+ {
+   "Id": 6,
+   "type": "TOOMANYHEEL",
+   "title": "Too many bad guys?",
+   "detail": "if you have 3 more HEEL than FACE, lose $10"
+ },
+ {
+   "Id": 7,
+   "type": "FREEGIMMICK",
+   "title": "Equpment bonus",
+   "detail": "Free gimmick card"
+ },
+ {
+   "Id": 8,
+   "type": "FREESTORY",
+   "title": "Productive writing",
+   "detail": "Free story card"
+ },
+ {
+   "Id": 9,
+   "type": "INJURY1",
+   "title": "Short term injury",
+   "detail": "Star from pos 2 will miss next show!"
+ },
+ {
+   "Id": 10,
+   "type": "INJURY2",
+   "title": "Long term injury",
+   "detail": "Star from pos 3 is removed from your roster"
+ },
+ {
+   "Id": 11,
+   "type": "UPSTAGED",
+   "title": "Upstaged by undercard?",
+   "detail": "If a lower card match scores higher than main event, lose $5"
+ },
+ {
+   "Id": 12,
+   "type": "5STAR",
+   "title": "5 Star match",
+   "detail": "your top rated match is very popular, the superstars gain +1"
+ },
+ {
+   "Id": 13,
+   "type": "POPSTORY",
+   "title": "Popular story",
+   "detail": "If you have an active story, double its payoff value"
+ },
+ {
+   "Id": 14,
+   "type": "POPGUY",
+   "title": "Top star",
+   "detail": "Winner of your main event gets additional +1"
+ },
+ {
+   "Id": 15,
+   "type": "POPLOSER",
+   "title": "Loveable loser",
+   "detail": "Loser of lowest match gets +1"
+ },
+ {
+   "Id": 16,
+   "type": "EXTENDSTORY",
+   "title": "Extend story",
+   "detail": "If an active story, set back to stage 1"
+ },
+ {
+   "Id": 17,
+   "type": "TOOMANYGIMMICK",
+   "title": "Too many gimmicks",
+   "detail": "if over 6 gimmicks played, lose $10"
+ },
+ {
+   "Id": 18,
+   "type": "TOOMANYTV",
+   "title": "Too many TV spots",
+   "detail": "if over 3 TV spots, lose $10"
+ },
+ {
+   "Id": 19,
+   "type": "TOOMANYARENA",
+   "title": "Too many big shows?",
+   "detail": "If over 2 arena shows, lose $10"
+ },
+ {
+   "Id": 20,
+   "type": "TOOMANYLEGEND",
+   "title": "Too many legends",
+   "detail": "No space for young guys, if over 2 legend visits, lose $10"
+ },
+ {
+   "Id": 21,
+   "type": "NOCHAMP",
+   "title": "No champ?",
+   "detail": "If no champion set, lose $10"
+ },
+ {
+   "Id": 22,
+   "type": "NOBIGSHOW",
+   "title": "No big shows?",
+   "detail": "If no tokens earnt yet, lose $10"
+ },
+ {
+   "Id": 23,
+   "type": "FREEAGENT",
+   "title": "Free agent",
+   "detail": "If any available stars, free one added to roster"
+ },
+ {
+   "Id": 24,
+   "type": "QUITTER",
+   "title": "Star quits",
+   "detail": "Random roster member leaves and becomes free agent, you are paid their value"
+ },
+ {
+   "Id": 25,
+   "type": "FREETVSPOT",
+   "title": "Free TV spot",
+   "detail": "Reward for ratings, you get 1 free TV card"
+ },
+ {
+   "Id": 26,
+   "type": "SHOWBONUS",
+   "title": "Show bonus",
+   "detail": "Your show is well received, have a bonus $10"
+ },
+ {
+   "Id": 27,
+   "type": "ROSTERTOOSMALL",
+   "title": "Where are your roster?",
+   "detail": "If you have 6 or less on your roster, lose $10"
+ },
+ {
+   "Id": 28,
+   "type": "NOSTARS",
+   "title": "No big stars?",
+   "detail": "If you have no stars of 9 or above, lose $10"
+ },
+ {
+   "Id": 29,
+   "type": "NOSTORIES",
+   "title": "No stories?",
+   "detail": "If no active stories, lose $10"
+ },
+ {
+   "Id": 30,
+   "type": "WCHAMPINTERVIEW",
+   "title": "World Champ interview",
+   "detail": "The world champ interviews on TV, if yours gain an extra $10"
+ }
 ]
