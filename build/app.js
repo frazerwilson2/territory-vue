@@ -19,7 +19,7 @@ var app = new Vue({
       roster:[],
       stories: [],
       gimmicks:[],
-      wChamp:1,
+      wChamp:3,
       tv:4,
       arena:4,
       legends:[],
@@ -31,6 +31,7 @@ var app = new Vue({
   },
   mounted: function() {
   this.getRoster();
+  console.log(this.game);
   },
   methods: {
     newPlayer: function(){
@@ -40,7 +41,7 @@ var app = new Vue({
         roster:[],
         stories:[],
         gimmicks:[],
-        news: [],
+        news: false,
         goal:0,
         tokens: 0,
         arena: false,

@@ -199,13 +199,22 @@ var game = new Vue({
       }
     },
     checkNews: function checkNews(player) {
-      if (player.news.length) {
-        this.newsTitle = this.news[player.news[0]].title;
-        this.newsDetail = this.news[player.news[0]].detail;
+      if (player.news) {
+        this.newsTitle = player.news.title;
+        this.newsDetail = player.news.detail;
+        if (player.news.enact) {
+          console.log('enact the gift/punishment');
+          switch (player.news.type) {
+            case 'money':
+              this.game.players[index].cash += player.news.money;
+          }
+        } else {
+          console.log('doesnt affect this time');
+        }
       }
     },
     removeNews: function removeNews(turn) {
-      this.game.players[turn].news.splice(0, 1);
+      this.game.players[turn].news = false;
       this.newsTitle = false;
       this.newsDetail = false;
     },
@@ -405,19 +414,11 @@ var game = new Vue({
     },
     enactNewsItem: function enactNewsItem(index) {
       console.log('enact news for player ' + index + ' with news item ' + this.game.news[0]);
-      var newsResult = news.acessNews(this.news[this.game.news[0] - 1], this.game.players[index]);
-      console.log(newsResult);
-      if (newsResult) {
-        console.log('enact the gift/punishment');
-        switch (newsResult.type) {
-          case 'money':
-            this.game.players[index].cash += newsResult.money;
-        }
-      } else {
-        console.log('doesnt affect this time');
-      }
+      var newsResult = news.acessNews(this.news[this.game.news[0] - 1], this.game.players[index], this.summaryValues, index);
+      this.news[this.game.news[0] - 1].enact = newsResult;
+      console.log(this.news[this.game.news[0] - 1]);
       // add to players news then remove from pile
-      this.game.players[index].news.push(this.game.news[0]);
+      this.game.players[index].news = this.news[this.game.news[0] - 1];
       this.game.news.splice(0, 1);
     },
     nextRound: function nextRound() {

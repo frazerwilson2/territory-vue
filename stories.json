@@ -1,110 +1,362 @@
 [
-	{
-		"Name":"test story 1",
-		"Id":1,
-		"requires":["charisma:>10","theme:=jobber"],
-		"lengthDur":3,
-		"current":1,
-		"competitors":[],
-		"active":false
-		},
-	{
-		"Name":"test story 2",
-		"Id":2,
-		"requires":["charisma:>15","theme:=athlete"],
-		"lengthDur":3,
-		"current":1,
-		"competitors":[],
-		"active":false
-		},
-	{
-		"Name":"test story 3",
-		"Id":3,
-		"requires":["charisma:>10","theme:=jobber"],
-		"lengthDur":3,
-		"current":1,
-		"competitors":[],
-		"active":false
-		},
-	{
-		"Name":"test story 4",
-		"Id":4,
-		"requires":["charisma:>5","theme:=athlete"],
-		"lengthDur":3,
-		"current":1,
-		"competitors":[],
-		"active":false
-		},
-	{
-		"Name":"test story 5",
-		"Id":5,
-		"requires":["charisma:>15","theme:=jobber"],
-		"lengthDur":3,
-		"current":1,
-		"competitors":[],
-		"active":false
-		},
-	{
-		"Name":"test story 6",
-		"Id":6,
-		"requires":["charisma:>10","theme:=athlete"],
-		"lengthDur":3,
-		"current":1,
-		"competitors":[],
-		"active":false
-		},
-	{
-		"Name":"test story 7",
-		"Id":7,
-		"requires":["charisma:>5","theme:=jobber"],
-		"lengthDur":3,
-		"current":1,
-		"competitors":[],
-		"active":false
-		},
-	{
-		"Name":"test story 8",
-		"Id":8,
-		"requires":["charisma:>10","theme:=athlete"],
-		"lengthDur":3,
-		"current":1,
-		"competitors":[],
-		"active":false
-		},
-	{
-		"Name":"test story 9",
-		"Id":9,
-		"requires":["charisma:>15","theme:=jobber"],
-		"lengthDur":3,
-		"current":1,
-		"competitors":[],
-		"active":false
-		},
-	{
-		"Name":"test story 10",
-		"Id":10,
-		"requires":["charisma:>5","theme:=athlete"],
-		"lengthDur":3,
-		"current":1,
-		"competitors":[],
-		"active":false
-		},
-	{
-		"Name":"test story 11",
-		"Id":11,
-		"requires":["charisma:>10","theme:=athlete"],
-		"lengthDur":3,
-		"current":1,
-		"competitors":[],
-		"active":false
-		},
-	{
-		"Name":"test story 12",
-		"Id":12,
-		"requires":["charisma:>5","theme:=jobber"],
-		"lengthDur":3,
-		"current":1,
-		"competitors":[],
-		"active":false
-		}
+ {
+   "Name": "Superstar showdown",
+   "Id": 1,
+   "requires": ["theme:=superstar","theme:=superstar"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Dream match",
+   "Id": 2,
+   "requires": ["val:>9","val:>9"],
+   "lengthDur": 1,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Dominant tag",
+   "Id": 3,
+   "requires": ["type:=tag","type:=tag"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "David and goliath",
+   "Id": 4,
+   "requires": ["height:>6.3","height:<6"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Legend killer",
+   "Id": 5,
+   "requires": ["theme:=legend","val:>7"],
+   "lengthDur": 1,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Talking smack",
+   "Id": 6,
+   "requires": ["charisma:>10","charisma:>10"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Numbers game",
+   "Id": 7,
+   "requires": ["type:=tag","type:=singles"],
+   "lengthDur": 2,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Show stealers",
+   "Id": 8,
+   "requires": ["ability:>11","ability:>11"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Up and comer",
+   "Id": 9,
+   "requires": ["val:<7","val:<7"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Decider",
+   "Id": 10,
+   "requires": ["inc:=3","inc:=3"],
+   "lengthDur": 1,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Cruiserweight battle",
+   "Id": 11,
+   "requires": ["style:=cruiserweight","style:=cruiserweight"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Beast battle",
+   "Id": 12,
+   "requires": ["theme:=beast","theme:=beast"],
+   "lengthDur": 2,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Title feud",
+   "Id": 13,
+   "requires": ["isChamp:=false","isChamp:=true"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Giant battle",
+   "Id": 14,
+   "requires": ["height:>6.2","height:>6.2"],
+   "lengthDur": 2,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Champ feud",
+   "Id": 15,
+   "requires": ["isChamp:=true","isWChamp:=true"],
+   "lengthDur": 2,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Submission feud",
+   "Id": 16,
+   "requires": ["style:=submission","style:=submission"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Style and substance",
+   "Id": 17,
+   "requires": ["ability:>10","charisma:>10"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Top woman",
+   "Id": 18,
+   "requires": ["gender:=f","gender:=f"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Supernatural",
+   "Id": 19,
+   "requires": ["theme:=mystical","theme:=hero"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Best of 3 tag",
+   "Id": 20,
+   "requires": ["type:=tag","type:=tag"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Underdog",
+   "Id": 21,
+   "requires": ["val:>5","val:<5"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Blood feud",
+   "Id": 22,
+   "requires": ["theme:=violent","theme:=violent"],
+   "lengthDur": 4,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Once in a lifetime",
+   "Id": 23,
+   "requires": ["theme:=legend","theme:=hero"],
+   "lengthDur": 1,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Friendship soured",
+   "Id": 24,
+   "requires": ["heelface:=H","heelface:=F"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Faction war",
+   "Id": 25,
+   "requires": ["type:=tag","type:=tag"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Love story",
+   "Id": 26,
+   "requires": ["gender:=f","gender:=m"],
+   "lengthDur": 2,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Beast challenger",
+   "Id": 27,
+   "requires": ["theme:=beast","val:=<6"],
+   "lengthDur": 2,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Unstoppable meets immovable",
+   "Id": 28,
+   "requires": ["theme:=hero","theme:=beast"],
+   "lengthDur": 2,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Undercard",
+   "Id": 29,
+   "requires": ["val:<5","val:<6"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Powerhouses",
+   "Id": 30,
+   "requires": ["style:=power","style:=power"],
+   "lengthDur": 2,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Heavyweight clash",
+   "Id": 31,
+   "requires": ["weight:>350","weight:>350"],
+   "lengthDur": 2,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Lightweight clash",
+   "Id": 32,
+   "requires": ["weight:<250","weight:<250"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Fire the crowd",
+   "Id": 33,
+   "requires": ["theme:=high-flying","theme:=high-flying"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "New star",
+   "Id": 34,
+   "requires": ["inc:=0","inc:=0"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Tag contention",
+   "Id": 35,
+   "requires": ["type:=tag","type:=tag"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Style clash",
+   "Id": 36,
+   "requires": ["style:=submission","style:=technical"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Ground the beast",
+   "Id": 37,
+   "requires": ["style:=technical","theme:=beast"],
+   "lengthDur": 2,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "There can only be one",
+   "Id": 38,
+   "requires": ["theme:=hero","theme:=hero"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Hardcore battle",
+   "Id": 39,
+   "requires": ["style:=brawler","style:=brawler"],
+   "lengthDur": 2,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ },
+ {
+   "Name": "Clip the wings",
+   "Id": 40,
+   "requires": ["theme:=high-flying","style:=technical"],
+   "lengthDur": 3,
+   "current": 1,
+   "competitors": [],
+   "active": false
+ }
 ]

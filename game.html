@@ -166,10 +166,12 @@
         </div>
       </div>
 
-        <div class="news_card" v-if="newsTitle">
+        <div class="news_card" v-if="player.news">
           <a @click="removeNews(turn)">close</a>
-          <h2>{{newsTitle}}</h2>
-          <p>{{newsDetail}}</p>
+          <h2>{{player.news.title}}</h2>
+          <p>{{player.news.detail}}</p>
+          <span v-if="!player.news.enact">X</span>
+          <span v-if="player.news.enact">Y</span>
         </div>
 
   </div>
