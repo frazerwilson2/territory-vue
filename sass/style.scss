@@ -1,6 +1,12 @@
 // Import Bulma
 @import "../node_modules/bulma/bulma";
 
+.clearfix {
+    clear:both;
+}
+.align_right {
+    text-align: right;
+}
 // overwrites
 .section {
     background:none;
@@ -16,6 +22,11 @@ $grey: #a7a7a7;
     padding: 1%;
     border-radius: 4px;
     color: #333;
+    h2 {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
     .num {
         float:right;
         background: white;
@@ -34,7 +45,7 @@ $grey: #a7a7a7;
     }
 }
 .active {
-border:1px red solid;
+border:3px #5eabdc solid;
 }
 .assigned, .hide {
 opacity: 0.5;
@@ -47,21 +58,11 @@ width: 100%;
 height: 100%;
 }
 
-#game {
-	> div {
-		display:inline-block;
-		float:left;
-		padding:1%;
-		width:30%;
-		&:nth-child(1) {
-			width:calc(20% - (1% * 2));
-			background:$grey;
-		}
-		&:nth-child(2) {
-			width:calc(70% - (1% * 2));
-		}
-		&:nth-child(3) {
-			width:calc(10% - (1% * 2));
+.store_link {
+    background:#E91E63;
+}
+
+		#infosCol {
 			background:$grey;
 			h3 {
 				font-size:4em;
@@ -72,34 +73,71 @@ height: 100%;
     			margin: 0;
 			}
 		}
-	}
-}
+
 .actions {
-	text-align:right;
-    border-top: 1px black solid;
-    padding-top: 5px;
+	border-top: 1px black solid;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: aliceblue;
 }
 .select-card {
 //	border-bottom:1px black solid;
 	padding:5px;
 	text-align:center;
-    width:800px;
+    width:700px;
     margin:auto;
+    position: relative;
 	&.ready {
-		border:2px green solid;
+		background: lightgoldenrodyellow;
+        width: 700px;
 	}
 }
-.card-holder {
+
+.remove_match {
+    float: right;
+    position: absolute;
+    right: 5px;
+    .ready & {
+        display: none;
+    }
+}
+
+.card_holder {
     display: inline-block;
     border: 1px dashed;
     width: 160px;
     height: 200px;
+    opacity: 0.5;
+    overflow: hidden;
     &.setup {
         background:#fff;
         border:1px solid;
+        opacity: 1;
     }
     div {
-    	float:left;
+        height: 100%;
+    }
+    &:hover {
+        opacity: 1;
+    }
+    .select_btn {
+        color:red;
+        width: 100%;
+        display: block;
+        height: 100%;
+        &:before {
+            content: "-";
+            padding-top: 50px;
+            display: block;
+            color: grey;
+            font-size: 40px;
+        }
+        &:hover {
+            &:before {
+                content: "+";
+            }
+        }
     }
 }
 .summary {
@@ -124,11 +162,12 @@ height: 100%;
     position: fixed;
     color:white;
     background: rebeccapurple;
-    width: calc(100% - 20px);
+    width: 100%;
     left: 0;
     top: 0;
-    height: 50px;
+    min-height: 50px;
     padding: 10px;
+    z-index: 99;
 }
 .win {
     border: 2px #58b3b5 solid;
@@ -140,17 +179,13 @@ height: 100%;
     margin: auto;
 }
 #store {
-    background: white;
-    position: absolute;
-    top: 5%;
-    top:-200%;
-    height: calc(90% - 20px);
-    width: calc(67% - 20px);
-    padding: 10px;
-    border-radius: 2px;
-    transition:top 0.5s;
-    &.show {
-    	top:5%;
+    height:0;
+    overflow:hidden;
+    background:#838e65;
+    &.is-fullheight{
+        height:initial;
+        overflow:auto;
+        padding:30px;
     }
     ul {
     	padding:0;
@@ -163,8 +198,7 @@ height: 100%;
 		    margin: 0 3px;
     	}
 }
-.heel {background:#b18a8a;}
-.face {background:#649d9e;}
+
 .champ:before {
     content: 'champ';
     background: yellow;
@@ -182,7 +216,7 @@ small {
     top: 5%;
     width: 40%;
     left: 30%;
-    min-height: 300px;
+    min-height: 100px;
     box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
     div {
         padding:10px;
@@ -212,6 +246,7 @@ small {
     padding: 10px;
     margin: 10px;
     font-size: 14px;
+    bottom: 5px;
 }
 .wchamp_round {
     background: white;
@@ -232,4 +267,103 @@ small {
     padding: 10px;
     left: calc(50% - 100px);
     height: 250px;
+}
+
+.center_panel {
+    width: calc(100% - 130px); 
+    display: inline-block;
+    padding: 0 20px;
+}
+
+.player_details {
+    h1 {
+        font-size:2em;
+    }
+    p {
+        font-size: 1em;
+    }
+}
+
+.reg_grid {
+    height: 210px;
+    overflow-x: hidden;
+    position: absolute;
+    width: 10%;
+    min-width: 160px;
+    transition:width 200ms, margin 200ms;
+    margin-left: -20px;
+    &:hover {
+        margin-left:0;
+    }
+    &.expand {
+        width:100%;
+        overflow: auto;
+        height: initial;
+        z-index: 9;
+        min-width:auto;
+        margin-left:0;
+    }
+    .expand_menu {
+        position: absolute;
+        background: rgba(245, 245, 220, 0.5);
+        width: 150px;
+        height: 200px;
+        text-align: center;
+        font-size: 40px;
+        padding-top: 60px;
+        opacity:0;
+        &:hover {
+            opacity: 1;
+        }
+    }
+    .close_menu {
+        position: absolute;
+        right: 15px;
+        top: 5px;
+        background: #00ffd5;
+        border-radius: 100%;
+        width: 20px;
+        text-align: center;
+    }
+}
+
+.reg_col {
+        display:inline-block;
+        float:left;
+        width: 150px;
+        background: aliceblue;
+        margin: 0 10px 10px 0;
+        height: 200px;
+    }
+
+.c_base {
+    background:rgba(255, 250, 245, 1);
+    padding: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    font-size: 0.6em;
+    &.c_active {
+        background:#c0c2c3;
+    }
+    h4 {
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+}
+
+.c_wrestler {
+    &.heel {
+        background: #fff1f1;
+    }
+    &.face {
+        background: #f1f6ff;
+    }
+    .w_val {
+        float:right;
+    }
+    hr {
+        margin: 0.1rem 0;
+    }
+}
+.close_errors {
+    float:right;
 }

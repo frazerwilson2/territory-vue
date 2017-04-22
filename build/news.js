@@ -129,9 +129,11 @@ var news = new Vue({
         case 'POPSTORY':
             player.matchcard.forEach(function(match){
               if(match.story){
-                game.findStory(match.story).payoff += 10;
-                response.type = 'storypop'; 
-                console.log(response);          
+//                game.findStory(match.story).payoff += 10;
+                response.type = 'storypop';
+                response.storypop = match.story;
+                response.storypopType = 'payoff';
+                return response;
               }
             });
             if(response.type){return response;}
@@ -158,7 +160,8 @@ var news = new Vue({
           player.matchcard.forEach(function(match){
               if(match.story){
                 response.type = 'storypop';
-                response.storypop = match.story; 
+                response.storypop = match.story;
+                response.storypopType = 'extend';
                 return response;           
               }
             });

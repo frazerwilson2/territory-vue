@@ -54,7 +54,7 @@
 <div class="container">
 <h1 class="title">Pick Roster</h1>
 <hr>
-{{game}}
+
 <div class="columns">
     <div v-for="(player, index) in game.players" class="column" v-bind:class="{ active: currentPlayer == index, assigned: player.ready }"> 
           <p><strong>{{player.name}}</strong>

@@ -29,10 +29,9 @@ var game = new Vue({
     currentMatch:false,
     currentPos:false,
     summaryValues:[],
-    validate:false,
+    validate:[],
     titleCards: false,
     showStore:false,
-    showModal: false,
     showWModal: false,
     setChampNow: false,
     showChampRoster: false,
@@ -46,7 +45,11 @@ var game = new Vue({
     tempIndex: null,
     switchWChampMsg: false,
     prospectWChamp: null,
-    prospectWChampHolder: null
+    prospectWChampHolder: null,
+    // menu
+    expandedRoster: false,
+    expandedGimmick: false,
+    expandedStory: false
   },
   mounted: function() {
   this.loadRoster();
@@ -92,26 +95,17 @@ var game = new Vue({
     },
     // IN GAME
     nextTurn: function(){
-      game.validate = false;
-      this.closeOverlay();
-      this.game.players[this.turn].matchcard.forEach(function(match){
+      game.validate = [];
+      this.game.players[this.turn].matchcard.forEach(function(match, index){
         // make sure matches are ready
-        if(!match.ready){game.validate = true;}
+        if(!match.ready){game.validate.push('Match ' + (index + 1) + ' not completed, check they have competitors and winner set');}
       });
-      if(this.validate == true) {return;} 
+      if(this.validate.length) {return;}
       else {
         this.turn++;
         if(this.turn == this.game.players.length){this.turn = 'REVIEW'; this.summarize()}
         else {this.checkForChamp(this.game.players[this.turn]); this.checkNews(this.game.players[this.turn])}
       }
-    },
-    resetModal: function(){
-        this.showModal = true;
-        this.setChampNow = false;
-        this.showChampRoster = false;
-        this.switchWChampMsg = false;
-        this.voteApprovedMsg = false;
-        this.confirmNewWChamp = false;
     },
     wChampVote: function(player){
       if(!player.hasWChamp){
@@ -186,10 +180,14 @@ var game = new Vue({
       this.voteRejectedMsg = true;
     },
     checkForChamp: function(player){
+      this.setChampNow = false;
       if(!player.champSet){
-        this.resetModal();
         this.setChampNow = true;
       }
+    },
+    closeValidations: function(){
+      this.setChampNow = false;
+      this.validate = [];
     },
     checkNews: function(player){
       if(player.news){
@@ -212,12 +210,6 @@ var game = new Vue({
       this.newsTitle = false;
       this.newsDetail = false;
     },
-    closeOverlay: function(){
-        this.showModal = false;
-        this.setChampNow = false;
-        this.showChampRoster = false;
-        this.wChampQ = false;
-    },
     switchWChamp: function(index){
       this.tempIndex = index;
       this.switchWChampMsg = true;
@@ -234,7 +226,6 @@ var game = new Vue({
       this.addToCard(i, w, true, 0);
       this.loanWChampTravels(true);
       this.addToCard(this.game.players[index].temproster.length, this.game.wChamp, true, 1);
-      this.closeOverlay();
       this.prospectWChamp = w;
       this.prospectWChampHolder = index;
       this.confirmNewWChamp = true;
@@ -248,7 +239,7 @@ var game = new Vue({
         game.findWrestler(guy).isChamp = false;
       });
       this.findWrestler(wrest).isChamp = true;
-      this.closeOverlay();
+      this.setChampNow = false;
     },
     sumValues: function(val, index){
       let totalGain = 0;
@@ -414,8 +405,6 @@ var game = new Vue({
       this.game.round++;
       this.turn = 'WCHAMP';
       this.saveData();
-      this.resetModal();
-      this.showModal = false;
     },
     goToRegularRounds: function(){
       this.turn = 0;
@@ -587,7 +576,7 @@ var game = new Vue({
       this.showStore = show;
     },
     purchaseRoster:function(wrestler, cost){
-      if(game.game.players[this.turn].cash <= cost){return}
+      if(game.game.players[this.turn].cash < cost){alert('you dont be gettin that');return}
       game.game.players[this.turn].roster.push(wrestler);
       game.game.players[this.turn].cash -= cost;
       game.game.roster.forEach(function(val, index){
@@ -689,6 +678,22 @@ var game = new Vue({
       if(split[1][0] == '<'){msg += ' less than ' + split[1].substring(1)}
       if(split[1][0] == '='){msg += ': ' + split[1].substring(1)}
       return msg;
+    },
+    // Menu
+    expandRoster: function(show){
+      this.expandedGimmick = false;
+      this.expandedStory = false;
+      this.expandedRoster = !this.expandedRoster;
+    },
+    expandGimmick: function(show){
+      this.expandedRoster = false;
+      this.expandedStory = false; 
+      this.expandedGimmick = !this.expandedGimmick;
+    },
+    expandStory: function(show){
+      this.expandedRoster = false;
+      this.expandedGimmick = false;
+      this.expandedStory = !this.expandedStory;
     }
   }
 });
