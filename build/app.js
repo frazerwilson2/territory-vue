@@ -47,7 +47,7 @@ var app = new Vue({
         arena: false,
         tv: 0,
         legends:[],
-        discards:{gimmicks:[],stories:[],tv:0,arena:0,tokens:0,spend:0},
+        discards:{gimmicks:[],stories:[],tv:0,arena:0,tokens:0,legend:0,spend:0},
         ready: false,
         champSet: false,
         hasWChamp: false

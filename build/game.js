@@ -129,6 +129,7 @@ var game = new Vue({
         this.voteCard = [];
     },
     wChampVoteYes: function(index){
+      this.voteCard = [];
       this.game.players.forEach(function(){
         game.voteCard.push({vote:null});
       });
@@ -229,6 +230,7 @@ var game = new Vue({
     },
     setWChampMatch: function(w, i, index){
       this.game.players[index].tokens -= 3;
+      this.game.players[index].discards.tokens -= 3;
       this.addToCard(i, w, true, 0);
       this.loanWChampTravels(true);
       this.addToCard(this.game.players[index].temproster.length, this.game.wChamp, true, 1);
@@ -262,7 +264,7 @@ var game = new Vue({
           if(match.story){
             const matchStoryDetail = game.findStory(match.story);
             if(matchStoryDetail.current == matchStoryDetail.lengthDur){
-              matchSum += 5;
+              matchSum += matchStoryDetail.payoff;
               game.game.players[index].discards.stories.push(match.story);
               game.game.players[index].stories.forEach(function(val,key){
                 if(val == match.story){game.game.players[index].stories.splice(key,1)}
@@ -598,6 +600,7 @@ var game = new Vue({
       game.game.players[this.turn].legends.push(legend);
       game.game.players[this.turn].temproster.push(legend);
       game.game.players[this.turn].cash -= cost;
+      game.game.players[this.turn].discards.legend++;
       game.game.legends.forEach(function(val, index){
         if(legend == val){game.game.legends.splice(index, 1);}
       });
@@ -788,6 +791,10 @@ NEXT STEPS
 // MISSIONS
 
 // END GAME (end after 12, tally totals(with missions) and announce winner)
+
+// Bugs
+- wchamp when loaned, is added to temproster (already added to card)
+- tokens spent are added as minus
 
 // WRAP UP
 - remove from card (re-add to temproster)

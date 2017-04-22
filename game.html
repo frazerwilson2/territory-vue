@@ -98,7 +98,10 @@
        <a @click="removeMatch(player, index)" style="float:right;">Remove M</a>
       <div class="card-holder" v-if="match.ready" style="float:left;" v-bind:class="{ setup: match.gimmick}">
         <div @click="openGimmick(index)" v-show="!match.gimmick">add gimmick</div>
-        <div v-if="match.gimmick">{{findGimmick(match.gimmick).Name}} {{findWrestler(match.gimmickAffect).Name}}</div>
+        <div v-if="match.gimmick">
+          {{findGimmick(match.gimmick).Name}} 
+          <span v-if="match.gimmickAffect">{{findWrestler(match.gimmickAffect).Name}}</span>
+        </div>
       </div>
       
       <div class="card-holder" v-bind:class="{ setup: match.competitors[0]}">
@@ -177,8 +180,11 @@
   </div>
   <div v-if="turn == 'REVIEW'" class="summary">
     <h2>SUMMARY</h2> 
-    <div v-for="result in summaryValues">
-      <div v-for="(match, index) in result.matches">match {{index + 1}}: {{match}}</div>
+    <div v-for="(result, index1) in summaryValues">
+      <div v-for="(match, index) in result.matches">
+{{findWrestler(game.players[index1].matchcard[index].competitors[0]).Name}} /
+{{findWrestler(game.players[index1].matchcard[index].competitors[1]).Name}}
+- ${{match}}</div>
       <div>Bonus: {{result.bonus}}</div>
       <div><strong>TOTAL: {{result.total}}</strong></div>
     </div>
