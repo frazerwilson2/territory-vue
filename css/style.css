@@ -3931,6 +3931,9 @@ label.panel-block {
   background-color: whitesmoke;
   padding: 3rem 1.5rem 6rem; }
 
+body {
+  margin-bottom: 60px; }
+
 .clearfix {
   clear: both; }
 
@@ -3965,6 +3968,9 @@ label.panel-block {
     margin: 0 0 10px; }
   .hero.is-success .chara_box a {
     color: white; }
+
+.pick_player {
+  border: 3px transparent solid; }
 
 .active {
   border: 3px #5eabdc solid; }
@@ -4243,3 +4249,11 @@ small {
 
 .close_errors {
   float: right; }
+
+.roster_label {
+  background: white;
+  color: grey;
+  padding: 2px 6px;
+  margin: 2px;
+  display: inline-block;
+  border-radius: 2px; }

@@ -56,10 +56,10 @@
 <hr>
 
 <div class="columns">
-    <div v-for="(player, index) in game.players" class="column" v-bind:class="{ active: currentPlayer == index, assigned: player.ready }"> 
-          <p><strong>{{player.name}}</strong>
-          ${{player.cash}}</p> 
-          <span v-for="guy in player.roster">{{rawRoster[guy - 1].Name}}, </span>
+    <div v-for="(player, index) in game.players" class="column pick_player" v-bind:class="{ active: currentPlayer == index, assigned: player.ready }"> 
+          <span style="float: right">${{player.cash}}</span>
+          <p><strong>{{player.name}}</strong> {{player.roster.length}}</p> 
+          <div><span class="roster_label" v-for="guy in player.roster">{{rawRoster[guy - 1].Name}}</span></div>
           <a class="button is-dark" @click="donePurchase()" v-if="!player.ready">Finished</a>
     </div>
 </div>

@@ -262,7 +262,7 @@
  {
    "Name": "Beast challenger",
    "Id": 27,
-   "requires": ["theme:=beast","val:=<6"],
+   "requires": ["theme:=beast","val:<6"],
    "lengthDur": 2,
    "current": 1,
    "payoff":10,

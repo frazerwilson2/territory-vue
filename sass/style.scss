@@ -1,6 +1,10 @@
 // Import Bulma
 @import "../node_modules/bulma/bulma";
 
+body {
+    margin-bottom: 60px;
+}
+
 .clearfix {
     clear:both;
 }
@@ -43,6 +47,9 @@ $grey: #a7a7a7;
     .hero.is-success & a {
         color:white;
     }
+}
+.pick_player {
+border:3px transparent solid;    
 }
 .active {
 border:3px #5eabdc solid;
@@ -366,4 +373,12 @@ small {
 }
 .close_errors {
     float:right;
+}
+.roster_label {
+    background: white;
+    color: grey;
+    padding: 2px 6px;
+    margin: 2px;
+    display: inline-block;
+    border-radius: 2px;
 }

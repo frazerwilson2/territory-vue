@@ -195,9 +195,91 @@ var game = new Vue({
         this.newsDetail = player.news.detail;
           if(player.news.enact){
             console.log('enact the gift/punishment');
-            switch(player.news.type){
+            switch(player.news.enact.type){
               case 'money':
-                this.game.players[index].cash += player.news.money;
+                console.log('they had ' + this.game.players[this.turn].cash);
+                this.game.players[this.turn].cash += player.news.enact.money;
+                console.log('they have ' + this.game.players[this.turn].cash);
+                break;
+              case 'give':
+                console.log('give');
+                if(player.news.enact.give == 'gimmick'){
+                  if(this.game.gimmicks.length){
+                    player.gimmicks.push(this.game.gimmicks[0]);
+                    this.game.gimmicks.splice(0,1);
+                  }
+                }
+                if(player.news.enact.give == 'story'){
+                  if(this.game.stories.length){
+                    player.stories.push(this.game.stories[0]);
+                    this.game.stories.splice(0,1);
+                  }
+                }
+                if(player.news.enact.give == 'tv'){
+                  if(this.game.tv){
+                    player.discards.tv++;
+                    game.game.tv--;
+                    var match = Object.assign({}, this.match);
+                    player.matchcard.push(JSON.parse(JSON.stringify(match)));
+                  }
+                }
+                break;
+              case 'injury':
+                console.log('injury');
+                if(player.news.enact.injuryType == 'small'){
+                  player.temproster.forEach(function(w, index){
+                    if(w == player.news.enact.wrestler){
+                      player.temproster.splice(index, 1);
+                      console.log(game.findWrestler(w).Name + ' is poorly');
+                    }
+                  });
+                }
+                if(player.news.enact.injuryType == 'large'){
+                  player.roster.forEach(function(w, index){
+                    if(w == player.news.enact.wrestler){
+                      player.roster.splice(index, 1);
+                      console.log(game.findWrestler(w).Name + ' is out for the year');
+                    }
+                  });
+                }
+                break;
+              case 'starInc':
+                console.log('starInc');
+                player.news.enact.starInc.forEach(function(w){
+                  game.findWrestler(w).inc++;
+                  if(game.findWrestler(w).inc > 3) { game.findWrestler(w).inc = 3};
+                  console.log(game.findWrestler(w).Name + ' gets a push');
+                });
+                break;
+              case 'storypop':
+                console.log('storypop');
+                if(player.news.enact.storypopType == 'extend'){
+                  game.findStory(player.news.enact.storypop).current = 1;
+                  console.log(game.findStory(player.news.enact.storypop).Name + ' has been extended!');
+                }
+                if(player.news.enact.storypopType == 'payoff'){
+                  game.findStory(player.news.enact.storypop).payoff += 10;
+                  console.log(game.findStory(player.news.enact.storypop).Name + ' heating up!');
+                }
+                break;
+              case 'freeagent':
+                console.log('freeagent');
+                if(game.game.roster.length){
+                  var choice = Math.round(Math.random() * game.game.roster.length);
+                  player.roster.push(game.game.roster[choice]);
+                  game.game.roster.splice(choice, 1);
+                  console.log(game.findWrestler(choice).Name + ' signed to your roster');
+                }
+                break;
+              case 'quitter':
+                console.log('quitter');
+                var choice = Math.round(Math.random() * player.roster.length);
+                var quitter = player.roster[choice];
+                player.roster.splice(choice, 1);
+                player.cash += game.findWrestler(quitter).val;
+                game.roster.push(quitter);
+                console.log(game.findWrestler(quitter).Name + ' has quit, you have been refunded ' + game.findWrestler(quitter).val);
+                break;
             }
           }
           else {
@@ -407,6 +489,7 @@ var game = new Vue({
       this.saveData();
     },
     goToRegularRounds: function(){
+      //debugger;
       this.turn = 0;
       this.checkForChamp(this.game.players[this.turn]);
       this.checkNews(this.game.players[this.turn]);
@@ -800,11 +883,15 @@ NEXT STEPS
 // Bugs
 - wchamp when loaned, is added to temproster (already added to card)
 - tokens spent are added as minus
+- switching next chara keeps new champ list open
+- injured star kept in temproster
+- same for quitter
 
 // WRAP UP
 - remove from card (re-add to temproster)
 - remove gimmick from matchcard
 - if no data of any kind reload from storage (if no storage note error then return to index)
-
+- highlight top rated match on summary
+- notification that gimmick/story added to your packs
 
 */
