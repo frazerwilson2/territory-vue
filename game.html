@@ -94,7 +94,7 @@
   </div>
 <!-- /////////////////END STORE///////////////////// -->
   
-<div class="columns">
+<div class="columns" v-if="game.round != 'END'">
 
 <div class="column is-12">
 
@@ -349,21 +349,28 @@
     <!-- /////////////////END WCHAMP VOTE///////////////////// -->
 </div> <!-- end col is10 -->
 
-<!-- <small>
-  <hr>
-  {{game}}
-<br>
-      goal: {{game.goal}}<br>
-      news: {{game.news}}<br>
-      roster: {{game.roster}}<br>
-      stories: {{game.stories}}<br>
-      gimmicks: {{game.gimmicks}}<br>
-      tv: {{game.tv}}<br>
-      arena: {{game.arena}}<br>
-      legends: {{legendRoster}}
-</small> -->
-
 </div>
+
+<div v-if="game.round == 'END'">
+  <h2>GAME OVEERRRR!!</h2>
+  <small>
+    <hr>
+Game goal: {{findMission(game.goal)}}<br>
+Player 1:<br>
+    Base cash: ${{game.players[0].cash}}<br>
+    Goal: {{findMission(game.players[0].goal)}}
+  <br>
+<!--         goal: {{game.goal}}<br>
+        news: {{game.news}}<br>
+        roster: {{game.roster}}<br>
+        stories: {{game.stories}}<br>
+        gimmicks: {{game.gimmicks}}<br>
+        tv: {{game.tv}}<br>
+        arena: {{game.arena}}<br>
+        legends: {{legendRoster}} -->
+  </small>
+</div>
+
 </div>
   <!-- JS -->
   <script src="vue.js"></script>

@@ -13,8 +13,11 @@ var game = new Vue({
     legendRoster: [],
     news: [],
     game: [],
+    missions: [],
     // In game values
     turn: 'WCHAMP', // 'WCHAMP', 'REVIEW'
+    round: null,
+    totalRounds: 2,
     matchcard: [],
     match: {
       story: null,
@@ -61,7 +64,7 @@ var game = new Vue({
     //this.createData('x');
     this.loadNews();
     this.loadGame();
-    //this.loadMissions();
+    this.loadMissions();
     this.setMatchcard();
     this.wChampVote(this.game.players[0]);
     this.checkForChamp(this.game.players[0]);
@@ -88,10 +91,10 @@ var game = new Vue({
     loadNews: function loadNews() {
       this.$set(this, 'news', JSON.parse(localStorage.getItem('news')));
     },
-    // loadMissions:function(){
-    //   this.$set(this,'missions', JSON.parse(localStorage.getItem('missions')));
-    //   console.log(this.missions);
-    // },
+    loadMissions: function loadMissions() {
+      this.$set(this, 'missions', JSON.parse(localStorage.getItem('missions')));
+      console.log(this.missions);
+    },
     loadGame: function loadGame() {
       this.$set(this, 'game', JSON.parse(localStorage.getItem('gameData')));
     },
@@ -500,8 +503,12 @@ var game = new Vue({
     },
     nextRound: function nextRound() {
       this.setMatchcard();
-      this.game.round++;
-      this.turn = 'WCHAMP';
+      if (this.game.round >= this.totalRounds) {
+        this.goToEndGame();
+      } else {
+        this.game.round++;
+        this.turn = 'WCHAMP';
+      }
       this.saveData();
     },
     goToRegularRounds: function goToRegularRounds() {
@@ -509,6 +516,9 @@ var game = new Vue({
       this.turn = 0;
       this.checkForChamp(this.game.players[this.turn]);
       this.checkNews(this.game.players[this.turn]);
+    },
+    goToEndGame: function goToEndGame() {
+      this.game.round = "END";
     },
     saveData: function saveData() {
       //localStorage.setItem('gimmicks', JSON.stringify(this.gimmicks));
@@ -571,6 +581,18 @@ var game = new Vue({
       this.stories.forEach(function (story) {
         if (story.Id == id) {
           result = story;
+        }
+      });
+      if (!result) {
+        return;
+      }
+      return result;
+    },
+    findMission: function findMission(id) {
+      var result = null;
+      this.missions.forEach(function (mission) {
+        if (mission.Id == id) {
+          result = mission;
         }
       });
       if (!result) {
