@@ -1,47 +1,56 @@
 [
 	{
-		"Name":"Test mission 1",
+		"Name":"The nostalgia club",
 		"Id":1,
-		"type":"player"
+		"type":"player",
+		"theme": "MOSTLEG"
 		},
 	{
-		"Name":"Test mission 2",
+		"Name":"The wild house",
 		"Id":2,
-		"type":"player"
+		"type":"player",
+		"theme": "MOSTGIMMICK"
 		},
 	{
-		"Name":"Test mission 3",
+		"Name":"The land of opportunity",
 		"Id":3,
-		"type":"player"
+		"type":"player",
+		"theme": "3ABOVE9"
 		},
 	{
-		"Name":"Test mission 4",
+		"Name":"The big time",
 		"Id":4,
-		"type":"player"
+		"type":"player",
+		"theme": "MOSTARENA"
 		},
 	{
-		"Name":"Test mission 5",
+		"Name":"This is wrestling",
 		"Id":5,
-		"type":"player"
+		"type":"player",
+		"theme": "LEASTGIMMICK"
 		},
 	{
-		"Name":"Test mission 6",
+		"Name":"Ring masters",
 		"Id":6,
-		"type":"player"
+		"type":"player",
+		"theme": "LEASTSTORY"
 		},
 	{
-		"Name":"Game mission 1",
+		"Name":"Fire Russo",
 		"Id":7,
-		"type":"game"
+		"type":"player",
+		"theme": "MOSTITLESWTICH"
 		},
 	{
-		"Name":"Game mission 2",
+		"Name":"One and only",
 		"Id":8,
-		"type":"game"
+		"type":"player",
+		"theme": "NOTITLESWITCH"
 		},
 	{
-		"Name":"Game mission 3",
+		"Name":"Most tokens",
 		"Id":9,
-		"type":"game"
+		"type":"game",
+		"theme": "MOSTTOKENS"
 		}
 ]

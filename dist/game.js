@@ -68,8 +68,16 @@ var game = new Vue({
     this.setMatchcard();
     this.wChampVote(this.game.players[0]);
     this.checkForChamp(this.game.players[0]);
+    this.getGoing();
   },
   methods: {
+    getGoing: function getGoing() {
+      var thisgame = this;
+      this.game.players.forEach(function (player) {
+        var playerGoal = thisgame.findMission(player.goal).theme;
+        console.log(missions.acessPlayerMission(playerGoal, player));
+      });
+    },
     detailX: function detailX(x, y, z) {
       console.log(this.listReqs(x));
       var data = [y, z];
@@ -93,7 +101,6 @@ var game = new Vue({
     },
     loadMissions: function loadMissions() {
       this.$set(this, 'missions', JSON.parse(localStorage.getItem('missions')));
-      console.log(this.missions);
     },
     loadGame: function loadGame() {
       this.$set(this, 'game', JSON.parse(localStorage.getItem('gameData')));
@@ -519,6 +526,9 @@ var game = new Vue({
     },
     goToEndGame: function goToEndGame() {
       this.game.round = "END";
+      this.game.players.forEach(function (player) {
+        console.log(missions.acessPlayerMission(player.goal));
+      });
     },
     saveData: function saveData() {
       //localStorage.setItem('gimmicks', JSON.stringify(this.gimmicks));
