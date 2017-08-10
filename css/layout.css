@@ -1,0 +1,23 @@
+/*
+// layout
+*/
+html, body {
+  min-height: 100%; }
+
+body {
+  background: #000; }
+
+.bg, .bg-tint {
+  min-height: 100%;
+  position: fixed;
+  width: 100%; }
+
+.bg {
+  background: url("/images/base.jpg");
+  background-size: cover; }
+
+.bg-tint {
+  background: rgba(0, 0, 0, 0.5); }
+
+.layout {
+  position: relative; }

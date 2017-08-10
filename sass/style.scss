@@ -1,22 +1,15 @@
 // Import Bulma
 @import "../node_modules/bulma/bulma";
+@import "variables";
+@import "layout";
+@import "elements";
 
-body {
-    margin-bottom: 60px;
-}
-
-.clearfix {
-    clear:both;
-}
-.align_right {
-    text-align: right;
-}
 // overwrites
 .section {
     background:none;
 }
 
-$grey: #a7a7a7;
+
 
 .chara_box {
     background: #eaeaea;
@@ -85,8 +78,9 @@ height: 100%;
 	border-top: 1px black solid;
     position: fixed;
     bottom: 0;
+    left: 0;
     width: 100%;
-    background: aliceblue;
+    background: #a0bcd4;
 }
 .select-card {
 //	border-bottom:1px black solid;
@@ -256,11 +250,11 @@ small {
     bottom: 5px;
 }
 .wchamp_round {
-    background: white;
     padding: 10px;
     text-align: center;
     div.player{
         display: inline-block;
+        background: #fff;
         width: calc(25% - 2px);
         border: 1px black solid;
     }

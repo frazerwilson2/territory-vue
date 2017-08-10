@@ -8,9 +8,11 @@
   <link rel="stylesheet" href="css/style.css">
 </head> 
 <body class="">
+  <div class="bg"></div>
+  <div class="bg-tint"></div>
   <div id="news"></div>
   <div id="missions"></div>
-  <div id="game">
+  <div id="game" class="layout">
   
 <!-- /////////////////STORE///////////////////// -->
   <div id="store" class="columns" v-bind:class="{'is-fullheight hero':showStore}"> 
@@ -182,9 +184,7 @@
     </div>
     
     <div class="player_details">
-      <h1>{{player.name}} ({{player.tokens + ' token(s)'}})
-      ${{player.cash}}
-      </h1> 
+      
       <div v-if="player.hasWChamp">
         <div class="champ_belt w_champ">-</div> 
         <p>World Champion</p>
@@ -268,6 +268,35 @@
           <span v-if="player.news.enact">Y</span>
         </div>
 
+         <!-- /////////////////ACTIONS///////////////////// -->
+        <div class="actions" v-if="turn !== 'WCHAMP'">
+          <div class="columns">
+            <div class="column is-3">
+              <div class="world-champion" v-if="game.wChamp">
+                <h2>World Champion - {{findWrestler(game.wChamp).Name}}</h2>
+                <div v-for="(player, index) in game.players" v-if="player.hasWChamp">
+                    {{player.name}}
+                </div>
+              </div>
+            </div>
+            <div class="column is-2">
+              <h2>Round</h2>
+              <h3>{{game.round}}</h3>
+            </div>
+          <div class="column is-7 align_right">
+            <h1>{{player.name}} ({{player.tokens + ' token(s)'}})
+            ${{player.cash}}
+            </h1> 
+            <a @click="nextRound()" v-if="turn == 'REVIEW'"
+            class="button is-primary is-medium">Next round</a>
+            <a @click="nextTurn()" 
+            v-if="turn !== 'REVIEW' && turn !== 'WCHAMP'"
+            class="button is-primary is-medium">Next</a>
+          </div>
+          </div>
+        </div>
+        <!-- /////////////////END ACTIONS///////////////////// -->
+
   </div>
 <!-- /////////////////END MAINPANEL///////////////////// -->
 
@@ -285,36 +314,10 @@
     </div>
   </div>
 <!-- /////////////////END SUMMARY///////////////////// -->
- 
- <!-- /////////////////ACTIONS///////////////////// -->
-<div class="actions" v-if="turn !== 'WCHAMP'">
-  <div class="columns">
-    <div class="column is-3">
-      <div class="world-champion" v-if="game.wChamp">
-        <h2>World Champion - {{findWrestler(game.wChamp).Name}}</h2>
-        <div v-for="(player, index) in game.players" v-if="player.hasWChamp">
-            {{player.name}}
-        </div>
-      </div>
-    </div>
-    <div class="column is-2">
-      <h2>Round</h2>
-      <h3>{{game.round}}</h3>
-    </div>
-  <div class="column is-7 align_right">
-    <a @click="nextRound()" v-if="turn == 'REVIEW'"
-    class="button is-primary is-medium">Next round</a>
-    <a @click="nextTurn()" 
-    v-if="turn !== 'REVIEW' && turn !== 'WCHAMP'"
-    class="button is-primary is-medium">Next</a>
-  </div>
-  </div>
-</div>
-<!-- /////////////////END ACTIONS///////////////////// -->
 
 <!-- /////////////////WCHAMP VOTE///////////////////// -->
   <div v-if="turn == 'WCHAMP'">
-      Do votez and token claim
+      <h2>Do votez and token claim</h2>
       <div class="wchamp_round">
         <div v-for="(player, index) in game.players" class="player">
           {{player.name}} ({{player.tokens}})<br> - {{player.hasWChamp}}

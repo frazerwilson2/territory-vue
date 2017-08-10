@@ -3931,14 +3931,44 @@ label.panel-block {
   background-color: whitesmoke;
   padding: 3rem 1.5rem 6rem; }
 
-body {
-  margin-bottom: 60px; }
-
+/*
+// variables
+*/
 .clearfix {
   clear: both; }
 
 .align_right {
   text-align: right; }
+
+/*
+// layout
+*/
+html, body {
+  min-height: 100%; }
+
+body {
+  background: #000; }
+
+.bg, .bg-tint {
+  min-height: 100%;
+  position: fixed;
+  width: 100%; }
+
+.bg {
+  background: url("/images/base.jpg");
+  background-size: cover; }
+
+.bg-tint {
+  background: rgba(0, 0, 0, 0.5); }
+
+.layout {
+  position: relative; }
+
+/*
+// elements
+*/
+h2 {
+  color: #fff; }
 
 .section {
   background: none; }
@@ -4001,8 +4031,9 @@ body {
   border-top: 1px black solid;
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 100%;
-  background: aliceblue; }
+  background: #a0bcd4; }
 
 .select-card {
   padding: 5px;
@@ -4150,11 +4181,11 @@ small {
   bottom: 5px; }
 
 .wchamp_round {
-  background: white;
   padding: 10px;
   text-align: center; }
   .wchamp_round div.player {
     display: inline-block;
+    background: #fff;
     width: calc(25% - 2px);
     border: 1px black solid; }
 
