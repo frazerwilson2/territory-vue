@@ -6,6 +6,8 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
 </head> 
 <body class="">
   <div class="bg"></div>
@@ -91,10 +93,12 @@
 
 </div>
 
-  <div class="columns" v-if="turn !== 'WCHAMP' && turn !== 'REVIEW'"> 
-    <div class="column is-12 store_link">
-      <a @click="openStore(true)">store</a></div>
-  </div>
+ 
+    <div class="store-link" v-if="turn !== 'WCHAMP' && turn !== 'REVIEW'">
+      <div><a @click="openStore(true)">
+        <i class="fa fa-2x fa-shopping-basket" aria-hidden="true"></i>
+        </a></div>
+    </div>
 <!-- /////////////////END STORE///////////////////// -->
   
 <div class="columns" v-if="game.round != 'END'">
@@ -195,43 +199,73 @@
       </p>
     </div>
     
-    <div v-for="(match, index) in player.matchcard">
+<div class="matchcard">
+  <div v-for="(match, index) in player.matchcard">
 
-      <div class="select-card" v-bind:class="{ ready: match.ready}">
-       <a @click="removeMatch(player, index)" class="remove_match">X</a>
-      <div class="card_holder" v-if="match.ready" style="float:left;" v-bind:class="{ setup: match.gimmick}">
-        <div @click="openGimmick(index)" v-show="!match.gimmick">add gimmick</div>
-        <div v-if="match.gimmick">
+  <div class="match" v-bind:class="{ ready: match.ready}">
+      <div class="columns">
+        <div class="column is-12 add-gimmick">
+          <a v-if="match.ready && !match.gimmick" @click="openGimmick(index)">Add gimmick</a>
+          <div v-if="match.gimmick">
           {{findGimmick(match.gimmick).Name}} 
-          <span v-if="match.gimmickAffect">{{findWrestler(match.gimmickAffect).Name}}</span>
+          </div>
         </div>
       </div>
-      
-      <div class="card_holder" v-bind:class="{ setup: match.competitors[0]}">
-        <a @click="openRoster(index, 0)" v-if="!match.competitors[0]" class="select_btn"></a> 
-        <div v-if="match.competitors[0]" v-bind:class="{'heel':findWrestler(match.competitors[0]).heelface === 'H', 'face':findWrestler(match.competitors[0]).heelface == 'F', 'champ':findWrestler(match.competitors[0]).isChamp}" class="c_base c_wrestler">
-          {{findWrestler(match.competitors[0]).Name}}
-          <span v-if="match.competitors[0] == match.winner" class="win">WIN</span>
-          <a v-if="!match.winner || match.competitors[0] != match.winner" @click="setWinner(match, match.competitors[0], index)">Winner?</a>
+    <div class="columns">
+      <div class="column"></div>
+      <div class="column is-5 competitor competitor-1">
+        <div v-if="match.competitors[0]">
+          <div class="profile" v-bind:class="{ heel: findWrestler(match.competitors[0]).heelface == 'H', face: findWrestler(match.competitors[0]).heelface == 'F'}">
+            <img v-bind:src="'images/roster/' + imgPath(findWrestler(match.competitors[0]).Name) + '.jpg'">
+          <span v-if="match.competitors[0] == match.winner" class="win-label">W</span>
+          <span v-if="match.competitors[1] == match.winner" class="win-label">L</span>
+          <a v-if="!match.winner || match.competitors[0] != match.winner" @click="setWinner(match, match.competitors[0], index)" class="win-btn">W</a>
+          </div>
+        </div>
+        <h4 class="align-right">
+          <a @click="openRoster(index, 0)" v-if="!match.competitors[0]">+</a>
+          <span v-if="findWrestler(match.competitors[0])">{{findWrestler(match.competitors[0]).Name}}</span>
+        </h4>
+        <div class="inc-points align-right" v-if="match.competitors[0]">
+          <span v-if="findWrestler(match.competitors[0]).inc > 0"></span>
+          <span v-if="findWrestler(match.competitors[0]).inc > 1"></span>
+          <span v-if="findWrestler(match.competitors[0]).inc > 2"></span>
         </div>
       </div>
-      <div class="card_holder" v-bind:class="{ setup: match.competitors[1]}">
-      <a @click="openRoster(index, 1)" v-if="!match.competitors[1]" class="select_btn"></a> 
-        <div v-if="match.competitors[1]" v-bind:class="{'heel':findWrestler(match.competitors[1]).heelface === 'H', 'face':findWrestler(match.competitors[1]).heelface == 'F', 'champ':findWrestler(match.competitors[1]).isChamp}" class="c_base c_wrestler">
-          {{findWrestler(match.competitors[1]).Name}}
-          <span v-if="match.competitors[1] == match.winner" class="win">WIN</span>
-          <a v-if="!match.winner || match.competitors[1] != match.winner" @click="setWinner(match, match.competitors[1], index)">Winner?</a>
+      <div class="column"></div>
+      <div class="column is-5 competitor competitor-2">
+        <div v-if="match.competitors[1]">
+          <div class="profile" v-bind:class="{ heel: findWrestler(match.competitors[1]).heelface == 'H', face: findWrestler(match.competitors[1]).heelface == 'F'}">
+            <img v-bind:src="'images/roster/' + imgPath(findWrestler(match.competitors[1]).Name) + '.jpg'">
+            <span v-if="match.competitors[1] == match.winner" class="win-label">W</span>
+            <span v-if="match.competitors[0] == match.winner" class="win-label">L</span>
+            <a v-if="!match.winner || match.competitors[1] != match.winner" @click="setWinner(match, match.competitors[1], index)" class="win-btn">W</a>
+          </div>
+        </div>
+        <h4>
+          <a @click="openRoster(index, 1)" v-if="!match.competitors[1]">+</a>
+          <span v-if="findWrestler(match.competitors[1])">{{findWrestler(match.competitors[1]).Name}}</span>
+        </h4>
+        <div class="inc-points" v-if="match.competitors[1]">
+          <span v-if="findWrestler(match.competitors[1]).inc > 0"></span>
+          <span v-if="findWrestler(match.competitors[1]).inc > 1"></span>
+          <span v-if="findWrestler(match.competitors[1]).inc > 2"></span>
         </div>
       </div>
-
-      <div class="card_holder" v-if="match.ready" style="float:right;" v-bind:class="{ setup: match.story}">
-        <div @click="openStory(index)" v-show="!match.story">add story</div>
+      <div class="column remove-match"><a @click="removeMatch(player, index)"><i class="fa fa-times" aria-hidden="true"></i></a></div>
+    </div>
+    <div class="columns">
+      <div class="column is-12 add-story">
+        <a v-if="match.ready && !match.story" @click="openStory(index)">Add story</a>
         <div v-if="match.story">{{findStory(match.story).Name}}</div>
       </div>
-
-      </div>
     </div>
+  </div>
 
+  </div> <!-- match repeater -->
+</div> <!-- matchcard -->
+
+      <!-- pop menus -->
       <div class="pop poproster" v-bind:class="{ active: popRoster }">
         <a @click="closePop()">|x|</a>
         <ul><li v-for="(wrestler, index) in player.temproster">
@@ -303,7 +337,7 @@
 <!-- /////////////////SUMMARY///////////////////// -->
   <div v-if="turn == 'REVIEW'" class="summary">
     <h2>SUMMARY</h2> 
-    <div v-for="(result, index1) in summaryValues">
+    <div class="result" v-for="(result, index1) in summaryValues">
       <div v-for="(match, index) in result.matches">
 {{findWrestler(game.players[index1].matchcard[index].competitors[0]).Name}} /
 {{findWrestler(game.players[index1].matchcard[index].competitors[1]).Name}}
@@ -312,6 +346,29 @@
       <hr>
       <div><strong>TOTAL: {{result.total}}</strong></div>
     </div>
+
+     <!-- /////////////////ACTIONS///////////////////// -->
+    <div class="actions">
+      <div class="columns">
+        <div class="column is-3">
+          <div class="world-champion" v-if="game.wChamp">
+            <h2>World Champion - {{findWrestler(game.wChamp).Name}}</h2>
+            <div v-for="(player, index) in game.players" v-if="player.hasWChamp">
+                {{player.name}}
+            </div>
+          </div>
+        </div>
+        <div class="column is-2">
+          <h2>Round</h2>
+          <h3>{{game.round}}</h3>
+        </div>
+      <div class="column is-7 align_right">  
+        <a @click="nextRound()" v-if="turn == 'REVIEW'"
+        class="button is-primary is-medium">Next round</a>
+      </div>
+      </div>
+    </div>
+    <!-- /////////////////END ACTIONS///////////////////// -->
   </div>
 <!-- /////////////////END SUMMARY///////////////////// -->
 

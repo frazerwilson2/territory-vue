@@ -1,8 +1,13 @@
 // Import Bulma
 @import "../node_modules/bulma/bulma";
 @import "variables";
+@import "helpers";
 @import "layout";
 @import "elements";
+
+body {
+    font-family: 'Fjalla One', sans-serif;
+}
 
 // overwrites
 .section {
@@ -58,9 +63,6 @@ width: 100%;
 height: 100%;
 }
 
-.store_link {
-    background:#E91E63;
-}
 
 		#infosCol {
 			background:$grey;
@@ -142,7 +144,7 @@ height: 100%;
     }
 }
 .summary {
-	> div {
+	> div.result {
 		width:25%;
 		display:inline-block;
 		float:left;

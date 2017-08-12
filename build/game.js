@@ -808,6 +808,9 @@ var game = new Vue({
       this.expandedRoster = false;
       this.expandedGimmick = false;
       this.expandedStory = !this.expandedStory;
+    },
+    imgPath: function (path) {
+      return path.replace(/ /g,'');
     }
   }
 });

@@ -1,4 +1,7 @@
 /*
+// variables
+*/
+/*
 // layout
 */
 html, body {
@@ -21,3 +24,96 @@ body {
 
 .layout {
   position: relative; }
+
+.store-link {
+  border-top: 70px #41BFD6 solid;
+  border-left: 70px transparent solid;
+  border-right: 70px transparent solid;
+  width: 0;
+  height: 0;
+  position: absolute;
+  z-index: 5;
+  left: 10%; }
+  .store-link div {
+    position: relative;
+    top: -60px;
+    left: -18px; }
+    .store-link div a {
+      color: #fff; }
+
+.matchcard {
+  padding: 20px; }
+  .matchcard .match {
+    margin-top: 50px;
+    opacity: 0.8; }
+    .matchcard .match.ready {
+      opacity: 1; }
+    .matchcard .match .competitor {
+      background: rgba(0, 0, 0, 0.35);
+      border-bottom: 1px #41BFD6 solid;
+      height: 80px; }
+      .matchcard .match .competitor .profile {
+        border-radius: 100%;
+        width: 110px;
+        height: 110px;
+        display: inline-block;
+        overflow: hidden;
+        position: relative;
+        top: -25px; }
+        .matchcard .match .competitor .profile.heel {
+          border: 2px red solid; }
+        .matchcard .match .competitor .profile.face {
+          border: 2px #54d0f9 solid; }
+        .matchcard .match .competitor .profile .win-btn, .matchcard .match .competitor .profile .win-label {
+          position: absolute;
+          top: 0;
+          z-index: 6;
+          font-size: 70px;
+          width: 100%;
+          text-align: center;
+          opacity: 0; }
+          .matchcard .match .competitor .profile .win-btn:hover, .matchcard .match .competitor .profile .win-label:hover {
+            opacity: 1; }
+        .matchcard .match .competitor .profile .win-label {
+          opacity: 0.2; }
+      .matchcard .match .competitor h4 {
+        font-size: 40px;
+        color: #fff;
+        text-transform: uppercase; }
+    .matchcard .match .competitor-1 .profile {
+      float: left;
+      left: -30px; }
+    .matchcard .match .competitor-2 .profile {
+      float: right;
+      left: 30px; }
+    .matchcard .match .remove-match {
+      padding-top: 30px;
+      text-align: right; }
+      .matchcard .match .remove-match a {
+        color: #fff; }
+    .matchcard .match .add-gimmick, .matchcard .match .add-story {
+      text-align: center;
+      padding: 10px 50px 0; }
+      .matchcard .match .add-gimmick div, .matchcard .match .add-story div {
+        color: white;
+        border-radius: 100px; }
+      .matchcard .match .add-gimmick a, .matchcard .match .add-story a {
+        color: #fff;
+        opacity: 0.5; }
+        .matchcard .match .add-gimmick a:hover, .matchcard .match .add-story a:hover {
+          opacity: 1; }
+    .matchcard .match .add-gimmick div {
+      background: #DDFF80;
+      color: #777777; }
+    .matchcard .match .add-story div {
+      background: #F08181; }
+    .matchcard .match .inc-points {
+      margin-top: -16px; }
+
+.inc-points span {
+  width: 10px;
+  height: 10px;
+  background: #94EDFD;
+  display: inline-block;
+  border-radius: 100%;
+  margin-right: 5px; }

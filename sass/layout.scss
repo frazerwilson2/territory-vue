@@ -1,3 +1,4 @@
+@import "variables";
 /*
 // layout
 */
@@ -31,6 +32,128 @@ body {
 }
 
 // store
+
+.store-link {
+    border-top: 70px $active1 solid;
+    border-left: 70px transparent solid;
+    border-right: 70px transparent solid;
+    width: 0;
+    height: 0;
+    position: absolute;
+    z-index: 5;
+    left: 10%;
+    div {
+    	position: relative;
+    	top: -60px;
+    	left: -18px;
+    	a {
+    		color: #fff;
+    	}
+    }
+}
+
+// matchcard
+.matchcard {
+	padding: 20px;
+	.match {
+		margin-top: 50px;
+		opacity: 0.8;
+		&.ready {
+			opacity: 1;
+		}
+		
+		.competitor {
+			background: rgba(0, 0, 0, 0.35);	
+			border-bottom: 1px $active1 solid;
+			height: 80px;
+			.profile {
+				border-radius: 100%;
+				width: 110px;
+				height: 110px;
+				display: inline-block;
+				overflow: hidden;
+				position: relative;
+				top: -25px;
+				&.heel {
+					border: 2px red solid;
+				}
+				&.face {
+					border: 2px #54d0f9 solid;
+				}
+				.win-btn, .win-label {
+					position: absolute;
+					top: 0;
+					z-index: 6;
+					font-size: 70px;
+					width: 100%;
+					text-align: center;
+					opacity: 0;
+					&:hover {
+						opacity: 1;
+					}
+				}
+				.win-label {
+					opacity: 0.2;
+				}
+			}
+			h4 {
+				font-size: 40px;
+				color: #fff;
+				text-transform: uppercase;
+			}
+		}
+		.competitor-1 .profile {
+			float: left;
+			left: -30px;
+		}
+		.competitor-2 .profile {
+			float: right;
+			left: 30px;
+		}
+		.remove-match {
+			padding-top: 30px;
+			@include align-right;
+			a {
+				color: #fff
+			}
+		}
+
+		.add-gimmick, .add-story {
+			@include align-center;
+			padding: 10px 50px 0;
+			div {
+				color: white;
+				border-radius: 100px;
+			}
+			a {
+				color: #fff;
+				opacity: 0.5;
+				&:hover {
+					opacity: 1;
+				}
+			}
+		}
+		.add-gimmick div {
+			background: $gimmick;
+			color: #777777;
+		}
+		.add-story div {
+			background: $story;
+		}
+		.inc-points {
+			margin-top: -16px;
+		}
+	}
+}
+
+.inc-points span {
+	width: 10px;
+	height: 10px;
+	background: $lightblue;
+	display: inline-block;
+	border-radius: 100%;
+	margin-right: 5px;
+}
 
 // footer
 

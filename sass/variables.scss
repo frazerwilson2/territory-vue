@@ -5,14 +5,18 @@
 // colours
 
 $grey: #a7a7a7;
+$active1: #41BFD6;
+$gimmick: #DDFF80;
+$story: #F08181;
+$lightblue: #94EDFD;
 
 // font sizes
 
-// helper classes
-
-.clearfix {
-    clear:both;
+// mixins
+@mixin align-right {
+	text-align: right;
 }
-.align_right {
-    text-align: right;
+
+@mixin align-center {
+	text-align: center;
 }

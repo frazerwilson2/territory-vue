@@ -861,6 +861,9 @@ var game = new Vue({
       this.expandedRoster = false;
       this.expandedGimmick = false;
       this.expandedStory = !this.expandedStory;
+    },
+    imgPath: function imgPath(path) {
+      return path.replace(/ /g, '');
     }
   }
 });
