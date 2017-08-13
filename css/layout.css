@@ -41,6 +41,9 @@ body {
     .store-link div a {
       color: #fff; }
 
+.champ-overview {
+  color: #fff; }
+
 .matchcard {
   padding: 20px; }
   .matchcard .match {
@@ -110,6 +113,55 @@ body {
     .matchcard .match .inc-points {
       margin-top: -16px; }
 
+.pop {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  width: 250px;
+  padding: 10px;
+  transition: all 0.5s;
+  opacity: 0;
+  visibility: hidden; }
+  .pop.active {
+    opacity: 1;
+    visibility: visible; }
+  .pop a {
+    display: block;
+    color: #000; }
+  .pop li {
+    height: 32px;
+    margin: 5px 0; }
+    .pop li a, .pop li span.hide {
+      padding: 5px 0px 2px 35px; }
+    .pop li span.hide {
+      cursor: not-allowed; }
+    .pop li .inc-points {
+      float: right;
+      position: relative;
+      top: 3px; }
+    .pop li img {
+      width: 30px;
+      display: inline-block;
+      float: left;
+      border-radius: 100px; }
+    .pop li:hover {
+      background: #fff; }
+    .pop li .world-champion {
+      display: block;
+      border: 1px black solid;
+      padding: 10px;
+      margin: 10px;
+      font-size: 14px;
+      bottom: 5px; }
+
+.champ-belt {
+  float: right;
+  background: yellow;
+  display: inline-block;
+  width: 10px;
+  border-radius: 100%; }
+  .champ-belt.w-champ {
+    background: red; }
+
 .inc-points span {
   width: 10px;
   height: 10px;
@@ -117,3 +169,66 @@ body {
   display: inline-block;
   border-radius: 100%;
   margin-right: 5px; }
+
+.actions {
+  border-top: 1px #41BFD6 solid;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #2C2C2C;
+  padding: 15px;
+  font-size: 22px; }
+  .actions .listed-champ {
+    content: '';
+    border-right: 1px #41BFD6 solid;
+    transform: rotate(45deg);
+    float: right;
+    position: relative;
+    top: -102px;
+    height: 140px;
+    margin-bottom: -150px; }
+  .actions .column > div {
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #fff;
+    padding: 0 10px; }
+    .actions .column > div img {
+      width: 20px; }
+    .actions .column > div.fed img {
+      width: 50px;
+      float: left; }
+    .actions .column > div.fed h4 {
+      position: absolute;
+      top: 20px;
+      font-size: 32px;
+      color: #41BFD6; }
+    .actions .column > div.world-champion {
+      width: 100%; }
+      .actions .column > div.world-champion h2 {
+        font-size: 20px; }
+      .actions .column > div.world-champion img {
+        float: left;
+        width: 50px;
+        border-radius: 50px;
+        margin-right: 10px; }
+
+.store {
+  height: 0;
+  overflow: hidden;
+  background: #41BFD6; }
+  .store a {
+    color: #000; }
+  .store .close-store {
+    position: fixed;
+    right: 40px; }
+  .store.is-fullheight {
+    height: initial;
+    overflow: auto;
+    padding: 30px;
+    margin: 0; }
+  .store ul {
+    padding: 0;
+    margin: 0; }

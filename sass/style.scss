@@ -9,6 +9,10 @@ body {
     font-family: 'Fjalla One', sans-serif;
 }
 
+.button.is-primary {
+    background: $active1;
+}
+
 // overwrites
 .section {
     background:none;
@@ -49,7 +53,7 @@ body {
 .pick_player {
 border:3px transparent solid;    
 }
-.active {
+.activex {
 border:3px #5eabdc solid;
 }
 .assigned, .hide {
@@ -76,14 +80,7 @@ height: 100%;
 			}
 		}
 
-.actions {
-	border-top: 1px black solid;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #a0bcd4;
-}
+
 .select-card {
 //	border-bottom:1px black solid;
 	padding:5px;
@@ -150,17 +147,7 @@ height: 100%;
 		float:left;
 	}
 }
-.pop {
-    position: absolute;
-    background: white;
-    transition:all 0.5s;
-    opacity:0;
-    visibility:hidden;
-    &.active {
-    	opacity:1;
-    	visibility:visible;
-    }
-}
+
 .errors {
     position: fixed;
     color:white;
@@ -181,26 +168,7 @@ height: 100%;
     line-height: 4;
     margin: auto;
 }
-#store {
-    height:0;
-    overflow:hidden;
-    background:#838e65;
-    &.is-fullheight{
-        height:initial;
-        overflow:auto;
-        padding:30px;
-    }
-    ul {
-    	padding:0;
-    	margin:0;
-    }
-    li, .card {
-		    display: inline-block;
-		    width: 100px;
-		    border: 1px black solid;
-		    margin: 0 3px;
-    	}
-}
+
 
 .champ:before {
     content: 'champ';
@@ -234,23 +202,7 @@ small {
     min-height: 200px;
     box-shadow: 0 0 10px 800px rgba(0, 0, 0, 0.36);
 }
-.champ_belt {
-    background:yellow;
-    display: inline-block;
-    width: 10px;
-    border-radius: 100%;
-    &.w_champ {
-        background:red;
-    }
-}
-.world-champion {
-    display: block;
-    border:1px black solid;
-    padding: 10px;
-    margin: 10px;
-    font-size: 14px;
-    bottom: 5px;
-}
+
 .wchamp_round {
     padding: 10px;
     text-align: center;
@@ -330,43 +282,6 @@ small {
     }
 }
 
-.reg_col {
-        display:inline-block;
-        float:left;
-        width: 150px;
-        background: aliceblue;
-        margin: 0 10px 10px 0;
-        height: 200px;
-    }
-
-.c_base {
-    background:rgba(255, 250, 245, 1);
-    padding: 8px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-    font-size: 0.6em;
-    &.c_active {
-        background:#c0c2c3;
-    }
-    h4 {
-        font-weight: bold;
-        font-size: 1.2em;
-    }
-}
-
-.c_wrestler {
-    &.heel {
-        background: #fff1f1;
-    }
-    &.face {
-        background: #f1f6ff;
-    }
-    .w_val {
-        float:right;
-    }
-    hr {
-        margin: 0.1rem 0;
-    }
-}
 .close_errors {
     float:right;
 }

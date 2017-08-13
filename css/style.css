@@ -3940,6 +3940,21 @@ label.panel-block {
 .align_right, .align-right {
   text-align: right; }
 
+.align-center {
+  text-align: center; }
+
+.d-block {
+  display: block; }
+
+.d-inline {
+  display: inline-block; }
+
+.float-right {
+  float: right; }
+
+.fade {
+  opacity: 0.6; }
+
 /*
 // variables
 */
@@ -3982,6 +3997,9 @@ body {
     left: -18px; }
     .store-link div a {
       color: #fff; }
+
+.champ-overview {
+  color: #fff; }
 
 .matchcard {
   padding: 20px; }
@@ -4052,6 +4070,55 @@ body {
     .matchcard .match .inc-points {
       margin-top: -16px; }
 
+.pop {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  width: 250px;
+  padding: 10px;
+  transition: all 0.5s;
+  opacity: 0;
+  visibility: hidden; }
+  .pop.active {
+    opacity: 1;
+    visibility: visible; }
+  .pop a {
+    display: block;
+    color: #000; }
+  .pop li {
+    height: 32px;
+    margin: 5px 0; }
+    .pop li a, .pop li span.hide {
+      padding: 5px 0px 2px 35px; }
+    .pop li span.hide {
+      cursor: not-allowed; }
+    .pop li .inc-points {
+      float: right;
+      position: relative;
+      top: 3px; }
+    .pop li img {
+      width: 30px;
+      display: inline-block;
+      float: left;
+      border-radius: 100px; }
+    .pop li:hover {
+      background: #fff; }
+    .pop li .world-champion {
+      display: block;
+      border: 1px black solid;
+      padding: 10px;
+      margin: 10px;
+      font-size: 14px;
+      bottom: 5px; }
+
+.champ-belt {
+  float: right;
+  background: yellow;
+  display: inline-block;
+  width: 10px;
+  border-radius: 100%; }
+  .champ-belt.w-champ {
+    background: red; }
+
 .inc-points span {
   width: 10px;
   height: 10px;
@@ -4060,14 +4127,156 @@ body {
   border-radius: 100%;
   margin-right: 5px; }
 
+.actions {
+  border-top: 1px #41BFD6 solid;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #2C2C2C;
+  padding: 15px;
+  font-size: 22px; }
+  .actions .listed-champ {
+    content: '';
+    border-right: 1px #41BFD6 solid;
+    transform: rotate(45deg);
+    float: right;
+    position: relative;
+    top: -102px;
+    height: 140px;
+    margin-bottom: -150px; }
+  .actions .column > div {
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #fff;
+    padding: 0 10px; }
+    .actions .column > div img {
+      width: 20px; }
+    .actions .column > div.fed img {
+      width: 50px;
+      float: left; }
+    .actions .column > div.fed h4 {
+      position: absolute;
+      top: 20px;
+      font-size: 32px;
+      color: #41BFD6; }
+    .actions .column > div.world-champion {
+      width: 100%; }
+      .actions .column > div.world-champion h2 {
+        font-size: 20px; }
+      .actions .column > div.world-champion img {
+        float: left;
+        width: 50px;
+        border-radius: 50px;
+        margin-right: 10px; }
+
+.store {
+  height: 0;
+  overflow: hidden;
+  background: #41BFD6; }
+  .store a {
+    color: #000; }
+  .store .close-store {
+    position: fixed;
+    right: 40px; }
+  .store.is-fullheight {
+    height: initial;
+    overflow: auto;
+    padding: 30px;
+    margin: 0; }
+  .store ul {
+    padding: 0;
+    margin: 0; }
+
+/*
+// variables
+*/
 /*
 // elements
 */
+.card-pack {
+  height: 200px;
+  margin-top: 20px; }
+
+.card {
+  background: white;
+  padding: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+  font-size: 9px;
+  border-radius: 6px; }
+  .card.reg_col {
+    display: inline-block;
+    float: left;
+    width: 150px;
+    background: aliceblue;
+    margin: 0 10px 10px 0;
+    height: 210px; }
+  .card--active {
+    background: #c0c2c3; }
+  .card h4 {
+    font-weight: bold;
+    font-size: 1.2em; }
+  .card p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+  .card:before, .card .value {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background: #a7a7a7;
+    text-align: center;
+    border-radius: 100%;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    color: white;
+    padding: 5px 0 0; }
+  .card:before {
+    right: 5px;
+    left: initial; }
+  .card .inc-points {
+    padding-left: 25px;
+    height: 0; }
+    .card .inc-points span {
+      position: relative; }
+  .card--wrestler:before {
+    content: '';
+    background: #41BFD6 url("/images/star.svg"); }
+  .card--wrestler.heel {
+    background: #fff1f1; }
+  .card--wrestler.face {
+    background: #f1f6ff; }
+  .card--wrestler .w_val {
+    float: right; }
+  .card--wrestler hr {
+    margin: 0.1rem 0; }
+  .card--gimmick:before {
+    content: '';
+    background: #DDFF80 url("/images/flash.svg") 4px no-repeat; }
+  .card--story:before {
+    content: '';
+    background: #F08181 url("/images/speech.svg") 2px 4px no-repeat;
+    background-size: 85%; }
+  .card--news {
+    position: absolute;
+    top: 70px;
+    width: 200px;
+    height: 300px;
+    left: calc(50% - 50px); }
+    .card--news h2 {
+      color: #000; }
+
 h2 {
   color: #fff; }
 
 body {
   font-family: 'Fjalla One', sans-serif; }
+
+.button.is-primary {
+  background: #41BFD6; }
 
 .section {
   background: none; }
@@ -4101,7 +4310,7 @@ body {
 .pick_player {
   border: 3px transparent solid; }
 
-.active {
+.activex {
   border: 3px #5eabdc solid; }
 
 .assigned, .hide {
@@ -4122,14 +4331,6 @@ body {
   #infosCol h4 {
     font-size: 2em;
     margin: 0; }
-
-.actions {
-  border-top: 1px black solid;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: #a0bcd4; }
 
 .select-card {
   padding: 5px;
@@ -4182,16 +4383,6 @@ body {
   display: inline-block;
   float: left; }
 
-.pop {
-  position: absolute;
-  background: white;
-  transition: all 0.5s;
-  opacity: 0;
-  visibility: hidden; }
-  .pop.active {
-    opacity: 1;
-    visibility: visible; }
-
 .errors {
   position: fixed;
   color: white;
@@ -4211,23 +4402,6 @@ body {
   width: 40px;
   line-height: 4;
   margin: auto; }
-
-#store {
-  height: 0;
-  overflow: hidden;
-  background: #838e65; }
-  #store.is-fullheight {
-    height: initial;
-    overflow: auto;
-    padding: 30px; }
-  #store ul {
-    padding: 0;
-    margin: 0; }
-  #store li, #store .card {
-    display: inline-block;
-    width: 100px;
-    border: 1px black solid;
-    margin: 0 3px; }
 
 .champ:before {
   content: 'champ';
@@ -4259,22 +4433,6 @@ small {
   border-radius: 10px;
   min-height: 200px;
   box-shadow: 0 0 10px 800px rgba(0, 0, 0, 0.36); }
-
-.champ_belt {
-  background: yellow;
-  display: inline-block;
-  width: 10px;
-  border-radius: 100%; }
-  .champ_belt.w_champ {
-    background: red; }
-
-.world-champion {
-  display: block;
-  border: 1px black solid;
-  padding: 10px;
-  margin: 10px;
-  font-size: 14px;
-  bottom: 5px; }
 
 .wchamp_round {
   padding: 10px;
@@ -4342,37 +4500,6 @@ small {
     border-radius: 100%;
     width: 20px;
     text-align: center; }
-
-.reg_col {
-  display: inline-block;
-  float: left;
-  width: 150px;
-  background: aliceblue;
-  margin: 0 10px 10px 0;
-  height: 200px; }
-
-.c_base {
-  background: #fffaf5;
-  padding: 8px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-  font-size: 0.6em; }
-  .c_base.c_active {
-    background: #c0c2c3; }
-  .c_base h4 {
-    font-weight: bold;
-    font-size: 1.2em; }
-
-.c_wrestler.heel {
-  background: #fff1f1; }
-
-.c_wrestler.face {
-  background: #f1f6ff; }
-
-.c_wrestler .w_val {
-  float: right; }
-
-.c_wrestler hr {
-  margin: 0.1rem 0; }
 
 .close_errors {
   float: right; }

@@ -345,6 +345,7 @@ var game = new Vue({
       });
       this.findWrestler(wrest).isChamp = true;
       this.setChampNow = false;
+      this.showChampRoster = false;
     },
     sumValues: function sumValues(val, index) {
       var totalGain = 0;
@@ -355,6 +356,8 @@ var game = new Vue({
           matchSum += game.findWrestler(match.competitors[1]).inc;
           game.findWrestler(match.competitors[0]).isChamp ? matchSum += 1 : matchSum += 0;
           game.findWrestler(match.competitors[1]).isChamp ? matchSum += 1 : matchSum += 0;
+          // rather than give 5, give the standard of 3, then check a new gimmick attr of 'bonus', if present call a func with gimmick
+          // id and 2 competitor ids (spread operator?) and check for the gimmick bonus requirements? return int for bonus points
           if (match.gimmick) {
             matchSum += 5;game.game.players[index].discards.gimmicks.push(match.gimmick);
           }

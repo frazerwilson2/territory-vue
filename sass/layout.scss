@@ -52,6 +52,10 @@ body {
     }
 }
 
+.champ-overview {
+	color: #fff;
+}
+
 // matchcard
 .matchcard {
 	padding: 20px;
@@ -146,6 +150,68 @@ body {
 	}
 }
 
+.pop {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.8);
+    width: 250px;
+    padding: 10px;
+    transition:all 0.5s;
+    opacity:0;
+    visibility:hidden;
+    &.active {
+    	opacity:1;
+    	visibility:visible;
+    }
+    a {
+    	display: block;
+    	color: #000;
+    }
+    li {
+    	height: 32px;
+	    margin: 5px 0;
+    	a, span.hide {
+    		padding: 5px 0px 2px 35px;
+    	}
+    	span.hide {
+    		cursor: not-allowed;
+    	}
+    	.inc-points {
+    		float: right;
+    		position: relative;
+    		top: 3px;
+    	}
+    	img {
+    		width: 30px;
+    		display: inline-block;
+    		float: left;
+    		border-radius: 100px;
+    	}
+    	&:hover {
+    		background: #fff;
+    	}
+
+    	.world-champion {
+    	    display: block;
+    	    border:1px black solid;
+    	    padding: 10px;
+    	    margin: 10px;
+    	    font-size: 14px;
+    	    bottom: 5px;
+    	}
+    }
+}
+
+.champ-belt {
+	float: right;
+    background:yellow;
+    display: inline-block;
+    width: 10px;
+    border-radius: 100%;
+    &.w-champ {
+        background:red;
+    }
+}
+
 .inc-points span {
 	width: 10px;
 	height: 10px;
@@ -157,6 +223,87 @@ body {
 
 // footer
 
+.actions {
+	border-top: 1px $active1 solid;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: $darkGrey;
+    padding: 15px;
+    font-size: 22px;
+    .listed-champ {
+    	content: '';
+    	border-right: 1px $active1 solid;
+    	transform: rotate(45deg);
+    	float: right;
+    	position: relative;
+    	top: -102px;
+    	height: 140px;
+    	margin-bottom: -150px;
+    }
+    .column > div {
+    	display: inline-block;
+    	text-overflow: ellipsis;
+    	white-space: nowrap;
+    	overflow: hidden;
+    	color: #fff;
+    	padding: 0 10px;
+    	img {
+    		width: 20px;
+    	}
+    	    &.fed {
+    	    	img {
+    	    		width: 50px;
+    			    float: left;
+    	    	}
+    	    	h4 {
+    	    		position: absolute;
+    	    		top: 20px;
+    	    		font-size: 32px;
+    	    		color: $active1;
+    	    	}
+    	    }
+    	    &.world-champion {
+    	    	width: 100%;
+    	    	h2 {
+    	    		font-size: 20px;
+    	    	}
+    	    	img {
+    	    		float: left;
+    	    		width: 50px;
+    	    		border-radius: 50px;
+    	    		margin-right: 10px;
+    	    	}
+    	    }
+    }
+}
+
 // roster board
+
+// store
+
+.store {
+	a {
+		color: #000;
+	}
+	.close-store {
+		position: fixed;
+		right: 40px;
+	}
+    height: 0;
+    overflow: hidden;
+    background: $active1;
+    &.is-fullheight{
+        height: initial;
+        overflow: auto;
+        padding: 30px;
+        margin: 0;
+    }
+    ul {
+    	padding:0;
+    	margin:0;
+    }
+}
 
 // summary

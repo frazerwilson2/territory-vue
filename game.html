@@ -17,81 +17,85 @@
   <div id="game" class="layout">
   
 <!-- /////////////////STORE///////////////////// -->
-  <div id="store" class="columns" v-bind:class="{'is-fullheight hero':showStore}"> 
+  <div id="store" class="columns store" v-bind:class="{'is-fullheight hero':showStore}" v-if="turn !== 'WCHAMP' && turn !== 'REVIEW'"> 
 
-  <a @click="openStore(false)">|X|</a>
+    <a @click="openStore(false)" class="align-right close-store"><i class="fa fa-2x fa-times" aria-hidden="true"></i></a>
 
-<div class="columns">
-  
-  <div class="column">
-    <h3>Story</h3>
-    <div class="reg_col c_base" @click="purchaseStory()" v-bind:class="{'hide':checkNum(game.stories)}">Take story</div>
-  </div>
+    <div class="columns">
+      
+      <div class="column">
+        <h3>Story</h3>
+        <div class="reg_col card card--story" v-bind:class="{'hide':checkNum(game.stories)}">
+          <a @click="purchaseStory()">Take story</a>
+        </div>
+      </div>
 
-  <div class="column">
-    <h3>Gimmicks</h3>
-    <div v-show="game.gimmicks" class="reg_col c_base" @click="purchaseGimmick()" v-bind:class="{'hide':checkNum(game.gimmicks)}">Take gimmick</div>
-  </div>
+      <div class="column">
+        <h3>Gimmicks</h3>
+        <div v-show="game.gimmicks" class="reg_col card card--gimmick" v-bind:class="{'hide':checkNum(game.gimmicks)}">
+          <a @click="purchaseGimmick()">Take gimmick</a>
+        </div>
+      </div>
 
-<div class="column">
-  <h3>TV</h3>
-  <div v-if="game.tv" class="reg_col c_base"><a @click="getTv()">TV CARDS ({{game.tv}} left)</a></div>
-</div>
+    <div class="column">
+      <h3>TV</h3>
+      <div v-if="game.tv" class="reg_col card"
+      v-bind:class="{'fade':game.players[turn].cash <= 20}">
+      <h4>TV airtime</h4>
+        <a @click="getTv()" v-if="game.players[turn].cash >= 20">TAKE ({{game.tv}} left)</a>
+      </div>
+    </div>
 
-<div class="column">
-  <h3>Arena</h3>
-  <div v-if="game.arena" class="reg_col c_base"><a @click="getArena()">ARENA ({{game.arena}} left)</a></div>
-</div>
+    <div class="column">
+      <h3>Arena</h3>
+      <div v-if="game.arena" class="reg_col card"
+      v-bind:class="{'fade':game.players[turn].cash <= 50}">
+      <h4>Arena</h4>
+        <a @click="getArena()" v-if="game.players[turn].cash >= 50">TAKE ({{game.arena}} left)</a>
+      </div>
+    </div>
 
-</div>
+    </div>
 
-<div class="clearfix">-</div>
+    <div class="clearfix">-</div>
 
     <div class="column is-12">
 
-<h3>Legends</h3>
-<div>
-  <div class="reg_col c_base c_wrestler" 
-    v-for="(wrestler, index) in game.legends">
-      <div v-if="findWrestler(wrestler).isChamp" class="champ_belt">-</div>
-      <div v-if="findWrestler(wrestler).isWChamp" class="champ_belt w_champ">-</div>
-      <span class="w_val">{{findWrestler(wrestler).val}}</span>
-      <h4>{{findWrestler(wrestler).Name}}</h4>
-      Type: {{findWrestler(wrestler).type}} 
-          <a @click="purchaseLegend(wrestler, index)">Hire</a>
+      <h3>Legends</h3>
+      <div>
+        <div class="reg_col card card--wrestler" 
+          v-for="(wrestler, index) in game.legends"
+          v-bind:class="{'fade':game.players[turn].cash <= findWrestler(wrestler).val}">
+
+            <span class="w_val">{{findWrestler(wrestler).val}}</span>
+            <h4>{{findWrestler(wrestler).Name}}</h4>
+            Type: {{findWrestler(wrestler).type}} 
+                <a @click="purchaseLegend(wrestler, index)" v-if="game.players[turn].cash >= findWrestler(wrestler).val">Hire</a>
+          </div>
+      </div>
+
+      <div class="clearfix">-</div>
+
+      <h3>Roster</h3>
+      <div>
+      <div class="reg_col card card--wrestler" 
+        v-for="wrestler in game.roster" 
+        v-if="!findWrestler(wrestler).isWChamp"
+        v-bind:class="{'fade':game.players[turn].cash <= findWrestler(wrestler).val}">
+        <div class="value">{{findWrestler(wrestler).val}}</div>
+        <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.jpg'" v-bind:class="{'face':findWrestler(wrestler).heelface == 'F', 'heel':findWrestler(wrestler).heelface == 'H'}">
+          <span class="w_val">{{findWrestler(wrestler).val}}/{{findWrestler(wrestler).inc}}</span>
+          <h4>{{findWrestler(wrestler).Name}}</h4>
+          <p>Style: {{findWrestler(wrestler).style}} / Theme: {{findWrestler(wrestler).theme}}</p>
+          <p>Weight: {{findWrestler(wrestler).weight}} / Height: {{findWrestler(wrestler).height}}</p>
+          <p>Charisma: {{findWrestler(wrestler).charisma}} / Ability: {{findWrestler(wrestler).ability}}</p>
+              <a @click="purchaseRoster(wrestler, findWrestler(wrestler).val)" v-if="game.players[turn].cash >= findWrestler(wrestler).val">Purchase</a>
+        </div> 
+      </div>
+
     </div>
-</div>
 
-<div class="clearfix">-</div>
-
-  <h3>Roster</h3>
-  <div>
-  <div class="reg_col c_base c_wrestler" 
-    v-for="wrestler in game.roster" 
-    v-if="!findWrestler(wrestler).isWChamp"
-    v-bind:class="{'face':findWrestler(wrestler).heelface == 'F', 'heel':findWrestler(wrestler).heelface == 'H'}">
-      <div v-if="findWrestler(wrestler).isChamp" class="champ_belt">-</div>
-      <div v-if="findWrestler(wrestler).isWChamp" class="champ_belt w_champ">-</div>
-      <span class="w_val">{{findWrestler(wrestler).val}}/{{findWrestler(wrestler).inc}}</span>
-      <h4>{{findWrestler(wrestler).Name}}</h4>
-      Type: {{findWrestler(wrestler).type}} 
-      <span v-if="findWrestler(wrestler).gender">/ Gender: {{findWrestler(wrestler).gender}}</span>
-      <hr/>
-      Style: {{findWrestler(wrestler).style}}
-      Theme: {{findWrestler(wrestler).theme}}
-      <hr/>
-      Weight: {{findWrestler(wrestler).weight}}
-      Height: {{findWrestler(wrestler).height}}
-      <br>
-      Charisma: {{findWrestler(wrestler).charisma}}
-      Ability: {{findWrestler(wrestler).ability}}
-          <a @click="purchaseRoster(wrestler, findWrestler(wrestler).val)">Purchase</a>
-    </div> 
-  </div>
-
-</div>
-
-</div>
+  </div><!-- store -->
 
  
     <div class="store-link" v-if="turn !== 'WCHAMP' && turn !== 'REVIEW'">
@@ -106,53 +110,51 @@
 <div class="column is-12">
 
 <!-- /////////////////MENU///////////////////// -->
-  <div v-for="(player, index) in game.players" v-if="index == turn"
+<div v-for="(player, index) in game.players">
+  <div v-if="index == turn"
   style="display: inline-block; float: left; width: 130px;
 ">
+
   <!-- Roster list -->
-  <div style="height: 225px;">
-  <h4>Roster</h4>
+  <div class="card-pack">
   <div class="reg_grid" v-bind:class="{'expand':expandedRoster}" @click="expandRoster(false)">
     <a class="expand_menu" v-if="!expandedRoster">+</a>
-    <div class="reg_col c_base c_wrestler" 
-    v-for="(wrestler, index) in player.roster"
-    v-bind:class="{'face':findWrestler(wrestler).heelface == 'F', 'heel':findWrestler(wrestler).heelface == 'H'}">
-      <div v-if="findWrestler(wrestler).isChamp" class="champ_belt">-</div>
-      <div v-if="findWrestler(wrestler).isWChamp" class="champ_belt w_champ">-</div>
-      <span class="w_val">{{findWrestler(wrestler).val}}/{{findWrestler(wrestler).inc}}</span>
+    <div class="reg_col card card--wrestler" 
+    v-for="(wrestler, index) in player.roster">
+    <div class="value">{{findWrestler(wrestler).val}}</div>
+    <div class="inc-points">
+      <span v-if="findWrestler(wrestler).inc > 0"></span>
+      <span v-if="findWrestler(wrestler).inc > 1"></span>
+      <span v-if="findWrestler(wrestler).inc > 2"></span>
+    </div>
+      <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.jpg'" v-bind:class="{'face':findWrestler(wrestler).heelface == 'F', 'heel':findWrestler(wrestler).heelface == 'H'}">
+      <div v-if="findWrestler(wrestler).isChamp" class="champ-belt">-</div>
+      <div v-if="findWrestler(wrestler).isWChamp" class="champ-belt w-champ">-</div>
       <h4>{{findWrestler(wrestler).Name}}</h4>
-      Type: {{findWrestler(wrestler).type}} 
-      <span v-if="findWrestler(wrestler).gender">/ Gender: {{findWrestler(wrestler).gender}}</span>
-      <hr/>
-      Style: {{findWrestler(wrestler).style}}
-      Theme: {{findWrestler(wrestler).theme}}
-      <hr/>
-      Weight: {{findWrestler(wrestler).weight}}
-      Height: {{findWrestler(wrestler).height}}
-      <br>
-      Charisma: {{findWrestler(wrestler).charisma}}
-      Ability: {{findWrestler(wrestler).ability}}
+      <p>Style: {{findWrestler(wrestler).style}} / Theme: {{findWrestler(wrestler).theme}}</p>
+      <p>Weight: {{findWrestler(wrestler).weight}} / Height: {{findWrestler(wrestler).height}}</p>
+      <p>Charisma: {{findWrestler(wrestler).charisma}} / Ability: {{findWrestler(wrestler).ability}}</p>
     </div>
   </div>
 </div>
 
-<div style="height: 225px;">
-  <h4>Gimmicks</h4>
+<div class="card-pack">
   <div class="reg_grid" v-bind:class="{'expand':expandedGimmick}" @click="expandGimmick(false)">
     <a class="expand_menu" v-if="!expandedGimmick">+</a>
-    <div class="reg_col c_base" v-for="(gimmick, index) in player.gimmicks">
+    <div class="reg_col card card--gimmick" v-for="(gimmick, index) in player.gimmicks">
+      <img src="/images/gimmick.jpg">
       <h4>{{findGimmick(gimmick).Name}}</h4>
     </div>
   </div>
 </div>
 
-<div style="height: 225px;">
-  <h4>Stories</h4>
+<div class="card-pack">
   <div class="reg_grid" v-bind:class="{'expand':expandedStory}" @click="expandStory(true)">
     <a class="expand_menu" v-if="!expandedStory">+</a>
-    <div class="reg_col c_base" v-for="(story, index) in player.stories" 
+    <div class="reg_col card card--story" v-for="(story, index) in player.stories" 
           @click="detailX(findStory(story).requires, findWrestler(player.roster[0]), findWrestler(player.roster[1]))"
           v-bind:class="{'c_active':findStory(story).active}">
+          <img src="/images/story.jpg">
       <h4>{{findStory(story).Name}}</h4>
       {{listReqs(findStory(story).requires)}}<br>
       Length: {{findStory(story).lengthDur}}
@@ -170,32 +172,26 @@
 <!-- /////////////////END MENU///////////////////// -->
 
 <!-- /////////////////MAIN PANEL///////////////////// -->
-  <div v-for="(player, index) in game.players" v-if="index == turn"
-  class="center_panel">
+  <div v-if="index == turn" class="center_panel">
 
-    <div v-if="validate.length || setChampNow" class="errors">
+    <div v-if="validate.length" class="errors">
       <a class="close_errors" @click="closeValidations()">|x|</a>
       <ul>
         <li v-for="error in validate">{{error}}</li>
-        <li v-if="setChampNow">
-          You don't have champion
-          <button @click="showChampRosterFunc()" v-if="!showChampRoster">Set Champ</button>
-          <ul v-if="showChampRoster">
-            <li v-for="w in player.roster" v-if="findWrestler(w).type == 'singles'">{{findWrestler(w).Name}} <a @click="makeChamp(w)">babing</a></li>
-          </ul>
-        </li>
       </ul>
     </div>
     
-    <div class="player_details">
-      
+    <div class="champ-overview align-center">
       <div v-if="player.hasWChamp">
         <div class="champ_belt w_champ">-</div> 
         <p>World Champion</p>
       </div>
-      <p>Current champ: 
-        <span v-if="!player.champSet">VACANT</span>
-        <span v-if="player.champSet">{{findWrestler(player.champSet).Name}}</span>
+      <p class="d-inline">Champion:&nbsp; 
+        <div v-if="!player.champSet" class="d-inline"> VACANT <a @click="showChampRosterFunc()" v-if="!showChampRoster" class="button is-primary is-small">Set Champ</a></div>
+        <div v-else class="d-inline"> {{findWrestler(player.champSet).Name}}</div>
+        <ul v-if="showChampRoster">
+          <li v-for="w in player.roster" v-if="findWrestler(w).type == 'singles'"><a @click="makeChamp(w)">{{findWrestler(w).Name}}</a></li>
+        </ul>
       </p>
     </div>
     
@@ -257,7 +253,7 @@
     <div class="columns">
       <div class="column is-12 add-story">
         <a v-if="match.ready && !match.story" @click="openStory(index)">Add story</a>
-        <div v-if="match.story">{{findStory(match.story).Name}}</div>
+        <div v-if="match.story">{{findStory(match.story).Name}} {{findStory(match.story).current}}/{{findStory(match.story).lengthDur}}</div>
       </div>
     </div>
   </div>
@@ -267,60 +263,93 @@
 
       <!-- pop menus -->
       <div class="pop poproster" v-bind:class="{ active: popRoster }">
-        <a @click="closePop()">|x|</a>
+        <a @click="closePop()" class="align-right"><i class="fa fa-times" aria-hidden="true"></i></a>
         <ul><li v-for="(wrestler, index) in player.temproster">
+          <div class="inc-points">
+            <span v-if="findWrestler(wrestler).inc > 0"></span>
+            <span v-if="findWrestler(wrestler).inc > 1"></span>
+            <span v-if="findWrestler(wrestler).inc > 2"></span>
+        </div>
+          <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.jpg'">
+          <div v-if="findWrestler(wrestler).isChamp" class="champ-belt">-</div>
+          <div v-if="findWrestler(wrestler).isWChamp" class="champ-belt w-champ">-</div>
           <a @click="addToCard(index, wrestler)">{{findWrestler(wrestler).Name}} {{findWrestler(wrestler).heelface}}</a>
-          <div v-if="findWrestler(wrestler).isChamp" class="champ_belt">-</div>
-          <div v-if="findWrestler(wrestler).isWChamp" class="champ_belt w_champ">-</div>
         </li></ul>
       </div>
 
       <div class="pop popgimmick" v-bind:class="{ active: popGimmick }">
-        <a @click="closePop()">|x|</a>
+        <a @click="closePop()" class="align-right"><i class="fa fa-times" aria-hidden="true"></i></a>
         <ul>
-          <li v-for="(gimmick, index) in player.gimmicks" v-bind:class="{ hide: findGimmick(gimmick).type == 'TITLECHANGE' && titleCards == false }"><a @click="addGimmickCard(gimmick, index)">{{findGimmick(gimmick).Name}}</a></li>
-        </ul>
-      </div>
-
-      <div class="pop popstory" v-bind:class="{ active: popStory }" v-if="player.matchcard[currentMatch]">
-        <a @click="closePop()">|x|</a>
-        <ul>
-          <li 
-          v-if="player.matchcard[currentMatch].ready" 
-          v-for="(story, index) in player.stories"
-          v-bind:class="{'hide':!summRes([findWrestler(player.matchcard[currentMatch].competitors[0]),findWrestler(player.matchcard[currentMatch].competitors[1])], findStory(story).requires) || myStory(story, player.matchcard[currentMatch].competitors)}">
-          <a @click="addStoryCard(story, index)">{{findStory(story).Name}}</a>
+          <li v-for="(gimmick, index) in player.gimmicks">
+            <div v-if="findGimmick(gimmick).type == 'TITLECHANGE'">
+              <a v-if="titleCards == true" @click="addGimmickCard(gimmick, index)">{{findGimmick(gimmick).Name}}</a>
+              <span v-else class="hide">{{findGimmick(gimmick).Name}}</span>
+            </div>
+            <div v-else>
+              <a @click="addGimmickCard(gimmick, index)">{{findGimmick(gimmick).Name}}</a>
+            </div>
           </li>
         </ul>
       </div>
 
-        <div class="news_card" v-if="player.news">
+      <div class="pop popstory" v-bind:class="{ active: popStory }" v-if="player.matchcard[currentMatch]">
+        <a @click="closePop()" class="align-right"><i class="fa fa-times" aria-hidden="true"></i></a>
+        <ul>
+          <li 
+          v-if="player.matchcard[currentMatch].ready" 
+          v-for="(story, index) in player.stories">
+          <div v-if="!summRes([findWrestler(player.matchcard[currentMatch].competitors[0]),findWrestler(player.matchcard[currentMatch].competitors[1])], findStory(story).requires) || myStory(story, player.matchcard[currentMatch].competitors)">
+            <span class="hide">{{findStory(story).Name}}</span>
+          </div>
+            <a v-else @click="addStoryCard(story, index)">{{findStory(story).Name}}</a>          
+          </li>
+        </ul>
+      </div>
+
+        <div class="card card--news" v-if="player.news">
           <a @click="removeNews(turn)">close</a>
           <h2>{{player.news.title}}</h2>
           <p>{{player.news.detail}}</p>
-          <span v-if="!player.news.enact">X</span>
-          <span v-if="player.news.enact">Y</span>
+          <span v-if="!player.news.enact">Does not apply</span>
+          <span v-if="player.news.enact">Applied!</span>
         </div>
 
          <!-- /////////////////ACTIONS///////////////////// -->
         <div class="actions" v-if="turn !== 'WCHAMP'">
           <div class="columns">
-            <div class="column is-3">
+            <div class="column is-one-quarter">
               <div class="world-champion" v-if="game.wChamp">
-                <h2>World Champion - {{findWrestler(game.wChamp).Name}}</h2>
+                <img v-bind:src="'images/roster/' + imgPath(findWrestler(game.wChamp).Name) + '.jpg'">
+                <h2>{{findWrestler(game.wChamp).Name}}</h2>
                 <div v-for="(player, index) in game.players" v-if="player.hasWChamp">
                     {{player.name}}
                 </div>
               </div>
+              <div class="listed-champ"></div>
             </div>
-            <div class="column is-2">
-              <h2>Round</h2>
-              <h3>{{game.round}}</h3>
+          <div class="column is-three-quarters align_right">
+            <div>
+              <img src="/images/cup.svg" v-if="player.tokens > 0">
+              <img src="/images/cup.svg" v-if="player.tokens > 1">
+              <img src="/images/cup.svg" v-if="player.tokens > 2">
             </div>
-          <div class="column is-7 align_right">
-            <h1>{{player.name}} ({{player.tokens + ' token(s)'}})
-            ${{player.cash}}
-            </h1> 
+            <div>
+              <h3>Month {{game.round}}</h3>
+            </div>
+            <div>/</div>
+            <div>
+              <h3>${{player.cash}}</h3>
+            </div>
+            <div>/</div>
+            <div> 
+              <img src="/images/star.svg"> {{player.roster.length}}
+              <img src="/images/flash.svg" style="width: 13px;"> {{player.gimmicks.length}}
+              <img src="/images/speech.svg"> {{player.stories.length}}</div>
+            <div class="fed">
+              <img src="/images/shield.svg">
+              <h4>{{player.name}}</h4>
+            </div> 
+
             <a @click="nextRound()" v-if="turn == 'REVIEW'"
             class="button is-primary is-medium">Next round</a>
             <a @click="nextTurn()" 
@@ -331,6 +360,7 @@
         </div>
         <!-- /////////////////END ACTIONS///////////////////// -->
 
+  </div>
   </div>
 <!-- /////////////////END MAINPANEL///////////////////// -->
 
