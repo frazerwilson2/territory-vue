@@ -182,9 +182,8 @@
     </div>
     
     <div class="champ-overview align-center">
-      <div v-if="player.hasWChamp">
-        <div class="champ_belt w_champ">-</div> 
-        <p>World Champion</p>
+      <div v-if="player.hasWChamp"> 
+        <p>Home of World Champion</p>
       </div>
       <p class="d-inline">Champion:&nbsp; 
         <div v-if="!player.champSet" class="d-inline"> VACANT <a @click="showChampRosterFunc()" v-if="!showChampRoster" class="button is-primary is-small">Set Champ</a></div>
@@ -270,7 +269,7 @@
             <span v-if="findWrestler(wrestler).inc > 1"></span>
             <span v-if="findWrestler(wrestler).inc > 2"></span>
         </div>
-          <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.jpg'">
+          <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.jpg'" v-bind:class="{ heel: findWrestler(wrestler).heelface == 'H', face: findWrestler(wrestler).heelface == 'F'}">
           <div v-if="findWrestler(wrestler).isChamp" class="champ-belt">-</div>
           <div v-if="findWrestler(wrestler).isWChamp" class="champ-belt w-champ">-</div>
           <a @click="addToCard(index, wrestler)">{{findWrestler(wrestler).Name}} {{findWrestler(wrestler).heelface}}</a>
@@ -307,11 +306,13 @@
       </div>
 
         <div class="card card--news" v-if="player.news">
-          <a @click="removeNews(turn)">close</a>
+          <a @click="removeNews(turn)" class="align-right float-right"><i class="fa fa-times" aria-hidden="true"></i></a>
           <h2>{{player.news.title}}</h2>
           <p>{{player.news.detail}}</p>
-          <span v-if="!player.news.enact">Does not apply</span>
-          <span v-if="player.news.enact">Applied!</span>
+          <div class="result">
+            <span v-if="!player.news.enact"><i class="fa fa-ban" aria-hidden="true"></i> Does not apply</span>
+            <span v-if="player.news.enact"><i class="fa fa-check" aria-hidden="true"></i> Applied!</span>
+          </div>
         </div>
 
          <!-- /////////////////ACTIONS///////////////////// -->
@@ -367,14 +368,18 @@
 <!-- /////////////////SUMMARY///////////////////// -->
   <div v-if="turn == 'REVIEW'" class="summary">
     <h2>SUMMARY</h2> 
-    <div class="result" v-for="(result, index1) in summaryValues">
-      <div v-for="(match, index) in result.matches">
-{{findWrestler(game.players[index1].matchcard[index].competitors[0]).Name}} /
-{{findWrestler(game.players[index1].matchcard[index].competitors[1]).Name}}
-- ${{match}}</div>
-      <div>Bonus: {{result.bonus}}</div>
-      <hr>
-      <div><strong>TOTAL: {{result.total}}</strong></div>
+    <div class="columns">
+      <div class="column" v-for="(result, index1) in summaryValues">
+        <h4>{{game.players[index1].name}}</h4>
+        <div v-for="(match, index) in result.matches">
+          {{findWrestler(game.players[index1].matchcard[index].competitors[0]).Name}} /
+          {{findWrestler(game.players[index1].matchcard[index].competitors[1]).Name}}
+          - ${{match}}
+        </div>
+        <div>Bonus: {{result.bonus}}</div>
+        <hr>
+        <div><strong>TOTAL: {{result.total}}</strong></div>
+      </div>
     </div>
 
      <!-- /////////////////ACTIONS///////////////////// -->
@@ -403,31 +408,39 @@
 <!-- /////////////////END SUMMARY///////////////////// -->
 
 <!-- /////////////////WCHAMP VOTE///////////////////// -->
-  <div v-if="turn == 'WCHAMP'">
-      <h2>Do votez and token claim</h2>
-      <div class="wchamp_round">
-        <div v-for="(player, index) in game.players" class="player">
-          {{player.name}} ({{player.tokens}})<br> - {{player.hasWChamp}}
-          <button @click="wChampVoteYes(index)" v-if="!player.hasWChamp">loan</button> 
-          <button v-if="player.tokens >= 3" @click="switchWChamp(index)">switch</button>
+  <div v-if="turn == 'WCHAMP'" class="wchamp-round">
+      <h2>Alliance meeting</h2>
+      <div>
+        <div class="columns">
+          <div v-for="(player, index) in game.players" class="column territory align-center">
+            <h4>{{player.name}}</h4> 
+            ({{player.tokens}} tokens)<br>
+            <div v-if="player.hasWChamp">HAS WORLD CHAMP</div>
+            <button @click="wChampVoteYes(index)" v-if="!player.hasWChamp && !confirmNewWChamp" class="button is-primary">Request</button> 
+            <button v-if="player.tokens >= 3" @click="switchWChamp(index)" class="button is-primary">Drop title</button>
+          </div>
         </div>
           <div class="vote-card" v-if="voteCard.length">
         <ul>
           <li v-for="(vote, index) in voteCard">
+            {{game.players[index].name}} votes: 
             <span v-if="vote.vote == true">YES</span>
             <span v-if="vote.vote == false">NO</span>
-            <span v-if="vote.vote == null"><a @click="voteThis(true, index)">Yeah</a> <a @click="voteThis(false, index)">Na</a></span>
+            <span v-if="vote.vote == null"><a @click="voteThis(true, index)">Approve</a> / <a @click="voteThis(false, index)">Reject</a></span>
           </li>
         </ul>
       </div>
-      <div v-if="voteRejectedMsg">Your request has been declined <button @click="wChampVoteNo()">OK</button></div>
-      <div v-if="voteApprovedMsg">{{game.players[tempIndex].name}} will host the world champion {{findWrestler(game.wChamp).Name}}! <button @click="goToRegularRounds()">OK</button></div>
+      <div v-if="voteRejectedMsg">
+        Your request has been declined
+      </div>
+      <div v-if="voteApprovedMsg">
+        {{game.players[tempIndex].name}} will host the world champion {{findWrestler(game.wChamp).Name}}! 
+      </div>
       <div v-if="switchWChampMsg">
           Arrange a new world champion
           <div v-if="game.players[tempIndex].hasWChamp">You already have the champ :)</div>
-          <div v-if="game.players[tempIndex].tokens < 3">You need 3 tokens to claim world champ</div>
             <div v-if="confirmNewWChamp">New World Champ will be {{findWrestler(prospectWChamp).Name}} 
-              <button @click="goToRegularRounds()">OK</button></div>
+          </div>
           <div v-if="game.players[tempIndex].tokens >= 3">Who?
             <ul>
               <li v-for="(wrestler, index) in game.players[tempIndex].temproster" v-if="isWChampAble(wrestler)"><a @click="setWChampMatch(wrestler, index, tempIndex)">{{findWrestler(wrestler).Name}}</a></li>
@@ -435,7 +448,9 @@
           </div>
         </div>
       </div>
-      <a @click="goToRegularRounds()" class="button is-primary is-medium">Go to rounds</a>
+      <div class="align-right">
+        <a @click="goToRegularRounds()" class="button is-primary is-medium">Go to rounds</a>
+      </div>
     </div>
     <!-- /////////////////END WCHAMP VOTE///////////////////// -->
 </div> <!-- end col is10 -->

@@ -106,9 +106,25 @@
     	width: 200px;
     	height: 300px;
     	left: calc(50% - 50px);
+        font-size: 14px;
     	h2 {
     		color: #000;
     	}
+        .result {
+            position: absolute;
+            bottom: 10px;
+        }
+        .fa-check {
+            color: green;
+        }
+        .fa-ban {
+            color: $red;
+        }
+        p {
+            white-space: initial;
+            overflow: auto;
+            text-overflow: initial;
+        }
     }
 
 }

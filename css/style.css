@@ -3980,7 +3980,8 @@ body {
   background: rgba(0, 0, 0, 0.5); }
 
 .layout {
-  position: relative; }
+  position: relative;
+  margin-bottom: 200px; }
 
 .store-link {
   border-top: 70px #41BFD6 solid;
@@ -4021,9 +4022,9 @@ body {
         position: relative;
         top: -25px; }
         .matchcard .match .competitor .profile.heel {
-          border: 2px red solid; }
+          border: 2px #ef5353 solid; }
         .matchcard .match .competitor .profile.face {
-          border: 2px #54d0f9 solid; }
+          border: 2px #94EDFD solid; }
         .matchcard .match .competitor .profile .win-btn, .matchcard .match .competitor .profile .win-label {
           position: absolute;
           top: 0;
@@ -4100,6 +4101,10 @@ body {
       display: inline-block;
       float: left;
       border-radius: 100px; }
+      .pop li img.heel {
+        border: 2px #ef5353 solid; }
+      .pop li img.face {
+        border: 2px #94EDFD solid; }
     .pop li:hover {
       background: #fff; }
     .pop li .world-champion {
@@ -4117,7 +4122,7 @@ body {
   width: 10px;
   border-radius: 100%; }
   .champ-belt.w-champ {
-    background: red; }
+    background: #ef5353; }
 
 .inc-points span {
   width: 10px;
@@ -4189,6 +4194,34 @@ body {
   .store ul {
     padding: 0;
     margin: 0; }
+  .store .card a {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    text-align: center;
+    left: 0;
+    font-size: 20px;
+    color: #41BFD6; }
+
+.wchamp-round {
+  padding: 50px;
+  color: #fff; }
+  .wchamp-round .territory {
+    min-height: 200px;
+    padding: 40px; }
+  .wchamp-round .vote-card {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    text-align: center;
+    margin-bottom: 10px; }
+  .wchamp-round h2 {
+    font-size: 32px; }
+
+.summary {
+  padding: 50px;
+  color: #fff; }
+  .summary h2 {
+    font-size: 32px; }
 
 /*
 // variables
@@ -4265,9 +4298,21 @@ body {
     top: 70px;
     width: 200px;
     height: 300px;
-    left: calc(50% - 50px); }
+    left: calc(50% - 50px);
+    font-size: 14px; }
     .card--news h2 {
       color: #000; }
+    .card--news .result {
+      position: absolute;
+      bottom: 10px; }
+    .card--news .fa-check {
+      color: green; }
+    .card--news .fa-ban {
+      color: #ef5353; }
+    .card--news p {
+      white-space: initial;
+      overflow: auto;
+      text-overflow: initial; }
 
 h2 {
   color: #fff; }
@@ -4471,7 +4516,7 @@ small {
   width: 10%;
   min-width: 160px;
   transition: width 200ms, margin 200ms;
-  margin-left: -20px; }
+  margin-left: -80px; }
   .reg_grid:hover {
     margin-left: 0; }
   .reg_grid.expand {

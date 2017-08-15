@@ -29,6 +29,7 @@ body {
 
 .layout {
 	position: relative;
+    margin-bottom: 200px;
 }
 
 // store
@@ -79,10 +80,10 @@ body {
 				position: relative;
 				top: -25px;
 				&.heel {
-					border: 2px red solid;
+					border: 2px $red solid;
 				}
 				&.face {
-					border: 2px #54d0f9 solid;
+					border: 2px $lightblue solid;
 				}
 				.win-btn, .win-label {
 					position: absolute;
@@ -185,6 +186,12 @@ body {
     		display: inline-block;
     		float: left;
     		border-radius: 100px;
+            &.heel {
+                border: 2px $red solid;
+            }
+            &.face {
+                border: 2px $lightblue solid;
+            }
     	}
     	&:hover {
     		background: #fff;
@@ -208,7 +215,7 @@ body {
     width: 10px;
     border-radius: 100%;
     &.w-champ {
-        background:red;
+        background:$red;
     }
 }
 
@@ -304,6 +311,41 @@ body {
     	padding:0;
     	margin:0;
     }
+    .card a {
+            position: absolute;
+            top: 70px;
+            width: 100%;
+            text-align: center;
+            left: 0;
+            font-size: 20px;
+            color: $active1;
+        }
+}
+
+// vote round 
+.wchamp-round {
+    padding: 50px;
+    color: #fff;
+    .territory {
+        min-height: 200px;
+        padding: 40px;
+    }
+    .vote-card {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 30px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    h2 {
+        font-size: $big;
+    }
 }
 
 // summary
+.summary {
+    padding: 50px;
+    color: #fff;
+    h2 {
+        font-size: $big;
+    }
+}

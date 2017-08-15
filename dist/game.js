@@ -17,7 +17,7 @@ var game = new Vue({
     // In game values
     turn: 'WCHAMP', // 'WCHAMP', 'REVIEW'
     round: null,
-    totalRounds: 2,
+    totalRounds: 12,
     matchcard: [],
     match: {
       story: null,
@@ -147,6 +147,7 @@ var game = new Vue({
       });
       this.tempIndex = index;
       game.voteCard[index].vote = true;
+      this.voteRejectedMsg = false;
     },
     voteThis: function voteThis(vote, index) {
       game.voteCard[index].vote = vote;
@@ -174,7 +175,6 @@ var game = new Vue({
       this.voteApprovedMsg = true;
       this.game.champLoan = this.tempIndex;
       this.game.players[this.tempIndex].cash -= 10;
-      alert('its costs 10');
       this.loanWChampTravels();
     },
     loanWChampTravels: function loanWChampTravels(changeover) {
@@ -287,8 +287,8 @@ var game = new Vue({
               if (game.game.roster.length) {
                 var choice = Math.round(Math.random() * game.game.roster.length);
                 player.roster.push(game.game.roster[choice]);
+                alert('Free agent ' + game.findWrestler(game.game.roster[choice]).Name + ' signed to your roster!');
                 game.game.roster.splice(choice, 1);
-                console.log(game.findWrestler(choice).Name + ' signed to your roster');
               }
               break;
             case 'quitter':
