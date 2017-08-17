@@ -247,13 +247,14 @@ var app = new Vue({
   components: {
     'wrestler': {
       props: ['data', 'cash'],
-      template: '<div class="chara_box card card--wrestler" v-bind:class="{ assigned: data.assigned || !cash , heel: data.heelface == \'H\', face: data.heelface == \'F\'}">\
-      <div class="num">{{data.val}}</div>\
-      <h2>{{data.Name}}</h2>\
-      <img v-bind:src="\'images/roster/\' + imgPath(data.Name) + \'.jpg\'" />\
+      template: '<div class="chara_box card card--wrestler" v-bind:class="{ assigned: data.assigned || !cash}">\
+      <div class="value">{{data.val}}</div>\
+      <img v-bind:src="\'images/roster/\' + imgPath(data.Name) + \'.jpg\'" v-bind:class="{ heel: data.heelface == \'H\', face: data.heelface == \'F\'}" />\
+      <h4>{{data.Name}}</h4>\
+        <p>Style: {{data.style}} / Theme: {{data.theme}}</p>\
+        <p>Weight: {{data.weight}} / Height: {{data.height}}</p>\
+        <p>Charisma: {{data.charisma}} / Ability: {{data.ability}}</p>\
       <a class="button is-dark" v-on:click="purchaseRoster()" v-if="!data.assigned">Purchase</a>\
-      <span v-if="data.type == \'tag\'">TAG</span>\
-      <span>{{data.gender}}</span>\
       </div>',
       methods: {
         purchaseRoster: function purchaseRoster() {

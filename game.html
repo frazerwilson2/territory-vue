@@ -156,7 +156,7 @@
           v-bind:class="{'c_active':findStory(story).active}">
           <img src="/images/story.jpg">
       <h4>{{findStory(story).Name}}</h4>
-      {{listReqs(findStory(story).requires)}}<br>
+      <span v-if="!findStory(story).competitors[0]">{{listReqs(findStory(story).requires)}}</span>
       Length: {{findStory(story).lengthDur}}
       <ul v-if="findStory(story).active">
         <li v-show="findStory(story).active"><span>Part {{findStory(story).current}} of {{findStory(story).lengthDur}}</span></li>
