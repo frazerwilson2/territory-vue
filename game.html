@@ -458,14 +458,25 @@
 </div>
 
 <div v-if="game.round == 'END'">
+  <div class="summary">
+    
   <h2>GAME OVEERRRR!!</h2>
-  <small>
+  
+<div class="columns">
+  <div class="column" v-for="(player, index) in game.players">
+    <h4>{{player.name}}:</h4>
+        Base cash: ${{player.cash}}<br>
+        Goal: {{findMission(player.goal)}}
+      <hr><hr>
+<!--       most tokens = {{evalMost('tokens') == player.discards.tokens}}     -->
+
+      <small>{{player.discards}}</small>
+  </div>
+</div>
+
     <hr>
 Game goal: {{findMission(game.goal)}}<br>
-Player 1:<br>
-    Base cash: ${{game.players[0].cash}}<br>
-    Goal: {{findMission(game.players[0].goal)}}
-  <br>
+  <small>
 <!--         goal: {{game.goal}}<br>
         news: {{game.news}}<br>
         roster: {{game.roster}}<br>
@@ -475,6 +486,8 @@ Player 1:<br>
         arena: {{game.arena}}<br>
         legends: {{legendRoster}} -->
   </small>
+
+  </div>
 </div>
 
 </div>

@@ -68,16 +68,9 @@ var game = new Vue({
     this.setMatchcard();
     this.wChampVote(this.game.players[0]);
     this.checkForChamp(this.game.players[0]);
-    this.getGoing();
+    this.goToEndGame();
   },
   methods: {
-    getGoing: function getGoing() {
-      var thisgame = this;
-      this.game.players.forEach(function (player) {
-        var playerGoal = thisgame.findMission(player.goal).theme;
-        console.log(missions.acessPlayerMission(playerGoal, player));
-      });
-    },
     detailX: function detailX(x, y, z) {
       console.log(this.listReqs(x));
       var data = [y, z];
@@ -327,7 +320,7 @@ var game = new Vue({
     },
     setWChampMatch: function setWChampMatch(w, i, index) {
       this.game.players[index].tokens -= 3;
-      this.game.players[index].discards.tokens -= 3;
+      this.game.players[index].discards.tokens += 3;
       this.addToCard(i, w, true, 0);
       this.loanWChampTravels(true);
       this.addToCard(this.game.players[index].temproster.length, this.game.wChamp, true, 1);
@@ -529,8 +522,11 @@ var game = new Vue({
     },
     goToEndGame: function goToEndGame() {
       this.game.round = "END";
-      this.game.players.forEach(function (player) {
-        console.log(missions.acessPlayerMission(player.goal));
+      var thisgame = this;
+      missions.init(thisgame.game);
+      this.game.players.forEach(function (player, i) {
+        var playerGoal = thisgame.findMission(player.goal).theme;
+        console.log('player ' + i + ' mission success -- ' + missions.acessPlayerMission(playerGoal, i));
       });
     },
     saveData: function saveData() {
