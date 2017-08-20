@@ -355,3 +355,19 @@ body {
         font-size: $med;
     }
 }
+
+// end
+.end-cash {
+    font-size: $big;
+    padding: 10px 0;
+    &.winner {
+        color: $lightblue;
+        border: 1px red solid;
+        border-radius: 100%;
+        display: inline-block;
+    }
+}
+.fa.top3 {
+    position: relative;
+    top: 3px;
+}

@@ -474,6 +474,19 @@
   </div>
 </div>
 
+<div class="columns">
+  <div class="column align-right" v-for="(player, index) in endTotals">
+    <p>Cash: ${{player.baseCash}}</p> 
+    <p>Mission success: 
+      <i v-if="player.missionSuccess" class="fa fa-check top3" aria-hidden="true"></i>
+      <i v-if="!player.missionSuccess" class="fa fa-ban top3" aria-hidden="true"></i></p> 
+    <p>Game goal winner:
+      <i v-if="player.gameGoalWinner" class="fa fa-check top3" aria-hidden="true"></i>
+      <i v-if="!player.gameGoalWinner" class="fa fa-ban top3" aria-hidden="true"></i></p></p> 
+    <p class="end-cash" v-bind:class="{ winner: player.winner }">Final cash: ${{player.totalCash}}</p> 
+  </div>
+</div>
+
     <hr>
 Game goal: {{findMission(game.goal)}}<br>
   <small>

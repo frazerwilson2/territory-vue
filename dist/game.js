@@ -54,7 +54,8 @@ var game = new Vue({
     // menu
     expandedRoster: false,
     expandedGimmick: false,
-    expandedStory: false
+    expandedStory: false,
+    endTotals: []
   },
   mounted: function mounted() {
     this.loadRoster();
@@ -524,12 +525,29 @@ var game = new Vue({
       this.game.round = "END";
       var thisgame = this;
       missions.init(thisgame.game);
-      this.game.players.forEach(function (player, i) {
-        var playerGoal = thisgame.findMission(player.goal).theme;
-        console.log('player ' + i + ' mission success -- ' + missions.acessPlayerMission(playerGoal, i));
-      });
+      var endTotalsArr = [];
       var gameGoalWinner = missions.accessGameMission(thisgame.findMission(thisgame.game.goal).theme);
       console.log('game mission winner - ', gameGoalWinner !== null ? gameGoalWinner : 'no clear winner');
+      this.game.players.forEach(function (player, i) {
+        thisgame.endTotals.push({ baseCash: 0, missionSuccess: false, gameGoalWinner: false, totalCash: 0, winner: false });
+        thisgame.endTotals[i].baseCash += player.cash;
+        thisgame.endTotals[i].totalCash += player.cash;
+        // bonus for passing your goal
+        var playerGoal = thisgame.findMission(player.goal).theme;
+        if (missions.acessPlayerMission(playerGoal, i)) {
+          console.log('player ' + i + ' mission success -- ' + missions.acessPlayerMission(playerGoal, i));
+          thisgame.endTotals[i].missionSuccess = true;
+          thisgame.endTotals[i].totalCash += 50;
+        }
+        // bonus for overral game winner
+        if (gameGoalWinner == i) {
+          thisgame.endTotals[i].gameGoalWinner = true;
+          thisgame.endTotals[i].totalCash += 50;
+        }
+        endTotalsArr.push(thisgame.endTotals[i].totalCash);
+      }); //foreach loop
+      var theDeFactoWinner = missions.indexOfMaxValue(endTotalsArr);
+      thisgame.endTotals[theDeFactoWinner].winner = true;
     },
     saveData: function saveData() {
       //localStorage.setItem('gimmicks', JSON.stringify(this.gimmicks));

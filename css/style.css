@@ -4228,6 +4228,19 @@ body {
     color: #fff;
     font-size: 24px; }
 
+.end-cash {
+  font-size: 32px;
+  padding: 10px 0; }
+  .end-cash.winner {
+    color: #94EDFD;
+    border: 1px red solid;
+    border-radius: 100%;
+    display: inline-block; }
+
+.fa.top3 {
+  position: relative;
+  top: 3px; }
+
 /*
 // variables
 */
