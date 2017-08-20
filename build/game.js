@@ -513,6 +513,8 @@ var game = new Vue({
         var playerGoal = thisgame.findMission(player.goal).theme;
         console.log('player ' + i + ' mission success -- ' + missions.acessPlayerMission(playerGoal, i));
       });
+      let gameGoalWinner = missions.accessGameMission(thisgame.findMission(thisgame.game.goal).theme);
+      console.log('game mission winner - ', gameGoalWinner !== null ? gameGoalWinner : 'no clear winner');
     },
     saveData: function(){
       //localStorage.setItem('gimmicks', JSON.stringify(this.gimmicks));

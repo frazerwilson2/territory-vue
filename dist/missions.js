@@ -17,9 +17,7 @@ var missions = new Vue({
       switch (type) {
         case 'MOSTITLESWTICH':
           //this.evalMost('legend', true);
-          var result = player == this.evalArray('titlechange');
-          console.log(result);
-          return result;
+          return player == this.evalArray('titlechange');
           // Do whatever checks if value met true
           break;
         case 2:
@@ -28,6 +26,22 @@ var missions = new Vue({
         default:
           return false;
       }
+    },
+    accessGameMission: function accessGameMission(type) {
+      var winner = void 0;
+      switch (type) {
+        case 'MOSTTOKENS':
+          var winnersBlock = [];
+          var mostTokensUsed = this.evalMost('tokens', true);
+          this.gameinstance.players.forEach(function (player, i) {
+            if (player.discards.tokens == mostTokensUsed) {
+              winnersBlock.push(i);
+            }
+          });
+          // only return if 1 result in array // otherwise nobody wins!!
+          winner = winnersBlock.length === 1 ? winnersBlock[0] : null;
+      }
+      return winner;
     },
     evalMost: function evalMost(req, tokens) {
       var evalBlock = [];
@@ -50,6 +64,7 @@ var missions = new Vue({
       }
     },
     countTotal: function countTotal(a, match) {
+      // count number of matches (match) in array (a)
       return a.filter(function (value) {
         return value === match;
       }).length;
