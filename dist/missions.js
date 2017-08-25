@@ -9,19 +9,23 @@ var missions = new Vue({
     init: function init(x) {
       this.gameinstance = x;
     },
-    acessPlayerMission: function acessPlayerMission(type, player) {
+    acessPlayerMission: function acessPlayerMission(type, player, roster) {
       // type: type of mission to resolve
       // player: index of player
       //      console.log('analysing ' + type);
 
       switch (type) {
         case 'MOSTITLESWTICH':
-          //this.evalMost('legend', true);
           return player == this.evalArray('titlechange');
-          // Do whatever checks if value met true
           break;
-        case 2:
-          // Do whatever checks if value met true
+        case '3ABOVE9':
+          return this.evalRoster(roster, 3, 9);
+          break;
+        case 'LEASTSTORY':
+          return player == this.evalArray('leaststory');
+          break;
+        case 'MOSTGIMMICK':
+          return player == this.evalArray('mostgimmick');
           break;
         default:
           return false;
@@ -62,6 +66,20 @@ var missions = new Vue({
         console.log('player ' + (this.indexOfMaxValue(evalBlock) + 1) + ' has most title switch gimmicks');
         return this.indexOfMaxValue(evalBlock);
       }
+      if (type == 'leaststory') {
+        var _evalBlock = [];
+        this.gameinstance.players.forEach(function (player) {
+          _evalBlock.push(player.discards.stories.length);
+        });
+        return this.indexOfLeastValue(_evalBlock);
+      }
+      if (type == 'mostgimmick') {
+        var _evalBlock2 = [];
+        this.gameinstance.players.forEach(function (player) {
+          _evalBlock2.push(player.discards.gimmicks.length);
+        });
+        return this.indexOfMaxValue(_evalBlock2);
+      }
     },
     countTotal: function countTotal(a, match) {
       // count number of matches (match) in array (a)
@@ -73,6 +91,23 @@ var missions = new Vue({
       return a.reduce(function (iMax, x, i, arr) {
         return x > arr[iMax] ? i : iMax;
       }, 0);
+    },
+    indexOfLeastValue: function indexOfLeastValue(a) {
+      var index = 0;
+      var value = a[0];
+      for (var i = 1; i < a.length; i++) {
+        if (a[i] < value) {
+          value = a[i];
+          index = i;
+        }
+      }
+      return index;
+    },
+    evalRoster: function evalRoster(a, num, val) {
+      var filterd = a.filter(function (w) {
+        return w >= val;
+      });
+      return filterd.length >= num;
     }
   }
 });

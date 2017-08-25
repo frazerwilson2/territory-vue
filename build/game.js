@@ -519,8 +519,13 @@ var game = new Vue({
         thisgame.endTotals[i].totalCash += player.cash;
         // bonus for passing your goal
         var playerGoal = thisgame.findMission(player.goal).theme;
-        if(missions.acessPlayerMission(playerGoal, i)){
-          console.log('player ' + i + ' mission success -- ' + missions.acessPlayerMission(playerGoal, i));
+        let rosterValTotal = [];
+        if(playerGoal === "3ABOVE9"){
+          player.roster.forEach(wrtlr=>{rosterValTotal.push(thisgame.findWrestler(wrtlr).val + thisgame.findWrestler(wrtlr).inc)});
+          console.log('rosterone');
+        }
+        console.log('player ' + i + ' mission success -- ' + missions.acessPlayerMission(playerGoal, i, rosterValTotal));
+        if(missions.acessPlayerMission(playerGoal, i, rosterValTotal)){
           thisgame.endTotals[i].missionSuccess = true;
           thisgame.endTotals[i].totalCash += 50;
         }
