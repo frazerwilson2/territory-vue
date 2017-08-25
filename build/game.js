@@ -67,7 +67,9 @@ var game = new Vue({
   this.setMatchcard();
   this.wChampVote(this.game.players[0]);
   this.checkForChamp(this.game.players[0]);
-  this.goToEndGame();
+  if(this.game.round == 'END'){
+    this.goToEndGame();
+  }
   },
   methods: {
     detailX: function(x, y, z){
@@ -927,12 +929,12 @@ NEXT STEPS
 // Reimplement champloan/switch
 *- new step between summary and first step
 *- each user listed, click to open loan vote or perform switch
-- multiple votes can be taken, once 1 vote accepted or switch stage over
+*- multiple votes can be taken, once 1 vote accepted or switch stage over
 *- set current stuff (matchcard and temproster must be done before)
 
 // NEWS
-- draw news card beginning of each player switch
-- enact based on name (each has specific rules)
+*- draw news card beginning of each player switch
+*- enact based on name (each has specific rules)
 
 // MISSIONS
 
@@ -940,16 +942,22 @@ NEXT STEPS
 
 // Bugs
 - wchamp when loaned, is added to temproster (already added to card)
-- tokens spent are added as minus
-- switching next chara keeps new champ list open
+*- tokens spent are added as minus
+*- switching next chara keeps new champ list open
 - injured star kept in temproster
 - same for quitter
+- champ switch not done correctly
+- spent money not added to player discards
+- bug on finish too soon
+- no reset after switching wchamp on first stage
 
 // WRAP UP
 - remove from card (re-add to temproster)
 - remove gimmick from matchcard
 - if no data of any kind reload from storage (if no storage note error then return to index)
-- highlight top rated match on summary
+- highlight top rated match on summary (transition screen before summary, then highlights on summary at top)
 - notification that gimmick/story added to your packs
+- gimmick strengths for wrestler types
+
 
 */
