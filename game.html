@@ -460,17 +460,24 @@
 <div v-if="game.round == 'END'">
   <div class="summary">
     
-  <h2>GAME OVEERRRR!!</h2>
+  <h2>And we're done..</h2>
   
 <div class="columns">
   <div class="column" v-for="(player, index) in game.players">
-    <h4>{{player.name}}:</h4>
+    <h4>{{player.name}}</h4>
         Base cash: ${{player.cash}}<br>
-        Goal: {{findMission(player.goal)}}
-      <hr><hr>
-<!--       most tokens = {{evalMost('tokens') == player.discards.tokens}}     -->
-
-      <small>{{player.discards}}</small>
+        Goal: {{findMission(player.goal).Name}}
+      <hr>
+      <ul>
+        <li>Stories used: {{player.discards.stories.length}}</li>
+        <li>Gimmicks used: {{player.discards.gimmicks.length}}</li>
+        <li>Tv slots bought: {{player.discards.tv}}</li>
+        <li>Arena shows bought: {{player.discards.arena}}</li>
+        <li>Tokens spent: {{player.discards.tokens}}</li>
+        <li>Legends hired: {{player.discards.legend}}</li>
+        <li>Total spent: {{player.discards.spend}}</li>
+      </ul>
+      <hr>
   </div>
 </div>
 
@@ -480,15 +487,12 @@
     <p>Mission success: 
       <i v-if="player.missionSuccess" class="fa fa-check top3" aria-hidden="true"></i>
       <i v-if="!player.missionSuccess" class="fa fa-ban top3" aria-hidden="true"></i></p> 
-    <p>Game goal winner:
+    <p>Game goal ({{findMission(game.goal).Name}}) winner:
       <i v-if="player.gameGoalWinner" class="fa fa-check top3" aria-hidden="true"></i>
       <i v-if="!player.gameGoalWinner" class="fa fa-ban top3" aria-hidden="true"></i></p></p> 
     <p class="end-cash" v-bind:class="{ winner: player.winner }">Final cash: ${{player.totalCash}}</p> 
   </div>
 </div>
-
-    <hr>
-Game goal: {{findMission(game.goal)}}<br>
   <small>
 <!--         goal: {{game.goal}}<br>
         news: {{game.news}}<br>

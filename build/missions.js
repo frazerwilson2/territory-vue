@@ -25,6 +25,20 @@ var missions = new Vue({
         case 'MOSTGIMMICK':
           return player == this.evalArray('mostgimmick');
           break;
+        case 'LEASTGIMMICK':
+          return player == this.evalArray('leastgimmick');
+          break;
+        case 'MOSTARENA':
+          return player == this.evalArray('mostarena');
+          break;
+        case 'MOSTTOKENS':
+          return player == this.evalArray('mosttokens');
+          break;
+        case 'MOSTLEG':
+          return player == this.evalArray('mostlegend');
+          break;
+        case 'NOTITLESWITCH':
+          return this.evalTitleSwitchCount(player);
         default: return false;
     	}
     },
@@ -49,7 +63,6 @@ var missions = new Vue({
       this.gameinstance.players.forEach(player => {
         evalBlock.push(tokens ? player['discards'][req] : player[req]);
       });
-      console.log('top result: ' + Math.max( ...evalBlock ));
       return Math.max( ...evalBlock );
     },
     evalArray: function (type, arr) {
@@ -58,7 +71,6 @@ var missions = new Vue({
         this.gameinstance.players.forEach(player => {
           evalBlock.push(this.countTotal(player.discards.gimmicks, 1));
         });
-        console.log('player ' + (this.indexOfMaxValue(evalBlock) + 1) + ' has most title switch gimmicks');
         return this.indexOfMaxValue(evalBlock);
       }
       if (type == 'leaststory') {
@@ -68,10 +80,36 @@ var missions = new Vue({
         });
         return this.indexOfLeastValue(evalBlock);
       }
-      if (type == 'mostgimmick') {
+      if (type == 'mostgimmick' || type == 'leastgimmick') {
         const evalBlock = [];
         this.gameinstance.players.forEach(player => {
           evalBlock.push(player.discards.gimmicks.length);
+        });
+        if(type == 'mostgimmick'){
+          return this.indexOfMaxValue(evalBlock);
+        }
+        else {
+          return this.indexOfLeastValue(evalBlock);
+        }
+      }
+      if(type == 'mostarena'){
+        const evalBlock = [];
+        this.gameinstance.players.forEach(player => {
+          evalBlock.push(player.discards.arena);
+        });
+        return this.indexOfMaxValue(evalBlock);
+      }
+      if(type == 'mostlegend'){
+        const evalBlock = [];
+        this.gameinstance.players.forEach(player => {
+          evalBlock.push(player.discards.legend);
+        });
+        return this.indexOfMaxValue(evalBlock);
+      }
+      if(type == 'mosttokens'){
+        const evalBlock = [];
+        this.gameinstance.players.forEach(player => {
+          evalBlock.push(player.discards.tokens);
         });
         return this.indexOfMaxValue(evalBlock);
       }
@@ -99,6 +137,13 @@ var missions = new Vue({
     evalRoster: function(a,num,val){
       let filterd = a.filter(w => w >= val);
       return filterd.length >= num;
+    },
+    evalTitleSwitchCount: function(p){
+      let notitleswitches = true;
+      this.gameinstance.players[p].discards.gimmicks.forEach(g =>{
+        if(g == 1){notitleswitches = false}
+      });
+      return notitleswitches;
     }
   }
 });
