@@ -10,7 +10,9 @@
 
 </head>
 <body>
+  <div class="bg"></div>
 <div id="app">
+  <div class="bg-tint" v-if="addPlayers"></div>
 
 <section class="hero is-success is-fullheight" v-if="titleScreen">
   <div class="hero-body">
@@ -29,12 +31,13 @@
   <div class="section container">
     <div class="columns">
       <div class="column is-two-thirds">
-        <h1 class="title">Set players</h1>
-  <ol class="block">
+        <h1 class="title">Setup players</h1>
+  <ol class="block player-setup">
     <li v-for="(player, index) in game.players" class="block"> 
       <div class="field">
         <p class="control">
-          <input class="input" type="text" v-model="player.name" v-bind:placeholder="'Player ' + (index + 1)">
+          Territory name
+          <input class="input" type="text" maxlength="3" v-model="player.name">
         </p>
       </div>
     </li>
@@ -52,20 +55,29 @@
 
 <div v-if="pickRosterView" class="hero is-success is-fullheight">
 <div class="container">
-<h1 class="title">Pick Roster</h1>
-<hr>
 
+<div class="pickbar" v-if="!loading">
+  <h1 class="title">Pick Roster</h1>
 <div class="columns">
     <div v-for="(player, index) in game.players" class="column pick_player" v-bind:class="{ activex: currentPlayer == index, assigned: player.ready }"> 
           <span style="float: right">${{player.cash}}</span>
           <p><strong>{{player.name}}</strong> {{player.roster.length}}</p> 
           <div><span class="roster_label" v-for="guy in player.roster">{{rawRoster[guy - 1].Name}}</span></div>
+          <a class="button is-dark" @click="viewGoal(player.goal)">View Goal</a>
           <a class="button is-dark" @click="donePurchase()" v-if="!player.ready">Finished</a>
+<!-- <p v-if="player.goal">{{findMission(player.goal).Name}}</p> -->
     </div>
 </div>
+<h2>Make selection: Player {{currentPlayer + 1}}</h2>
+</div>
 
-  <h2>Make selection: Player {{currentPlayer + 1}}</h2>
-  <div>
+<div class="card goal-view" v-if="tempGoal">
+  <a @click="closeGoal()" class="align-right close-store"><i class="fa fa-2x fa-times" aria-hidden="true"></i></a>
+  <h4>{{tempGoal.Name}}</h4>
+  <p>{{tempGoal.description}}</p>
+</div>
+
+  <div style="padding-top: 200px;">
   <wrestler v-for="guy in game.roster" v-bind:data="rawRoster[guy - 1]" v-bind:cash="game.players[currentPlayer].cash >= rawRoster[guy - 1].val" v-if="!rawRoster[guy - 1].isWChamp"></wrestler>
   </div>
   <hr/>
@@ -73,7 +85,7 @@
 </div>
 </div>
   <div class="loading" v-if="loading">
-    <h1 class="title">Rosters Loaded</h1>
+    <h1 class="title">We're all set</h1>
   <a @click="saveData" class="button is-dark">Start</a>
   </div>
 

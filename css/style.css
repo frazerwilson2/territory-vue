@@ -3983,6 +3983,34 @@ body {
   position: relative;
   margin-bottom: 200px; }
 
+.pickbar {
+  position: fixed;
+  width: calc(100% - 60px);
+  display: block;
+  top: 0px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 15px; }
+
+.card.goal-view {
+  position: fixed;
+  z-index: 100;
+  margin: auto;
+  width: 250px;
+  left: calc(50% - 125px);
+  top: 100px;
+  min-height: 330px;
+  font-size: 14px; }
+  .card.goal-view p {
+    white-space: initial; }
+
+.player-setup input {
+  background: transparent;
+  color: white;
+  text-transform: uppercase;
+  max-width: 140px;
+  font-size: 40px; }
+
 .store-link {
   border-top: 70px #41BFD6 solid;
   border-left: 70px transparent solid;
@@ -4344,6 +4372,9 @@ body {
 .section {
   background: none; }
 
+.hero, .hero.is-success {
+  background: transparent; }
+
 .chara_box {
   background: #eaeaea;
   margin: 1%;
@@ -4380,11 +4411,16 @@ body {
   opacity: 0.5; }
 
 .loading {
-  background: rgba(128, 128, 128, 0.48);
+  background: rgba(128, 128, 128, 0.6);
   top: 0;
-  position: absolute;
+  position: fixed;
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  z-index: 99;
+  text-align: center;
+  padding-top: 180px; }
+  .loading h1 {
+    color: white; }
 
 #infosCol {
   background: #a7a7a7; }

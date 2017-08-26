@@ -26,6 +26,34 @@ body {
   position: relative;
   margin-bottom: 200px; }
 
+.pickbar {
+  position: fixed;
+  width: calc(100% - 60px);
+  display: block;
+  top: 0px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 15px; }
+
+.card.goal-view {
+  position: fixed;
+  z-index: 100;
+  margin: auto;
+  width: 250px;
+  left: calc(50% - 125px);
+  top: 100px;
+  min-height: 330px;
+  font-size: 14px; }
+  .card.goal-view p {
+    white-space: initial; }
+
+.player-setup input {
+  background: transparent;
+  color: white;
+  text-transform: uppercase;
+  max-width: 140px;
+  font-size: 40px; }
+
 .store-link {
   border-top: 70px #41BFD6 solid;
   border-left: 70px transparent solid;

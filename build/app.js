@@ -28,6 +28,7 @@ var app = new Vue({
     },
     currentPlayer:0,
     loading: false,
+    tempGoal: null
   },
   mounted: function() {
   this.getRoster();
@@ -62,12 +63,15 @@ var app = new Vue({
       .then((data) => {this.$set(this,'rawRoster', data); localStorage.setItem('roster', JSON.stringify(data))});
     },
     pickRoster: function(){
+      this.loadUpData();
       this.game.roster = this.rawRoster.map(w => w.Id);
       this.pickRosterView = true;
       this.addPlayers = false;
+      this.game.players.forEach(p => {p.name = p.name.toUpperCase()});
     },
     // The setup roster pick
     addToRoster: function(data){
+      if(this.game.players[this.currentPlayer].cash < data.val){return}
       this.game.players[this.currentPlayer].roster.push(data.id);
       this.game.players[this.currentPlayer].cash -= data.val;
       for(var i=0;i<this.game.roster.length;i++){
@@ -86,7 +90,7 @@ var app = new Vue({
       }
       if(readyCount == this.game.players.length) {
         this.loading = true;
-        this.loadUpData();
+        // this.loadUpData();
       }
       else {
         this.nextPlayer();  
@@ -118,6 +122,23 @@ var app = new Vue({
       fetch('/missions.json')
       .then(blob => blob.json())
       .then((data) => {this.$set(this,'rawMissions', data); localStorage.setItem('missions', JSON.stringify(data)); this.sortMissions()})
+    },
+    findMission: function(id){
+      let theGoal;
+      this.rawMissions.forEach(mis => {
+        if(id == mis.Id){
+          theGoal = mis;
+        }
+      });
+      return theGoal;
+    },
+    viewGoal: function(id){
+      let msg = this.findMission(id);
+      console.log(msg.Name);
+      this.tempGoal = msg;
+    },
+    closeGoal: function(){
+      this.tempGoal = null;
     },
     sortMissions: function(){
       var playerMissions = this.rawMissions.filter(mission => mission.type == "player");
@@ -214,7 +235,7 @@ var app = new Vue({
         <p>Style: {{data.style}} / Theme: {{data.theme}}</p>\
         <p>Weight: {{data.weight}} / Height: {{data.height}}</p>\
         <p>Charisma: {{data.charisma}} / Ability: {{data.ability}}</p>\
-      <a class="button is-dark" v-on:click="purchaseRoster()" v-if="!data.assigned">Purchase</a>\
+      <a class="button is-dark" v-on:click="purchaseRoster()">Purchase</a>\
       </div>',
       methods: {
         purchaseRoster: function () {

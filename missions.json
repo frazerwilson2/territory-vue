@@ -3,49 +3,57 @@
 		"Name":"The nostalgia club",
 		"Id":1,
 		"type":"player",
-		"theme": "MOSTLEG"
+		"theme": "MOSTLEG",
+		"description": "For a bonus payout, end the year with the most legendary star appearances on your brand"
 		},
 	{
 		"Name":"The wild house",
 		"Id":2,
 		"type":"player",
-		"theme": "MOSTGIMMICK"
+		"theme": "MOSTGIMMICK",
+		"description": "For a bonus payout, have more gimmick matches than anybody else"
 		},
 	{
 		"Name":"The land of opportunity",
 		"Id":3,
 		"type":"player",
-		"theme": "3ABOVE9"
+		"theme": "3ABOVE9",
+		"description": "For a bonus payout, end the year with at least 3 stars with a rating of 9 or above"
 		},
 	{
 		"Name":"The big time",
 		"Id":4,
 		"type":"player",
-		"theme": "MOSTARENA"
+		"theme": "MOSTARENA",
+		"description": "For a bonus payout, have more arena shows than anybody else by the end of the year"
 		},
 	{
 		"Name":"This is wrestling",
 		"Id":5,
 		"type":"player",
-		"theme": "LEASTGIMMICK"
+		"theme": "LEASTGIMMICK",
+		"description": "For a bonus payout, end the year with the least gimmicks used"
 		},
 	{
 		"Name":"Ring masters",
 		"Id":6,
 		"type":"player",
-		"theme": "LEASTSTORY"
+		"theme": "LEASTSTORY",
+		"description": "For a bonus payout, end the year with the least stories completed"
 		},
 	{
 		"Name":"Fire Russo",
 		"Id":7,
 		"type":"player",
-		"theme": "MOSTITLESWTICH"
+		"theme": "MOSTITLESWTICH",
+		"description": "For a bonus payout, end the year with more title switches than anyone else"
 		},
 	{
 		"Name":"One and only",
 		"Id":8,
 		"type":"player",
-		"theme": "NOTITLESWITCH"
+		"theme": "NOTITLESWITCH",
+		"description": "For a bonus payout, end the year without a single title switch"
 		},
 	{
 		"Name":"Most tokens",
