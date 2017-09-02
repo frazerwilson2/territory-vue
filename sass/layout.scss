@@ -116,9 +116,15 @@ body {
 				top: -25px;
 				&.heel {
 					border: 2px $red solid;
+                    img {
+                        background: $heel;
+                    }
 				}
 				&.face {
 					border: 2px $lightblue solid;
+                    img {
+                        background: $face;
+                    }
 				}
 				.win-btn, .win-label {
 					position: absolute;
@@ -246,11 +252,15 @@ body {
 }
 
 .champ-belt {
-	float: right;
-    background:yellow;
+    float: right;
+    background: yellow;
     display: inline-block;
-    width: 10px;
+    width: 15px;
     border-radius: 100%;
+    height: 15px;
+    top: 8px;
+    position: relative;
+    text-indent: -99999px;
     &.w-champ {
         background:$red;
     }
@@ -330,6 +340,9 @@ body {
 .store {
 	a {
 		color: #000;
+        .fa {
+            color: #FFF;
+        }
 	}
 	.close-store {
 		position: fixed;

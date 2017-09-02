@@ -62,7 +62,7 @@
     <div v-for="(player, index) in game.players" class="column pick_player" v-bind:class="{ activex: currentPlayer == index, assigned: player.ready }"> 
           <span style="float: right">${{player.cash}}</span>
           <p><strong>{{player.name}}</strong> {{player.roster.length}}</p> 
-          <div><span class="roster_label" v-for="guy in player.roster">{{rawRoster[guy - 1].Name}}</span></div>
+          <div><span class="roster_label" v-for="guy in player.roster">{{findWrestler(guy).Name}}</span></div>
           <a class="button is-dark" @click="viewGoal(player.goal)">View Goal</a>
           <a class="button is-dark" @click="donePurchase()" v-if="!player.ready">Finished</a>
 <!-- <p v-if="player.goal">{{findMission(player.goal).Name}}</p> -->

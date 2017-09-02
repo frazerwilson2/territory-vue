@@ -53,10 +53,10 @@
   .card--wrestler:before {
     content: '';
     background: #41BFD6 url("/images/star.svg"); }
-  .card--wrestler.heel {
-    background: #fff1f1; }
-  .card--wrestler.face {
-    background: #f1f6ff; }
+  .card--wrestler img.heel {
+    background: #f7cece; }
+  .card--wrestler img.face {
+    background: #d0ddf5; }
   .card--wrestler .w_val {
     float: right; }
   .card--wrestler hr {

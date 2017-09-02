@@ -74,9 +74,9 @@ var app = new Vue({
       if(this.game.players[this.currentPlayer].cash < data.val){return}
       this.game.players[this.currentPlayer].roster.push(data.id);
       this.game.players[this.currentPlayer].cash -= data.val;
-      for(var i=0;i<this.game.roster.length;i++){
-        if(this.game.roster[i] == data.id){this.game.roster.splice(i, 1)}
-      }
+      // for(var i=0;i<this.game.roster.length;i++){
+      //   if(this.game.roster[i] == data.id){this.game.roster.splice(i, 1)}
+      // }
     },
     nextPlayer: function(){
       this.currentPlayer + 1 == this.game.players.length ? this.currentPlayer = 0 : this.currentPlayer++;
@@ -95,6 +95,17 @@ var app = new Vue({
       else {
         this.nextPlayer();  
       }     
+    },
+    findWrestler: function(id){
+      var result = null;
+      this.rawRoster.forEach(wrestler => {
+        if(wrestler.Id == id){
+          //console.log(wrestler)
+          result = wrestler;
+        }
+      });
+      if(!result){return}
+      return result;
     },
     loadUpData: function(){
       this.getLegends();
@@ -230,15 +241,16 @@ var app = new Vue({
       props: ['data', 'cash'],
       template: '<div class="chara_box card card--wrestler" v-bind:class="{ assigned: data.assigned || !cash}">\
       <div class="value">{{data.val}}</div>\
-      <img v-bind:src="\'images/roster/\' + imgPath(data.Name) + \'.jpg\'" v-bind:class="{ heel: data.heelface == \'H\', face: data.heelface == \'F\'}" />\
+      <img v-bind:src="\'images/roster/\' + imgPath(data.Name) + \'.png\'" v-bind:class="{ heel: data.heelface == \'H\', face: data.heelface == \'F\'}" />\
       <h4>{{data.Name}}</h4>\
         <p>Style: {{data.style}} / Theme: {{data.theme}}</p>\
         <p>Weight: {{data.weight}} / Height: {{data.height}}</p>\
         <p>Charisma: {{data.charisma}} / Ability: {{data.ability}}</p>\
-      <a class="button is-dark" v-on:click="purchaseRoster()">Purchase</a>\
+      <a class="button is-dark" v-on:click="purchaseRoster(data.assigned)">Purchase</a>\
       </div>',
       methods: {
-        purchaseRoster: function () {
+        purchaseRoster: function (bought) {
+          if(bought){return;}
           this.data.assigned = true;
           app.$emit('addToRoster', {id:this.data.Id, val:this.data.val});
           app.$emit('nextPlayer', 'switch to' + this.data.Id);

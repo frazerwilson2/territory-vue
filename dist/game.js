@@ -358,7 +358,7 @@ var game = new Vue({
             matchSum += 5;game.game.players[index].discards.gimmicks.push(match.gimmick);
           }
           if (match.gimmickAffect) {
-            game.affectGimmick(match);
+            game.affectGimmick(match, index);
           }
           if (match.story) {
             var matchStoryDetail = game.findStory(match.story);
@@ -397,7 +397,7 @@ var game = new Vue({
         }
       });
     },
-    affectGimmick: function affectGimmick(matchdet) {
+    affectGimmick: function affectGimmick(matchdet, index) {
       var gimmickdetail = this.findGimmick(matchdet.gimmick);
       switch (gimmickdetail.type) {
         case 'HEELFACE':
@@ -419,6 +419,8 @@ var game = new Vue({
               alert(game.roster[key].Name + ' is new champ!');
             }
           });
+          // champSet val set for player
+          this.game.players[index].champSet = matchdet.gimmickAffect;
           break;
       }
     },

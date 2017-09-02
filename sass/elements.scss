@@ -71,11 +71,13 @@
     		content: '';
 			background: #41BFD6 url('/images/star.svg');
     	}
-        &.heel {
-            background: #fff1f1;
-        }
-        &.face {
-            background: #f1f6ff;
+        img {
+            &.heel {
+                background: $heel;
+            }
+            &.face {
+                background: $face;
+            }
         }
         .w_val {
             float:right;

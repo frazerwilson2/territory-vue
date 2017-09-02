@@ -94,8 +94,12 @@ body {
         top: -25px; }
         .matchcard .match .competitor .profile.heel {
           border: 2px #ef5353 solid; }
+          .matchcard .match .competitor .profile.heel img {
+            background: #f7cece; }
         .matchcard .match .competitor .profile.face {
           border: 2px #94EDFD solid; }
+          .matchcard .match .competitor .profile.face img {
+            background: #d0ddf5; }
         .matchcard .match .competitor .profile .win-btn, .matchcard .match .competitor .profile .win-label {
           position: absolute;
           top: 0;
@@ -192,8 +196,12 @@ body {
   float: right;
   background: yellow;
   display: inline-block;
-  width: 10px;
-  border-radius: 100%; }
+  width: 15px;
+  border-radius: 100%;
+  height: 15px;
+  top: 8px;
+  position: relative;
+  text-indent: -99999px; }
   .champ-belt.w-champ {
     background: #ef5353; }
 
@@ -256,6 +264,8 @@ body {
   background: #41BFD6; }
   .store a {
     color: #000; }
+    .store a .fa {
+      color: #FFF; }
   .store .close-store {
     position: fixed;
     right: 40px; }

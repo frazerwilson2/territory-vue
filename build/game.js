@@ -342,7 +342,7 @@ var game = new Vue({
           // rather than give 5, give the standard of 3, then check a new gimmick attr of 'bonus', if present call a func with gimmick
           // id and 2 competitor ids (spread operator?) and check for the gimmick bonus requirements? return int for bonus points
           if(match.gimmick){matchSum += 5; game.game.players[index].discards.gimmicks.push(match.gimmick)}
-          if(match.gimmickAffect){game.affectGimmick(match)}
+          if(match.gimmickAffect){game.affectGimmick(match, index)}
           if(match.story){
             const matchStoryDetail = game.findStory(match.story);
             if(matchStoryDetail.current == matchStoryDetail.lengthDur){
@@ -380,7 +380,7 @@ var game = new Vue({
         }
       });
     },
-    affectGimmick: function(matchdet){
+    affectGimmick: function(matchdet, index){
       var gimmickdetail = this.findGimmick(matchdet.gimmick);
       switch(gimmickdetail.type){
        case 'HEELFACE':
@@ -402,6 +402,8 @@ var game = new Vue({
             alert(game.roster[key].Name + ' is new champ!');
           }
         });
+        // champSet val set for player
+        this.game.players[index].champSet = matchdet.gimmickAffect;
         break;
       }
     },

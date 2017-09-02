@@ -66,7 +66,7 @@
         <div class="reg_col card card--wrestler" 
           v-for="(wrestler, index) in game.legends"
           v-bind:class="{'fade':game.players[turn].cash <= findWrestler(wrestler).val}">
-
+          <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.png'" />
             <span class="w_val">{{findWrestler(wrestler).val}}</span>
             <h4>{{findWrestler(wrestler).Name}}</h4>
             Type: {{findWrestler(wrestler).type}} 
@@ -83,7 +83,7 @@
         v-if="!findWrestler(wrestler).isWChamp"
         v-bind:class="{'fade':game.players[turn].cash <= findWrestler(wrestler).val}">
         <div class="value">{{findWrestler(wrestler).val}}</div>
-        <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.jpg'" v-bind:class="{'face':findWrestler(wrestler).heelface == 'F', 'heel':findWrestler(wrestler).heelface == 'H'}">
+        <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.png'" v-bind:class="{'face':findWrestler(wrestler).heelface == 'F', 'heel':findWrestler(wrestler).heelface == 'H'}">
           <span class="w_val">{{findWrestler(wrestler).val}}/{{findWrestler(wrestler).inc}}</span>
           <h4>{{findWrestler(wrestler).Name}}</h4>
           <p>Style: {{findWrestler(wrestler).style}} / Theme: {{findWrestler(wrestler).theme}}</p>
@@ -127,7 +127,7 @@
       <span v-if="findWrestler(wrestler).inc > 1"></span>
       <span v-if="findWrestler(wrestler).inc > 2"></span>
     </div>
-      <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.jpg'" v-bind:class="{'face':findWrestler(wrestler).heelface == 'F', 'heel':findWrestler(wrestler).heelface == 'H'}">
+      <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.png'" v-bind:class="{'face':findWrestler(wrestler).heelface == 'F', 'heel':findWrestler(wrestler).heelface == 'H'}">
       <div v-if="findWrestler(wrestler).isChamp" class="champ-belt">-</div>
       <div v-if="findWrestler(wrestler).isWChamp" class="champ-belt w-champ">-</div>
       <h4>{{findWrestler(wrestler).Name}}</h4>
@@ -211,7 +211,7 @@
       <div class="column is-5 competitor competitor-1">
         <div v-if="match.competitors[0]">
           <div class="profile" v-bind:class="{ heel: findWrestler(match.competitors[0]).heelface == 'H', face: findWrestler(match.competitors[0]).heelface == 'F'}">
-            <img v-bind:src="'images/roster/' + imgPath(findWrestler(match.competitors[0]).Name) + '.jpg'">
+            <img v-bind:src="'images/roster/' + imgPath(findWrestler(match.competitors[0]).Name) + '.png'">
           <span v-if="match.competitors[0] == match.winner" class="win-label">W</span>
           <span v-if="match.competitors[1] == match.winner" class="win-label">L</span>
           <a v-if="!match.winner || match.competitors[0] != match.winner" @click="setWinner(match, match.competitors[0], index)" class="win-btn">W</a>
@@ -231,7 +231,7 @@
       <div class="column is-5 competitor competitor-2">
         <div v-if="match.competitors[1]">
           <div class="profile" v-bind:class="{ heel: findWrestler(match.competitors[1]).heelface == 'H', face: findWrestler(match.competitors[1]).heelface == 'F'}">
-            <img v-bind:src="'images/roster/' + imgPath(findWrestler(match.competitors[1]).Name) + '.jpg'">
+            <img v-bind:src="'images/roster/' + imgPath(findWrestler(match.competitors[1]).Name) + '.png'">
             <span v-if="match.competitors[1] == match.winner" class="win-label">W</span>
             <span v-if="match.competitors[0] == match.winner" class="win-label">L</span>
             <a v-if="!match.winner || match.competitors[1] != match.winner" @click="setWinner(match, match.competitors[1], index)" class="win-btn">W</a>
@@ -269,7 +269,7 @@
             <span v-if="findWrestler(wrestler).inc > 1"></span>
             <span v-if="findWrestler(wrestler).inc > 2"></span>
         </div>
-          <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.jpg'" v-bind:class="{ heel: findWrestler(wrestler).heelface == 'H', face: findWrestler(wrestler).heelface == 'F'}">
+          <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.png'" v-bind:class="{ heel: findWrestler(wrestler).heelface == 'H', face: findWrestler(wrestler).heelface == 'F'}">
           <div v-if="findWrestler(wrestler).isChamp" class="champ-belt">-</div>
           <div v-if="findWrestler(wrestler).isWChamp" class="champ-belt w-champ">-</div>
           <a @click="addToCard(index, wrestler)">{{findWrestler(wrestler).Name}} {{findWrestler(wrestler).heelface}}</a>
@@ -279,7 +279,7 @@
       <div class="pop popgimmick" v-bind:class="{ active: popGimmick }">
         <a @click="closePop()" class="align-right"><i class="fa fa-times" aria-hidden="true"></i></a>
         <ul>
-          <li v-for="(gimmick, index) in player.gimmicks">
+          <li v-for="(gimmick, index) in player.gimmicks" v-bind:class="{hideit: player.gimmicks[index] == player.gimmicks[index - 1]}">
             <div v-if="findGimmick(gimmick).type == 'TITLECHANGE'">
               <a v-if="titleCards == true" @click="addGimmickCard(gimmick, index)">{{findGimmick(gimmick).Name}}</a>
               <span v-else class="hide">{{findGimmick(gimmick).Name}}</span>
@@ -320,7 +320,7 @@
           <div class="columns">
             <div class="column is-one-quarter">
               <div class="world-champion" v-if="game.wChamp">
-                <img v-bind:src="'images/roster/' + imgPath(findWrestler(game.wChamp).Name) + '.jpg'">
+                <img v-bind:src="'images/roster/' + imgPath(findWrestler(game.wChamp).Name) + '.png'">
                 <h2>{{findWrestler(game.wChamp).Name}}</h2>
                 <div v-for="(player, index) in game.players" v-if="player.hasWChamp">
                     {{player.name}}
