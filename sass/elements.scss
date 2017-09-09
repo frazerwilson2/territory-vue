@@ -92,6 +92,11 @@
     		content: '';
 			background: $gimmick url("/images/flash.svg") 4px no-repeat;
     	}
+        p {
+            white-space: initial;
+            overflow: auto;
+            text-overflow: initial;
+        }
     }
 
     &--story {

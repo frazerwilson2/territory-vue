@@ -333,30 +333,53 @@ var game = new Vue({
     sumValues: function(val, index){
       let totalGain = 0;
       val.matchcard.forEach(function(match){
+        let notes = '';
         if(match.competitors[0] && match.competitors[1]){
           let matchSum = game.findWrestler(match.competitors[0]).val + game.findWrestler(match.competitors[1]).val;
           matchSum += game.findWrestler(match.competitors[0]).inc;
           matchSum += game.findWrestler(match.competitors[1]).inc;
+          if(matchSum > 17) {notes += 'high caliber stars';} else if (matchSum > 11) {notes += 'good stars';} else {notes += 'average stars';};
           game.findWrestler(match.competitors[0]).isChamp ? matchSum += 1 : matchSum += 0;
           game.findWrestler(match.competitors[1]).isChamp ? matchSum += 1 : matchSum += 0;
-          // rather than give 5, give the standard of 3, then check a new gimmick attr of 'bonus', if present call a func with gimmick
-          // id and 2 competitor ids (spread operator?) and check for the gimmick bonus requirements? return int for bonus points
-          if(match.gimmick){matchSum += 5; game.game.players[index].discards.gimmicks.push(match.gimmick)}
+          // gimmick
+          if(match.gimmick){
+            matchSum += 2; game.game.players[index].discards.gimmicks.push(match.gimmick);
+            let evalCompets;
+            if(match.gimmickAffect){
+              evalCompets = [];
+              evalCompets.push(match.gimmickAffect);
+            }
+            else {
+              evalCompets = match.competitors;
+            }
+            if (game.findGimmick(match.gimmick).bonus && game.gimmickBonus(game.findGimmick(match.gimmick).bonus, evalCompets)){
+              matchSum += 3;
+              notes += ', well played gimmick';
+            }
+            else {
+              notes += ', badly used gimmick';
+            }
+          }
           if(match.gimmickAffect){game.affectGimmick(match, index)}
+          // story
           if(match.story){
             const matchStoryDetail = game.findStory(match.story);
             if(matchStoryDetail.current == matchStoryDetail.lengthDur){
               matchSum += matchStoryDetail.payoff;
+              notes += ', big story blowoff';
               game.game.players[index].discards.stories.push(match.story);
               game.game.players[index].stories.forEach(function(val,key){
                 if(val == match.story){game.game.players[index].stories.splice(key,1)}
               })
             }
             else {
+              notes += ', story building';
               matchStoryDetail.current++;
             }
           }
+          if(matchSum > 30){notes += ', a MOTY contender';};
           game.summaryValues[index].matches.push(matchSum);
+          game.summaryValues[index].notes.push(notes);
           totalGain += matchSum;
         }
       });
@@ -407,13 +430,24 @@ var game = new Vue({
         break;
       }
     },
+    gimmickBonus: function(bonus, compets){
+      let result = false;
+      compets.forEach(w => {
+        let wrestle = this.findWrestler(w);
+        console.log(bonus.value == wrestle[bonus.type]);
+        if(bonus.value == wrestle[bonus.type]){
+          result = true;
+        };
+      });
+      return result;
+    },
     checkArena: function(value, index){
 
     },
     summarize: function(){
         game.summaryValues = [];
         this.game.players.forEach(function(value, index) {
-        game.summaryValues.push({'matches':[],'bonus':0, 'total':0});
+        game.summaryValues.push({'matches':[], 'notes': [],'bonus':0, 'total':0});
         game.sumValues(value, index);
         game.incWinners(value, index);
         game.checkArena(value, index);
@@ -869,7 +903,7 @@ Following final round tally all $ and award winner
 NEXT STEPS
 // SETUP
 *- summary display values (per match breakdown)
-- validate choices (match with 1 wrestler, type mismatch, select winner)
+*- validate choices (match with 1 wrestler, type mismatch, select winner)
 *- winner inc, loser inc reset
 *- reset temproster and matchcard for next round
 *- award round winner with token
@@ -943,17 +977,20 @@ NEXT STEPS
 // END GAME (end after 12, tally totals(with missions) and announce winner)
 
 // Bugs
+- all stars listed on store ???
 - wchamp when loaned, is added to temproster (already added to card)
 *- tokens spent are added as minus
 *- switching next chara keeps new champ list open
 - injured star kept in temproster
 - same for quitter
-- champ switch not done correctly
+*- champ switch not done correctly
 - spent money not added to player discards
-- bug on finish too soon
+*- bug on finish too soon
 - no reset after switching wchamp on first stage
 
 // WRAP UP
+*- gimmick types have bonus points enacted
+- sounds!!
 - remove from card (re-add to temproster)
 - remove gimmick from matchcard
 - if no data of any kind reload from storage (if no storage note error then return to index)

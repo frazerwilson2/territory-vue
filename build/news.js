@@ -107,7 +107,7 @@ var news = new Vue({
 	  			break;
 	  		case 'INJURY2':
 	  			response.type = 'injury';
-	  			response.wrestler = player.matchcard[1].competitors[0];
+	  			response.wrestler = player.matchcard[1] ? player.matchcard[1].competitors[0] : null;
 	  			response.injuryType = 'large';
 	  			return response;
 	  			break;

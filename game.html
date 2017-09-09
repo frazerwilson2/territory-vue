@@ -144,6 +144,7 @@
     <div class="reg_col card card--gimmick" v-for="(gimmick, index) in player.gimmicks">
       <img src="/images/gimmick.jpg">
       <h4>{{findGimmick(gimmick).Name}}</h4>
+      <p>{{findGimmick(gimmick).description}}</p>
     </div>
   </div>
 </div>
@@ -202,7 +203,7 @@
         <div class="column is-12 add-gimmick">
           <a v-if="match.ready && !match.gimmick" @click="openGimmick(index)">Add gimmick</a>
           <div v-if="match.gimmick">
-          {{findGimmick(match.gimmick).Name}} 
+          {{findGimmick(match.gimmick).Name}} {{gimmickBonus(findGimmick(match.gimmick).bonus, [match.competitors[0], match.competitors[1]])}}
           </div>
         </div>
       </div>
@@ -372,9 +373,10 @@
       <div class="column" v-for="(result, index1) in summaryValues">
         <h4>{{game.players[index1].name}}</h4>
         <div v-for="(match, index) in result.matches">
-          {{findWrestler(game.players[index1].matchcard[index].competitors[0]).Name}} /
+          <p>{{findWrestler(game.players[index1].matchcard[index].competitors[0]).Name}} /
           {{findWrestler(game.players[index1].matchcard[index].competitors[1]).Name}}
-          - ${{match}}
+          - ${{match}}</p>
+          <span class="notes">{{result.notes[index]}}</span>
         </div>
         <div>Bonus: {{result.bonus}}</div>
         <hr>

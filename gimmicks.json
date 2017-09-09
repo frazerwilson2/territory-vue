@@ -3,48 +3,69 @@
 		"Name":"title change",
 		"Id":1,
 		"type":"TITLECHANGE",
-		"description": "test",
+		"description": "Swap the territory championship for a big reaction",
 		"setupnum": 3,
-		"affect":"true"
+		"affect":"true",
+		"bonus":false
 		},
 	{
 		"Name":"Heel/face turn",
 		"Id":2,
 		"type":"HEELFACE",
-		"description": "test",
+		"description": "Turn your character heel or face, a heel turn gets bigger response",
 		"setupnum": 3,
-		"affect":"true"
+		"affect":"true",
+		"bonus": {
+			"type": "heelface",
+			"value": "F"
+		}
 		},
 	{
 		"Name":"cage",
 		"Id":3,
 		"type":"CAGE",
-		"description": "test",
+		"description": "A solid. steel. CAAAGE! bonus for a wrestler with power style",
 		"setupnum": 10,
-		"affect":"false"
+		"affect":"false",
+		"bonus": {
+			"type": "style",
+			"value": "power"
+		}
 		},
 	{
 		"Name":"Ladder",
 		"Id":4,
 		"type":"LADDER",
-		"description": "test",
+		"description": "Put on an exciting battle where winner climbs the ladder. Bonus for high flyers",
 		"setupnum": 10,
-		"affect":"false"
+		"affect":"false",
+		"bonus": {
+			"type": "theme",
+			"value": "high-flying"
+		}
 		},
 	{
 		"Name":"No dq",
 		"Id":5,
 		"type":"WEAPONS",
-		"description": "test",
+		"description": "An anything goes no DQ match. Bonus if brawlers included",
 		"setupnum": 10,
-		"affect":"false"
+		"affect":"false",
+		"bonus": {
+			"type": "style",
+			"value": "brawler"
+		}
 		},
 	{
 		"Name":"table",
 		"Id":6,
 		"type":"TABLE",
-		"description": "test",
+		"description": "A violent table match. Bonus for violent superstars included",
 		"setupnum": 10,
-		"affect":"false"
+		"affect":"false",
+		"bonus": {
+			"type": "theme",
+			"value": "violent"
+		}
 		}
 ]

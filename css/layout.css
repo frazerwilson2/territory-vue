@@ -308,6 +308,12 @@ body {
   .summary strong {
     color: #fff;
     font-size: 24px; }
+  .summary .notes {
+    color: #ffc4c4;
+    font-size: 12px;
+    display: block;
+    margin-bottom: 20px;
+    text-transform: capitalize; }
 
 .end-cash {
   font-size: 32px;

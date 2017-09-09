@@ -64,6 +64,10 @@
   .card--gimmick:before {
     content: '';
     background: #DDFF80 url("/images/flash.svg") 4px no-repeat; }
+  .card--gimmick p {
+    white-space: initial;
+    overflow: auto;
+    text-overflow: initial; }
   .card--story:before {
     content: '';
     background: #F08181 url("/images/speech.svg") 2px 4px no-repeat;

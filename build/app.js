@@ -217,6 +217,11 @@ var app = new Vue({
         }
       }
       this.shuffle(this.game.gimmicks);
+      debugger;
+      for(var x=0;x<this.game.players.length;x++){
+        this.game.players[x].gimmicks.push(this.game.gimmicks[this.game.gimmicks.length - 1]);
+        this.game.gimmicks.splice(this.game.gimmicks.length - 1, 1);
+      }
       //this.saveData();
     },
     getLegends:function() {
