@@ -74,9 +74,10 @@ var app = new Vue({
       if(this.game.players[this.currentPlayer].cash < data.val){return}
       this.game.players[this.currentPlayer].roster.push(data.id);
       this.game.players[this.currentPlayer].cash -= data.val;
-      // for(var i=0;i<this.game.roster.length;i++){
-      //   if(this.game.roster[i] == data.id){this.game.roster.splice(i, 1)}
-      // }
+     // console.log(data, this.game.roster);
+      for(var i=0;i<this.game.roster.length;i++){
+        if(this.game.roster[i] == data.id){this.game.roster.splice(i, 1)}
+      }
     },
     nextPlayer: function(){
       this.currentPlayer + 1 == this.game.players.length ? this.currentPlayer = 0 : this.currentPlayer++;
@@ -217,7 +218,6 @@ var app = new Vue({
         }
       }
       this.shuffle(this.game.gimmicks);
-      debugger;
       for(var x=0;x<this.game.players.length;x++){
         this.game.players[x].gimmicks.push(this.game.gimmicks[this.game.gimmicks.length - 1]);
         this.game.gimmicks.splice(this.game.gimmicks.length - 1, 1);

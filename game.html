@@ -19,7 +19,7 @@
 <!-- /////////////////STORE///////////////////// -->
   <div id="store" class="columns store" v-bind:class="{'is-fullheight hero':showStore}" v-if="turn !== 'WCHAMP' && turn !== 'REVIEW'"> 
 
-    <a @click="openStore(false)" class="align-right close-store"><i class="fa fa-2x fa-times" aria-hidden="true"></i></a>
+    <a @click="openStore(false)" class="align-right close-store" v-if="showStore"><i class="fa fa-2x fa-times" aria-hidden="true"></i></a>
 
     <div class="columns">
       
@@ -98,7 +98,7 @@
   </div><!-- store -->
 
  
-    <div class="store-link" v-if="turn !== 'WCHAMP' && turn !== 'REVIEW'">
+    <div class="store-link" v-if="turn !== 'WCHAMP' && turn !== 'REVIEW' && !showStore">
       <div><a @click="openStore(true)">
         <i class="fa fa-2x fa-shopping-basket" aria-hidden="true"></i>
         </a></div>
@@ -116,7 +116,7 @@
 ">
 
   <!-- Roster list -->
-  <div class="card-pack">
+  <div class="card-pack" v-if="!showStore">
   <div class="reg_grid" v-bind:class="{'expand':expandedRoster}" @click="expandRoster(false)">
     <a class="expand_menu" v-if="!expandedRoster">+</a>
     <div class="reg_col card card--wrestler" 
@@ -138,7 +138,7 @@
   </div>
 </div>
 
-<div class="card-pack">
+<div class="card-pack" v-if="!showStore">
   <div class="reg_grid" v-bind:class="{'expand':expandedGimmick}" @click="expandGimmick(false)">
     <a class="expand_menu" v-if="!expandedGimmick">+</a>
     <div class="reg_col card card--gimmick" v-for="(gimmick, index) in player.gimmicks">
@@ -149,7 +149,7 @@
   </div>
 </div>
 
-<div class="card-pack">
+<div class="card-pack" v-if="!showStore">
   <div class="reg_grid" v-bind:class="{'expand':expandedStory}" @click="expandStory(true)">
     <a class="expand_menu" v-if="!expandedStory">+</a>
     <div class="reg_col card card--story" v-for="(story, index) in player.stories" 
@@ -173,7 +173,7 @@
 <!-- /////////////////END MENU///////////////////// -->
 
 <!-- /////////////////MAIN PANEL///////////////////// -->
-  <div v-if="index == turn" class="center_panel">
+  <div v-if="index == turn && !showStore" class="center_panel">
 
     <div v-if="validate.length" class="errors">
       <a class="close_errors" @click="closeValidations()">|x|</a>

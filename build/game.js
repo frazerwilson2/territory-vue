@@ -978,6 +978,7 @@ NEXT STEPS
 
 // Bugs
 - all stars listed on store ???
+- fist player gets token when scores tied
 - wchamp when loaned, is added to temproster (already added to card)
 *- tokens spent are added as minus
 *- switching next chara keeps new champ list open
@@ -990,13 +991,14 @@ NEXT STEPS
 
 // WRAP UP
 *- gimmick types have bonus points enacted
-- sounds!!
+- show game goal somewhere
 - remove from card (re-add to temproster)
 - remove gimmick from matchcard
+- notification that gimmick/story added to your packs
+- sounds!!
 - if no data of any kind reload from storage (if no storage note error then return to index)
 - highlight top rated match on summary (transition screen before summary, then highlights on summary at top)
-- notification that gimmick/story added to your packs
-- gimmick strengths for wrestler types
+*- gimmick strengths for wrestler types
 
 
 */
