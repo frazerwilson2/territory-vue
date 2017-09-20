@@ -20,7 +20,7 @@
     &.reg_col {
         display:inline-block;
         float:left;
-        width: 150px;
+        width: 134px;
         background: aliceblue;
         margin: 0 10px 10px 0;
         height: 210px;
@@ -69,15 +69,13 @@
     &--wrestler {
     	&:before {
     		content: '';
-			background: #41BFD6 url('/images/star.svg');
+			// background: #41BFD6 url('/images/star.svg');
     	}
-        img {
-            &.heel {
-                background: $heel;
-            }
-            &.face {
-                background: $face;
-            }
+        &.heel:before {
+            background: #ff6161 url('/images/star.svg');
+        }
+        &.face:before {
+            background: #5d96ff url('/images/star.svg');
         }
         .w_val {
             float:right;
@@ -134,6 +132,24 @@
         }
     }
 
+}
+
+//toast
+.toast-msg {
+    background: white;
+    position: fixed;
+    bottom: 10px;
+    right: -300px;
+    width: 300px;
+    height: 90px;
+    padding: 10px;
+    opacity: 0;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+    &.show {
+        right: 10px;
+        opacity: 1;
+    }
 }
 
 // buttons

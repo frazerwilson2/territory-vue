@@ -77,8 +77,8 @@
   <h4>{{tempGoal.Name}}</h4>
   <p>{{tempGoal.description}}</p>
 </div>
-
   <div style="padding-top: 200px;">
+    <!-- <div v-for="guy in game.roster">{{findWrestler(guy)}}</div> -->
   <wrestler v-for="guy in game.roster" v-bind:data="findWrestler(guy)" v-bind:cash="game.players[currentPlayer].cash >= findWrestler(guy).val" v-if="!findWrestler(guy).isWChamp"></wrestler>
   </div>
   <hr/>

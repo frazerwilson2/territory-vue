@@ -141,7 +141,7 @@
    "Id": 24,
    "type": "QUITTER",
    "title": "Star quits",
-   "detail": "Random roster member leaves and becomes free agent, you are paid their value"
+   "detail": "A member of your roster leaves after this show and becomes a free agent, you are paid their value"
  },
  {
    "Id": 25,

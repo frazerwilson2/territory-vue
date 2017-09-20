@@ -65,7 +65,7 @@
       <div>
         <div class="reg_col card card--wrestler" 
           v-for="(wrestler, index) in game.legends"
-          v-bind:class="{'fade':game.players[turn].cash <= findWrestler(wrestler).val}">
+          v-bind:class="{'fade':game.players[turn].cash < findWrestler(wrestler).val}">
           <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.png'" />
             <span class="w_val">{{findWrestler(wrestler).val}}</span>
             <h4>{{findWrestler(wrestler).Name}}</h4>
@@ -81,9 +81,9 @@
       <div class="reg_col card card--wrestler" 
         v-for="wrestler in game.roster" 
         v-if="!findWrestler(wrestler).isWChamp"
-        v-bind:class="{'fade':game.players[turn].cash <= findWrestler(wrestler).val}">
+        v-bind:class="{'fade':game.players[turn].cash < findWrestler(wrestler).val, 'face':findWrestler(wrestler).heelface == 'F', 'heel':findWrestler(wrestler).heelface == 'H'}">
         <div class="value">{{findWrestler(wrestler).val}}</div>
-        <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.png'" v-bind:class="{'face':findWrestler(wrestler).heelface == 'F', 'heel':findWrestler(wrestler).heelface == 'H'}">
+        <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.png'">
           <span class="w_val">{{findWrestler(wrestler).val}}/{{findWrestler(wrestler).inc}}</span>
           <h4>{{findWrestler(wrestler).Name}}</h4>
           <p>Style: {{findWrestler(wrestler).style}} / Theme: {{findWrestler(wrestler).theme}}</p>
@@ -120,14 +120,15 @@
   <div class="reg_grid" v-bind:class="{'expand':expandedRoster}" @click="expandRoster(false)">
     <a class="expand_menu" v-if="!expandedRoster">+</a>
     <div class="reg_col card card--wrestler" 
-    v-for="(wrestler, index) in player.roster">
+    v-for="(wrestler, index) in player.roster"
+    v-bind:class="{'face':findWrestler(wrestler).heelface == 'F', 'heel':findWrestler(wrestler).heelface == 'H'}">
     <div class="value">{{findWrestler(wrestler).val}}</div>
     <div class="inc-points">
       <span v-if="findWrestler(wrestler).inc > 0"></span>
       <span v-if="findWrestler(wrestler).inc > 1"></span>
       <span v-if="findWrestler(wrestler).inc > 2"></span>
     </div>
-      <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.png'" v-bind:class="{'face':findWrestler(wrestler).heelface == 'F', 'heel':findWrestler(wrestler).heelface == 'H'}">
+      <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.png'">
       <div v-if="findWrestler(wrestler).isChamp" class="champ-belt">-</div>
       <div v-if="findWrestler(wrestler).isWChamp" class="champ-belt w-champ">-</div>
       <h4>{{findWrestler(wrestler).Name}}</h4>
@@ -203,7 +204,8 @@
         <div class="column is-12 add-gimmick">
           <a v-if="match.ready && !match.gimmick" @click="openGimmick(index)">Add gimmick</a>
           <div v-if="match.gimmick">
-          {{findGimmick(match.gimmick).Name}} {{gimmickBonus(findGimmick(match.gimmick).bonus, [match.competitors[0], match.competitors[1]])}}
+          <span v-if="match.gimmickAffect">{{findWrestler(match.gimmickAffect).Name}}</span> {{findGimmick(match.gimmick).Name}}
+          <a v-if="findGimmick(match.gimmick).type == 'HEELFACE'" @click="switchHeel(player, index)">(switch)</a>
           </div>
         </div>
       </div>
@@ -248,7 +250,10 @@
           <span v-if="findWrestler(match.competitors[1]).inc > 2"></span>
         </div>
       </div>
-      <div class="column remove-match"><a @click="removeMatch(player, index)"><i class="fa fa-times" aria-hidden="true"></i></a></div>
+      <div class="column remove-match">
+        <a @click="resetMatch(player, index)" v-if="match.competitors[0] || match.competitors[1]"><i class="fa fa-trash" aria-hidden="true"></i></a>
+        <a @click="removeMatch(player, index)" v-if="!match.competitors[0] && !match.competitors[1]"><i class="fa fa-times" aria-hidden="true"></i></a>
+      </div>
     </div>
     <div class="columns">
       <div class="column is-12 add-story">
@@ -310,10 +315,17 @@
           <a @click="removeNews(turn)" class="align-right float-right"><i class="fa fa-times" aria-hidden="true"></i></a>
           <h2>{{player.news.title}}</h2>
           <p>{{player.news.detail}}</p>
+          <p v-if="player.news.enact.notes"><hr>{{player.news.enact.notes}}</p>
           <div class="result">
             <span v-if="!player.news.enact"><i class="fa fa-ban" aria-hidden="true"></i> Does not apply</span>
             <span v-if="player.news.enact"><i class="fa fa-check" aria-hidden="true"></i> Applied!</span>
           </div>
+        </div>
+
+        <div class="card card--news" v-if="tempMission">
+          <a @click="removeTempMission()" class="align-right float-right"><i class="fa fa-times" aria-hidden="true"></i></a>
+          <h2>{{tempMission.Name}}</h2><hr>
+          <p>{{tempMission.description}}</p>
         </div>
 
          <!-- /////////////////ACTIONS///////////////////// -->
@@ -330,6 +342,8 @@
               <div class="listed-champ"></div>
             </div>
           <div class="column is-three-quarters align_right">
+            <a class="button is-dark" @click="viewGoal(player.goal)">View your goal</a>
+            <a class="button is-dark" @click="viewGoal(game.goal)">View game goal</a>
             <div>
               <img src="/images/cup.svg" v-if="player.tokens > 0">
               <img src="/images/cup.svg" v-if="player.tokens > 1">
@@ -365,6 +379,15 @@
   </div>
   </div>
 <!-- /////////////////END MAINPANEL///////////////////// -->
+
+<div class="toast-msg" v-bind:class="{'show': toastShowing}">
+  <p v-if="tstGimmick">Purchased gimmick</p>
+  <p v-if="tstArena">Purchased Arena, show worth double</p>
+  <p v-if="tstTv">Purchased TV slot, gain extra match</p>
+  <p v-if="tstStory">Puchased Story</p>
+  <p v-if="tstLegend">Purchased one time legend appearance</p>
+  <p v-if="tstRoster">Purchased new roster member</p>
+</div>
 
 <!-- /////////////////SUMMARY///////////////////// -->
   <div v-if="turn == 'REVIEW'" class="summary">

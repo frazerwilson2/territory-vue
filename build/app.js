@@ -244,7 +244,7 @@ var app = new Vue({
   components: {
     'wrestler': {
       props: ['data', 'cash'],
-      template: '<div class="chara_box card card--wrestler" v-bind:class="{ assigned: data.assigned || !cash}">\
+      template: '<div class="chara_box card card--wrestler" v-bind:class="{ assigned: data.assigned || !cash, heel: data.heelface == \'H\', face: data.heelface == \'F\'}">\
       <div class="value">{{data.val}}</div>\
       <img v-bind:src="\'images/roster/\' + imgPath(data.Name) + \'.png\'" v-bind:class="{ heel: data.heelface == \'H\', face: data.heelface == \'F\'}" />\
       <h4>{{data.Name}}</h4>\

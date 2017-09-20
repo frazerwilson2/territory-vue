@@ -28,10 +28,9 @@ body {
 
 .pickbar {
   position: fixed;
-  width: calc(100% - 60px);
+  width: 1152px;
   display: block;
   top: 0px;
-  left: 0;
   z-index: 10;
   background: rgba(0, 0, 0, 0.7);
   padding: 15px; }
@@ -134,10 +133,9 @@ body {
       .matchcard .match .add-gimmick div, .matchcard .match .add-story div {
         color: white;
         border-radius: 100px; }
-      .matchcard .match .add-gimmick a, .matchcard .match .add-story a {
-        color: #fff;
+      .matchcard .match .add-gimmick > a, .matchcard .match .add-story > a {
         opacity: 0.5; }
-        .matchcard .match .add-gimmick a:hover, .matchcard .match .add-story a:hover {
+        .matchcard .match .add-gimmick > a:hover, .matchcard .match .add-story > a:hover {
           opacity: 1; }
     .matchcard .match .add-gimmick div {
       background: #DDFF80;
@@ -156,7 +154,8 @@ body {
   overflow: auto;
   transition: all 0.5s;
   opacity: 0;
-  visibility: hidden; }
+  visibility: hidden;
+  z-index: 100; }
   .pop.active {
     opacity: 1;
     visibility: visible; }
@@ -223,6 +222,10 @@ body {
   background: #2C2C2C;
   padding: 15px;
   font-size: 22px; }
+  .actions .button {
+    margin-top: 15px; }
+    .actions .button.is-primary {
+      margin-top: 10px; }
   .actions .listed-champ {
     content: '';
     border-right: 1px #41BFD6 solid;
@@ -270,6 +273,8 @@ body {
   .store .close-store {
     position: fixed;
     right: 40px; }
+  .store h3 {
+    color: #fff; }
   .store.is-fullheight {
     height: initial;
     overflow: auto;

@@ -17,7 +17,7 @@
   .card.reg_col {
     display: inline-block;
     float: left;
-    width: 150px;
+    width: 134px;
     background: aliceblue;
     margin: 0 10px 10px 0;
     height: 210px; }
@@ -51,12 +51,11 @@
     .card .inc-points span {
       position: relative; }
   .card--wrestler:before {
-    content: '';
-    background: #41BFD6 url("/images/star.svg"); }
-  .card--wrestler img.heel {
-    background: #f7cece; }
-  .card--wrestler img.face {
-    background: #d0ddf5; }
+    content: ''; }
+  .card--wrestler.heel:before {
+    background: #ff6161 url("/images/star.svg"); }
+  .card--wrestler.face:before {
+    background: #5d96ff url("/images/star.svg"); }
   .card--wrestler .w_val {
     float: right; }
   .card--wrestler hr {
@@ -92,6 +91,21 @@
       white-space: initial;
       overflow: auto;
       text-overflow: initial; }
+
+.toast-msg {
+  background: white;
+  position: fixed;
+  bottom: 10px;
+  right: -300px;
+  width: 300px;
+  height: 90px;
+  padding: 10px;
+  opacity: 0;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s; }
+  .toast-msg.show {
+    right: 10px;
+    opacity: 1; }
 
 h2 {
   color: #fff; }

@@ -53,7 +53,16 @@ var game = new Vue({
     expandedRoster: false,
     expandedGimmick: false,
     expandedStory: false,
-    endTotals: []
+    endTotals: [],
+    tempMission: false,
+    // toast
+    toastShowing: false,
+    tstGimmick: false,
+    tstArena: false,
+    tstTv: false,
+    tstStory: false,
+    tstLegend: false,
+    tstRoster: false
   },
   mounted: function() {
   this.loadRoster();
@@ -163,10 +172,12 @@ var game = new Vue({
       this.voteApprovedMsg = true;
       this.game.champLoan = this.tempIndex;
       this.game.players[this.tempIndex].cash -= 10;
-      this.loanWChampTravels();
+      this.loanWChampTravels(true);
     },
-    loanWChampTravels: function(changeover){
-      this.game.players[this.tempIndex].temproster.push(this.game.wChamp);
+    loanWChampTravels: function(loan, changeover){
+      if(loan){
+        this.game.players[this.tempIndex].temproster.push(this.game.wChamp);
+      }
       this.game.players.forEach(function(val, key){
         if(val.hasWChamp){
           if(!changeover){
@@ -244,6 +255,7 @@ var game = new Vue({
                   player.roster.forEach(function(w, index){
                     if(w == player.news.enact.wrestler){
                       player.roster.splice(index, 1);
+                      player.temproster.splice(index, 1);
                       console.log(game.findWrestler(w).Name + ' is out for the year');
                     }
                   });
@@ -273,7 +285,7 @@ var game = new Vue({
                 if(game.game.roster.length){
                   var choice = Math.round(Math.random() * game.game.roster.length);
                   player.roster.push(game.game.roster[choice]);
-                  alert('Free agent ' + game.findWrestler(game.game.roster[choice]).Name + ' signed to your roster!');
+                  player.news.enact.notes = game.findWrestler(game.game.roster[choice]).Name;
                   game.game.roster.splice(choice, 1);
                 }
                 break;
@@ -284,6 +296,8 @@ var game = new Vue({
                 player.roster.splice(choice, 1);
                 player.cash += game.findWrestler(quitter).val;
                 game.roster.push(quitter);
+                player.news.enact.notes = game.findWrestler(quitter).Name;
+                this.game.roster.push(quitter);
                 console.log(game.findWrestler(quitter).Name + ' has quit, you have been refunded ' + game.findWrestler(quitter).val);
                 break;
             }
@@ -297,6 +311,11 @@ var game = new Vue({
       this.game.players[turn].news = false;
       this.newsTitle = false;
       this.newsDetail = false;
+    },
+    resetVoteCard: function(){
+      this.switchWChampMsg = false;
+      this.voteApprovedMsg = false;
+      this.switchWChampMsg = false;
     },
     switchWChamp: function(index){
       this.tempIndex = index;
@@ -312,7 +331,7 @@ var game = new Vue({
       this.game.players[index].tokens -= 3;
       this.game.players[index].discards.tokens += 3;
       this.addToCard(i, w, true, 0);
-      this.loanWChampTravels(true);
+      this.loanWChampTravels(false, true);
       this.addToCard(this.game.players[index].temproster.length, this.game.wChamp, true, 1);
       this.prospectWChamp = w;
       this.prospectWChampHolder = index;
@@ -430,6 +449,14 @@ var game = new Vue({
         break;
       }
     },
+    switchHeel: function(player, match){
+      if(player.matchcard[match].gimmickAffect === player.matchcard[match].competitors[0]){
+        player.matchcard[match].gimmickAffect = player.matchcard[match].competitors[1];
+      }
+      else {
+        player.matchcard[match].gimmickAffect = player.matchcard[match].competitors[0];
+      }
+    },
     gimmickBonus: function(bonus, compets){
       let result = false;
       compets.forEach(w => {
@@ -483,11 +510,24 @@ var game = new Vue({
       }
       return maxIndex;
     },
+    countTotal: function(a, match){
+      // count number of matches (match) in array (a)
+      return a.filter(function(value){
+          return value === match;
+      }).length;
+    },
     awardTopDraw: function(){
       let drawTotals = [];
       game.summaryValues.forEach(val=>drawTotals.push(val.total));
       var i = this.indexOfMax(drawTotals);
-      this.game.players[i].tokens++;
+      var highestVal = Math.max(...drawTotals);
+      let numWinners = this.countTotal(drawTotals, highestVal);
+      if(numWinners > 1) {
+        console.log('no tokens, shared round');
+      }
+      else {
+        this.game.players[i].tokens++;
+      }
       if(this.game.champLoan != null){
         if(i == this.game.champLoan){
           alert('champ on top show, everyone wins!!');
@@ -535,6 +575,7 @@ var game = new Vue({
       else {
         this.game.round++;
         this.turn = 'WCHAMP';
+        this.resetVoteCard();
       }
       this.saveData();
     },
@@ -725,6 +766,19 @@ var game = new Vue({
       this.game.players[this.turn].matchcard.splice(match, 1);
       game.$forceUpdate();
     },
+    resetMatch: function(player, match){
+      console.log(player, match);
+      player.matchcard[match].competitors.forEach(w => {
+        console.log(w);
+        player.temproster.push(w);
+      });
+      if(player.matchcard[match].gimmick){
+        player.gimmicks.push(player.matchcard[match].gimmick);
+      }
+      player.matchcard.splice(match, 1);
+      var match = Object.assign({}, this.match);
+      player.matchcard.push(JSON.parse(JSON.stringify(match)));
+    },
     validateMatch: function(match, titleswitch){
       if(match.competitors.length >1){
         match.competitors.forEach(function(val, key){
@@ -755,6 +809,8 @@ var game = new Vue({
       if(game.game.players[this.turn].cash < cost){alert('you dont be gettin that');return}
       game.game.players[this.turn].roster.push(wrestler);
       game.game.players[this.turn].cash -= cost;
+      game.game.players[this.turn].discards.spend += cost;
+      this.ShowToast('roster');
       game.game.roster.forEach(function(val, index){
         if(wrestler == val){game.game.roster.splice(index, 1);}
       });
@@ -765,7 +821,9 @@ var game = new Vue({
       game.game.players[this.turn].legends.push(legend);
       game.game.players[this.turn].temproster.push(legend);
       game.game.players[this.turn].cash -= cost;
+      game.game.players[this.turn].discards.spend += cost;
       game.game.players[this.turn].discards.legend++;
+      this.ShowToast('legend');
       game.game.legends.forEach(function(val, index){
         if(legend == val){game.game.legends.splice(index, 1);}
       });
@@ -773,28 +831,36 @@ var game = new Vue({
     purchaseGimmick:function(){
       if(game.game.players[this.turn].cash <= 5){return}
       game.game.players[this.turn].cash -= 5;
+      game.game.players[this.turn].discards.spend += 5;
+      this.ShowToast('gimmick');
       game.game.players[this.turn].gimmicks.push(game.game.gimmicks[0]);
       game.game.gimmicks.splice(0, 1);
     },
     purchaseStory:function(){
       if(game.game.players[this.turn].cash <= 5){return}
       game.game.players[this.turn].cash -= 5;
+      game.game.players[this.turn].discards.spend += 5;
+      this.ShowToast('story');
       game.game.players[this.turn].stories.push(game.game.stories[0]);
       game.game.stories.splice(0, 1);
     },
     getTv:function(){
       if(game.game.players[this.turn].cash <= 20){return}
       game.game.players[this.turn].cash -= 20;
+    game.game.players[this.turn].discards.spend += 20;
       game.game.players[this.turn].discards.tv++;
       game.game.tv--;
       var match = Object.assign({}, this.match);
+      this.ShowToast('tv');
       game.game.players[this.turn].matchcard.push(JSON.parse(JSON.stringify(match)));
     },
     getArena:function(){
       if(game.game.players[this.turn].cash <= 50){return}
       game.game.players[this.turn].cash -= 50;
+    game.game.players[this.turn].discards.spend += 50;
       game.game.players[this.turn].discards.arena++;
       game.game.arena--;
+      this.ShowToast('arena');
       game.game.players[this.turn].arena = true;
     },
     checkNum: function(thing){
@@ -873,6 +939,45 @@ var game = new Vue({
     },
     imgPath: function (path) {
       return path.replace(/ /g,'');
+    },
+    ShowToast: function(type){
+      switch(type){
+        case 'gimmick':
+          this.tstGimmick = true;
+          console.log(this.tstGimmick);
+          break;
+        case 'arena':
+          this.tstArena = true;
+          break;
+        case 'tv':
+          this.tstTv = true;
+          break;
+        case 'story':
+          this.tstStory = true;
+          break;
+        case 'legend':
+          this.tstLegend = true;
+          break;
+        case 'roster':
+          this.tstRoster = true;
+          break;
+      }
+      this.toastShowing = true;
+      setTimeout(function(){
+        this.toastShowing = false;
+        this.tstGimmick = false;
+        this.tstArena = false;
+        this.tstTv = false;
+        this.tstStory = false;
+        this.tstLegend = false;
+        this.tstRoster = false;
+      }.bind(this), 1500);
+    },
+    viewGoal: function(p){
+      this.tempMission = this.findMission(p);
+    },
+    removeTempMission: function(){
+      this.tempMission = false;
     }
   }
 });
@@ -977,24 +1082,24 @@ NEXT STEPS
 // END GAME (end after 12, tally totals(with missions) and announce winner)
 
 // Bugs
-- all stars listed on store ???
-- fist player gets token when scores tied
-- wchamp when loaned, is added to temproster (already added to card)
+*- all stars listed on store ???
+*- fist player gets token when scores tied
+*- wchamp when loaned, is added to temproster (already added to card)
 *- tokens spent are added as minus
 *- switching next chara keeps new champ list open
-- injured star kept in temproster
-- same for quitter
+*- injured star kept in temproster
+*- same for quitter
 *- champ switch not done correctly
-- spent money not added to player discards
+*- spent money not added to player discards
 *- bug on finish too soon
-- no reset after switching wchamp on first stage
+*- no reset after switching wchamp on first stage
 
 // WRAP UP
 *- gimmick types have bonus points enacted
-- show game goal somewhere
-- remove from card (re-add to temproster)
-- remove gimmick from matchcard
-- notification that gimmick/story added to your packs
+*- show game goal somewhere
+*- remove from card (re-add to temproster)
+*- remove gimmick from matchcard
+*- notification that gimmick/story added to your packs
 - sounds!!
 - if no data of any kind reload from storage (if no storage note error then return to index)
 - highlight top rated match on summary (transition screen before summary, then highlights on summary at top)

@@ -18,7 +18,6 @@ var news = new Vue({
               return response;
             }
           });
-          console.log('here');
           if (response.type) {
             return response;
           }
@@ -114,12 +113,14 @@ var news = new Vue({
           response.type = 'injury';
           response.wrestler = player.matchcard[0].competitors[1];
           response.injuryType = 'small';
+          response.notes = game.findWrestler(player.matchcard[0].competitors[1]).Name;
           return response;
           break;
         case 'INJURY2':
           response.type = 'injury';
           response.wrestler = player.matchcard[1] ? player.matchcard[1].competitors[0] : null;
           response.injuryType = 'large';
+          response.notes = player.matchcard[1] ? game.findWrestler(player.matchcard[1].competitors[0]).Name : null;
           return response;
           break;
         case 'UPSTAGED':
