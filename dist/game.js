@@ -931,7 +931,7 @@ var game = new Vue({
       } else if (comp[1][0] == '<') {
         result = input[comp[0]] <= pars;
       } else {
-        result = input[comp[0]] == comp[1].substring(1);
+        result = input[comp[0]].toString() == comp[1].substring(1);
       }
       return result;
     },
@@ -1042,127 +1042,12 @@ var game = new Vue({
 });
 
 /*
-//
-SETUP
-*- Json files for each data list get
-*- Store to localstorage if not found (browser based game)
-*- Intro page for setting up game. set num players (with names), 
-*divide up roster purchase, share cards and missions. When game setup go
-to main game page.
-
-MAIN
-- If no storage token revert to setup
-*- do not copy data and keep records, use lookup functions to find data
-from storage and use ids in references.
-- 4 phase
-  - purchases/plans (vote for hosting wchamp, buy extra cards)
-  - build card (make matches, add gimmicks)
-  - present and accumulate (tally costs, award highest draw)
-  - news card draw and action (each player served one action)
-  x 12 rounds (1 year)
-Following final round tally all $ and award winner
-//
-
-
-NEXT STEPS
-// SETUP
-*- summary display values (per match breakdown)
-*- validate choices (match with 1 wrestler, type mismatch, select winner)
-*- winner inc, loser inc reset
-*- reset temproster and matchcard for next round
-*- award round winner with token
-
-// GIMMICK
-*- add to match (remove from users set)
-- remove (return to users set)
-*- count value in match rating
-*- add card to players discard gimmick pile
-*- enact actions (change title, heel/face turns)
-
-// STORIES
-*- add story to match (if applicable)
-*- increment length in summary
-*- end if reached payoff, payoff added to match, card added to discard
-
-// TERRITORY CHAMP
-*- set on game start
-- switch title (no payoff) option
-- list on player details
-*- +4 on champ in matches
-
-// LEGENDS
-*- added to matchcard roster (distinguish type to avoid id clash)
-- prevent story or title switch/heelface gimmick
-*- check values tracked
-*- inc amount used on players record (eqiv of added to discard pile)
-
-// ARENA / TV
-*- increment arena when bought (equiv of discard)
-*- flag to double in summary
-*- add bonus double the total of matches
-*- increment tv when bought (equiv of discard)
-*- add additional match
-
-// STORE
-*- buy gimmick
-*- buy roster
-*- buy story
-*- buy legend
-*- buy tv time (extra match)
-*- buy stadium (double value)
-
-// WCHAMP (awards based on scores, vote for hire, use tokens to switch)
-*- begin with question, then vote (return true/false) (unless has champ)
-*- rules for getting champ on loan, goes to matchcard, pay 10 (to owner if owned)
-*- rules for award: everyone gets 10 when on highest.
-*- rules for switch: use 3 tokens (to discard) then autofix the match/opponent/winner
-*- setting for champowner to navigate other functions
-
-    *click yes and open vote panel, with length of users, current user select defaulted yes
-    *once vote tally equals all votes, count and return true or false
-    *if true, set champloan to player index(turn), (check champloan to stop others getting vote),
-    *find hasWChamp and remove wchamp from temproster, add to loaners temproster (where used, if wchamp they win)
-    *in summary, check for champloan, if yes check if matches highest earner (if so all get 10)
-    *if no champloan, check for champowner, if yes check if matches highest earner (if so all get 10)
-    *set champloan to null
-
-// Reimplement champloan/switch
-*- new step between summary and first step
-*- each user listed, click to open loan vote or perform switch
-*- multiple votes can be taken, once 1 vote accepted or switch stage over
-*- set current stuff (matchcard and temproster must be done before)
-
-// NEWS
-*- draw news card beginning of each player switch
-*- enact based on name (each has specific rules)
-
-// MISSIONS
-
-// END GAME (end after 12, tally totals(with missions) and announce winner)
-
 // Bugs
-*- all stars listed on store ???
-*- fist player gets token when scores tied
-*- wchamp when loaned, is added to temproster (already added to card)
-*- tokens spent are added as minus
-*- switching next chara keeps new champ list open
-*- injured star kept in temproster
-*- same for quitter
-*- champ switch not done correctly
-*- spent money not added to player discards
-*- bug on finish too soon
-*- no reset after switching wchamp on first stage
+-
 
 // WRAP UP
-*- gimmick types have bonus points enacted
-*- show game goal somewhere
-*- remove from card (re-add to temproster)
-*- remove gimmick from matchcard
-*- notification that gimmick/story added to your packs
 - sounds!!
 - if no data of any kind reload from storage (if no storage note error then return to index)
 - highlight top rated match on summary (transition screen before summary, then highlights on summary at top)
-*- gimmick strengths for wrestler types
-
 
 */

@@ -9,7 +9,7 @@
 		"bonus":false
 		},
 	{
-		"Name":"Heel/face turn",
+		"Name":"Character turn",
 		"Id":2,
 		"type":"HEELFACE",
 		"description": "Turn your character heel or face, a heel turn gets bigger response",

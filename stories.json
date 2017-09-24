@@ -333,7 +333,7 @@
    "Name": "New star",
    "Id": 34,
    "requires": ["inc:=0","inc:=0"],
-   "lengthDur": 3,
+   "lengthDur": 1,
    "current": 1,
    "payoff":10,
    "competitors": [],

@@ -26,6 +26,19 @@
         height: 210px;
     }
 
+    .title-name {
+        font-size: 20px;
+        position: absolute;
+        top: 54px;
+        color: white;
+        width: calc(100% - 20px);
+        text-align: center;
+        &.gimmick {
+            font-size: 30px;
+            top: 38px;
+        }
+    }
+
     &--active {
         background:#c0c2c3;
     }

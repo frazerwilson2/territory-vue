@@ -4032,6 +4032,14 @@ body {
 
 .champ-overview {
   color: #fff; }
+  .champ-overview img {
+    width: 40px;
+    position: relative;
+    top: 3px; }
+
+.base-belt {
+  position: absolute;
+  top: 55px; }
 
 .matchcard {
   padding: 20px; }
@@ -4075,7 +4083,8 @@ body {
       .matchcard .match .competitor h4 {
         font-size: 40px;
         color: #fff;
-        text-transform: uppercase; }
+        text-transform: uppercase;
+        white-space: nowrap; }
     .matchcard .match .competitor-1 .profile {
       float: left;
       left: -30px; }
@@ -4154,16 +4163,12 @@ body {
 
 .champ-belt {
   float: right;
-  background: yellow;
   display: inline-block;
-  width: 15px;
+  width: 45px;
   border-radius: 100%;
-  height: 15px;
   top: 8px;
   position: relative;
   text-indent: -99999px; }
-  .champ-belt.w-champ {
-    background: #ef5353; }
 
 .inc-points span {
   width: 10px;
@@ -4269,7 +4274,7 @@ body {
 .summary {
   padding: 50px;
   color: #fff; }
-  .summary h2 {
+  .summary h2, .summary h4 {
     font-size: 32px; }
   .summary strong {
     color: #fff;
@@ -4317,6 +4322,16 @@ body {
     background: aliceblue;
     margin: 0 10px 10px 0;
     height: 210px; }
+  .card .title-name {
+    font-size: 20px;
+    position: absolute;
+    top: 54px;
+    color: white;
+    width: calc(100% - 20px);
+    text-align: center; }
+    .card .title-name.gimmick {
+      font-size: 30px;
+      top: 38px; }
   .card--active {
     background: #c0c2c3; }
   .card h4 {

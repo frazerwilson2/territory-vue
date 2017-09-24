@@ -21,6 +21,16 @@
     background: aliceblue;
     margin: 0 10px 10px 0;
     height: 210px; }
+  .card .title-name {
+    font-size: 20px;
+    position: absolute;
+    top: 54px;
+    color: white;
+    width: calc(100% - 20px);
+    text-align: center; }
+    .card .title-name.gimmick {
+      font-size: 30px;
+      top: 38px; }
   .card--active {
     background: #c0c2c3; }
   .card h4 {

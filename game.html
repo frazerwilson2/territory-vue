@@ -143,7 +143,8 @@
   <div class="reg_grid" v-bind:class="{'expand':expandedGimmick}" @click="expandGimmick(false)">
     <a class="expand_menu" v-if="!expandedGimmick">+</a>
     <div class="reg_col card card--gimmick" v-for="(gimmick, index) in player.gimmicks">
-      <img src="/images/gimmick.jpg">
+      <span v-if="gimmick == 1" class="title-name">{{player.name}}</span>
+      <img v-bind:src="'images/' + imgPath(findGimmick(gimmick).Name) + '.png'">
       <h4>{{findGimmick(gimmick).Name}}</h4>
       <p>{{findGimmick(gimmick).description}}</p>
     </div>
@@ -155,7 +156,8 @@
     <a class="expand_menu" v-if="!expandedStory">+</a>
     <div class="reg_col card card--story" v-for="(story, index) in player.stories" 
           @click="detailX(findStory(story).requires, findWrestler(player.roster[0]), findWrestler(player.roster[1]))"
-          v-bind:class="{'c_active':findStory(story).active}">
+          v-bind:class="{'fade':findStory(story).active}">
+          <span class="title-name gimmick">{{findStory(story).lengthDur}}</span>
           <img src="/images/story.jpg">
       <h4>{{findStory(story).Name}}</h4>
       <span v-if="!findStory(story).competitors[0]">{{listReqs(findStory(story).requires)}}</span>
@@ -185,11 +187,11 @@
     
     <div class="champ-overview align-center">
       <div v-if="player.hasWChamp"> 
-        <p>Home of World Champion</p>
+        <p>Home of World Champion <img src="images/wcbelt.png"></p>
       </div>
       <p class="d-inline">Champion:&nbsp; 
         <div v-if="!player.champSet" class="d-inline"> VACANT <a @click="showChampRosterFunc()" v-if="!showChampRoster" class="button is-primary is-small">Set Champ</a></div>
-        <div v-else class="d-inline"> {{findWrestler(player.champSet).Name}}</div>
+        <div v-else class="d-inline"> {{findWrestler(player.champSet).Name}} <img src="images/belt.png"></div>
         <ul v-if="showChampRoster">
           <li v-for="w in player.roster" v-if="findWrestler(w).type == 'singles'"><a @click="makeChamp(w)">{{findWrestler(w).Name}}</a></li>
         </ul>
@@ -276,8 +278,8 @@
             <span v-if="findWrestler(wrestler).inc > 2"></span>
         </div>
           <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.png'" v-bind:class="{ heel: findWrestler(wrestler).heelface == 'H', face: findWrestler(wrestler).heelface == 'F'}">
-          <div v-if="findWrestler(wrestler).isChamp" class="champ-belt">-</div>
-          <div v-if="findWrestler(wrestler).isWChamp" class="champ-belt w-champ">-</div>
+          <div v-if="findWrestler(wrestler).isChamp" class="champ-belt"><img src="images/belt.png"></div>
+          <div v-if="findWrestler(wrestler).isWChamp" class="champ-belt w-champ"><img src="images/wcbelt.png"></div>
           <a @click="addToCard(index, wrestler)">{{findWrestler(wrestler).Name}} {{findWrestler(wrestler).heelface}}</a>
         </li></ul>
       </div>
@@ -333,6 +335,7 @@
           <div class="columns">
             <div class="column is-one-quarter">
               <div class="world-champion" v-if="game.wChamp">
+                <img src="images/wcbelt.png" class="base-belt">
                 <img v-bind:src="'images/roster/' + imgPath(findWrestler(game.wChamp).Name) + '.png'">
                 <h2>{{findWrestler(game.wChamp).Name}}</h2>
                 <div v-for="(player, index) in game.players" v-if="player.hasWChamp">
@@ -509,7 +512,7 @@
 <div class="columns">
   <div class="column align-right" v-for="(player, index) in endTotals">
     <p>Cash: ${{player.baseCash}}</p> 
-    <p>Mission success: 
+    <p>Mission ({{findMission(game.players[index].goal).Name}}) success: 
       <i v-if="player.missionSuccess" class="fa fa-check top3" aria-hidden="true"></i>
       <i v-if="!player.missionSuccess" class="fa fa-ban top3" aria-hidden="true"></i></p> 
     <p>Game goal ({{findMission(game.goal).Name}}) winner:
@@ -518,16 +521,6 @@
     <p class="end-cash" v-bind:class="{ winner: player.winner }">Final cash: ${{player.totalCash}}</p> 
   </div>
 </div>
-  <small>
-<!--         goal: {{game.goal}}<br>
-        news: {{game.news}}<br>
-        roster: {{game.roster}}<br>
-        stories: {{game.stories}}<br>
-        gimmicks: {{game.gimmicks}}<br>
-        tv: {{game.tv}}<br>
-        arena: {{game.arena}}<br>
-        legends: {{legendRoster}} -->
-  </small>
 
   </div>
 </div>

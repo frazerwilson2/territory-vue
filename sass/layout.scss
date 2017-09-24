@@ -90,6 +90,16 @@ body {
 
 .champ-overview {
 	color: #fff;
+    img {
+        width: 40px;
+        position: relative;
+        top: 3px;
+    }
+}
+
+.base-belt {
+    position: absolute;
+    top: 55px;
 }
 
 // matchcard
@@ -146,6 +156,7 @@ body {
 				font-size: 40px;
 				color: #fff;
 				text-transform: uppercase;
+                white-space: nowrap;
 			}
 		}
 		.competitor-1 .profile {
@@ -253,17 +264,12 @@ body {
 
 .champ-belt {
     float: right;
-    background: yellow;
     display: inline-block;
-    width: 15px;
+    width: 45px;
     border-radius: 100%;
-    height: 15px;
     top: 8px;
     position: relative;
     text-indent: -99999px;
-    &.w-champ {
-        background:$red;
-    }
 }
 
 .inc-points span {
@@ -404,7 +410,7 @@ body {
 .summary {
     padding: 50px;
     color: #fff;
-    h2 {
+    h2, h4 {
         font-size: $big;
     }
     strong {

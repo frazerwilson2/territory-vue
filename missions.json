@@ -56,7 +56,7 @@
 		"description": "For a bonus payout, end the year without a single title switch"
 		},
 	{
-		"Name":"Most tokens",
+		"Name":"Most tokens spent",
 		"Id":9,
 		"type":"game",
 		"theme": "MOSTTOKENS"
