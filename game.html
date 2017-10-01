@@ -14,7 +14,7 @@
   <div class="bg-tint"></div>
   <div id="news"></div>
   <div id="missions"></div>
-  <div id="game" class="layout">
+  <div id="game" class="layout" v-bind:class="{'turn-1': turn == 0, 'turn-2': turn == 1, 'turn-3': turn == 2, 'turn-4': turn == 3}">
 
 <!-- /////////////////STORE///////////////////// -->
   <div id="store" class="columns store" v-bind:class="{'is-fullheight hero':showStore}" v-if="turn !== 'WCHAMP' && turn !== 'REVIEW'"> 
@@ -396,8 +396,9 @@
   <div v-if="turn == 'REVIEW'" class="summary">
     <h2>SUMMARY</h2> 
     <div class="columns">
-      <div class="column" v-for="(result, index1) in summaryValues">
-        <h4>{{game.players[index1].name}}</h4>
+      <div class="column" v-for="(result, index1) in summaryValues"
+      v-bind:class="{'turn-1': index1 == 0, 'turn-2': index1 == 1, 'turn-3': index1 == 2, 'turn-4': index1 == 3}">
+        <h4 class="player-title">{{game.players[index1].name}}</h4>
         <div v-for="(match, index) in result.matches">
           <p>{{findWrestler(game.players[index1].matchcard[index].competitors[0]).Name}} /
           {{findWrestler(game.players[index1].matchcard[index].competitors[1]).Name}}
@@ -440,12 +441,15 @@
       <h2>Alliance meeting</h2>
       <div>
         <div class="columns">
-          <div v-for="(player, index) in game.players" class="column territory align-center">
+          <div v-for="(player, index) in game.players" class="column territory align-center"
+          v-bind:class="{'turn-1': index == 0, 'turn-2': index == 1, 'turn-3': index == 2, 'turn-4': index == 3, 'current-turn': index == AllianceTurn}">
             <h4>{{player.name}}</h4> 
             ({{player.tokens}} tokens)<br>
             <div v-if="player.hasWChamp">HAS WORLD CHAMP</div>
+            <button @click="openRosterTrade()" class="button is-primary">Roster Trade</button>
             <button @click="wChampVoteYes(index)" v-if="!player.hasWChamp && !confirmNewWChamp" class="button is-primary">Request</button> 
             <button v-if="player.tokens >= 3" @click="switchWChamp(index)" class="button is-primary">Drop title</button>
+            <br><a @click="nxtPlrTrn()">> done</a>
           </div>
         </div>
           <div class="vote-card" v-if="voteCard.length">
@@ -457,6 +461,42 @@
             <span v-if="vote.vote == null"><a @click="voteThis(true, index)">Approve</a> / <a @click="voteThis(false, index)">Reject</a></span>
           </li>
         </ul>
+      </div>
+      <div v-bind:class="{'show':tradeRoster}" class="trade-roster">
+        <a @click="closeRosterTrade()" class="align-right"><i class="fa fa-times" aria-hidden="true"></i></a>
+        <h2>Trade roster</h2>
+<div>
+  <div v-for="(player, index) in game.players" v-if="AllianceTurn !== index" class="tab-heading" v-bind:class="{'active': index == AllianceRosterTurn}" @click="switchAllianceRoster(index)">
+    {{player.name}}
+  </div>
+        <div v-for="(player, index) in game.players" v-if="AllianceRosterTurn == index && !SwapRosterTab">
+             <div class="reg_col card card--wrestler" 
+             v-for="(wrestler, index) in player.roster"
+             v-bind:class="{'face':findWrestler(wrestler).heelface == 'F', 'heel':findWrestler(wrestler).heelface == 'H'}">
+             <div class="value">{{findWrestler(wrestler).val}}</div>
+             <div class="inc-points">
+               <span v-if="findWrestler(wrestler).inc > 0"></span>
+               <span v-if="findWrestler(wrestler).inc > 1"></span>
+               <span v-if="findWrestler(wrestler).inc > 2"></span>
+             </div>
+               <img v-bind:src="'images/roster/' + imgPath(findWrestler(wrestler).Name) + '.png'">
+               <div v-if="findWrestler(wrestler).isChamp" class="champ-belt">-</div>
+               <div v-if="findWrestler(wrestler).isWChamp" class="champ-belt w-champ">-</div>
+               <h4>{{findWrestler(wrestler).Name}}</h4>
+               <p>Style: {{findWrestler(wrestler).style}} / Theme: {{findWrestler(wrestler).theme}}</p>
+               <p>Weight: {{findWrestler(wrestler).weight}} / Height: {{findWrestler(wrestler).height}}</p>
+               <p>Charisma: {{findWrestler(wrestler).charisma}} / Ability: {{findWrestler(wrestler).ability}}</p>
+               <a @click="tradeRequest(wrestler)">Trade</a>
+             </div>
+        </div>
+        <div v-if="SwapRosterTab" class="swap-roster">
+          <a @click="closeSwapRosterTab()" class="align-right"><i class="fa fa-times" aria-hidden="true"></i></a>
+          <h4>Propose swap of {{findWrestler(tempSwap).Name}} with:</h4>
+          <ul>
+            <li v-for="(wrestler, index) in game.players[AllianceTurn].roster" @click="completeSwapPropose(wrestler)">{{findWrestler(wrestler).Name}}</li>
+          </ul>
+        </div>
+</div>
       </div>
       <div v-if="voteRejectedMsg">
         Your request has been declined
@@ -476,6 +516,11 @@
           </div>
         </div>
       </div>
+      <ul>
+        <li v-for="(swap, index) in tradeProposeList">
+          {{game.players[swap.terr2].name}} Swap {{findWrestler(swap.swap2).Name}} ({{findWrestler(swap.swap2).val + findWrestler(swap.swap2).inc}}) for {{findWrestler(swap.swap1).Name}} ({{findWrestler(swap.swap1).val + findWrestler(swap.swap1).inc}}) ({{game.players[swap.terr1].name}})? <a><i class="fa fa-check" aria-hidden="true"></i> <a @click="removeSwap(index)"><i class="fa fa-times" aria-hidden="true"></i></a>
+        </li>
+      </ul>
       <div class="align-right">
         <a @click="goToRegularRounds()" class="button is-primary is-medium">Go to rounds</a>
       </div>
@@ -491,8 +536,9 @@
   <h2>And we're done..</h2>
   
 <div class="columns">
-  <div class="column" v-for="(player, index) in game.players">
-    <h4>{{player.name}}</h4>
+  <div class="column" v-for="(player, index) in game.players"
+  v-bind:class="{'turn-1': index == 0, 'turn-2': index == 1, 'turn-3': index == 2, 'turn-4': index == 3}">
+    <h4 class="player-title">{{player.name}}</h4>
         Base cash: ${{player.cash}}<br>
         Goal: {{findMission(player.goal).Name}}
       <hr>

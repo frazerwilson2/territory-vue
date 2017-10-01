@@ -71,6 +71,7 @@ body {
 
 .store-link {
     border-top: 70px $active1 solid;
+    @include theme('bt', 70px);
     border-left: 70px transparent solid;
     border-right: 70px transparent solid;
     width: 0;
@@ -115,6 +116,7 @@ body {
 		.competitor {
 			background: rgba(0, 0, 0, 0.35);	
 			border-bottom: 1px $active1 solid;
+            @include theme('bb', 1px);
 			height: 80px;
 			.profile {
 				border-radius: 100%;
@@ -285,6 +287,7 @@ body {
 
 .actions {
 	border-top: 1px $active1 solid;
+    @include theme('bb', 1px);
     position: fixed;
     bottom: 0;
     left: 0;
@@ -301,6 +304,7 @@ body {
     .listed-champ {
     	content: '';
     	border-right: 1px $active1 solid;
+        @include theme('br', 1px);
     	transform: rotate(45deg);
     	float: right;
     	position: relative;
@@ -319,15 +323,18 @@ body {
     		width: 20px;
     	}
     	    &.fed {
+                position: relative;
+                top: 7px;
     	    	img {
     	    		width: 50px;
     			    float: left;
     	    	}
     	    	h4 {
     	    		position: absolute;
-    	    		top: 20px;
+    	    		top: 5px;
     	    		font-size: 32px;
     	    		color: $active1;
+                    @include theme('clr');
     	    	}
     	    }
     	    &.world-champion {
@@ -366,6 +373,7 @@ body {
     height: 0;
     overflow: hidden;
     background: $active1;
+    @include theme('bg');
     &.is-fullheight{
         height: initial;
         overflow: auto;
@@ -384,6 +392,7 @@ body {
             left: 0;
             font-size: 20px;
             color: $active1;
+            @include theme('clr');
         }
 }
 
@@ -394,7 +403,26 @@ body {
     .territory {
         min-height: 200px;
         padding: 40px;
+        position: relative;
+        opacity: 0.5;
+        &:after {
+            content: "";
+            width: 100%;
+            display: block;
+            height: 100%;
+            background: transparent;
+            position: absolute;
+            top: 0;
+            box-sizing: inherit;
+        }
+        &.current-turn {
+            opacity: 1;
+            &:after {
+                display: none;
+            }
+        }
     }
+
     .vote-card {
         background: rgba(0, 0, 0, 0.5);
         padding: 30px;
@@ -404,6 +432,49 @@ body {
     h2 {
         font-size: $big;
     }
+}
+
+.trade-roster {
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    top: 20%;
+    padding: 10px;
+    background: #ccc;
+    box-sizing: content-box;
+    display: none;
+    &.show {
+        display: block;
+    }
+    .tab-heading {
+        display: inline-block;
+        padding: 0 10px;
+        margin-bottom: 10px;
+        &.active {
+            border: 1px red solid;
+        }
+    }
+    .card a {
+            position: absolute;
+            top: 70px;
+            width: 100%;
+            text-align: center;
+            left: 0;
+            font-size: 20px;
+            color: $active1;
+            @include theme('clr');
+        }
+    .swap-roster {
+        background: #2d2d2d;
+            position: absolute;
+            width: calc(100% + -20px);
+            padding: 10px;
+            box-sizing: border-box;
+    }
+}
+
+.player-title {
+    @include theme('clr');
 }
 
 // summary

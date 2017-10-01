@@ -6,13 +6,112 @@
 
 $grey: #a7a7a7;
 $darkGrey: #2C2C2C;
-$active1: #41BFD6;
 $gimmick: #DDFF80;
 $story: #F08181;
 $lightblue: #94EDFD;
 $red: #ef5353;
 $heel: #f7cece;
 $face: #d0ddf5;
+
+$player1: #94ea94;
+$player2: #be94ea;
+$player3: #e27070;
+$player4: #84c4ff;
+
+$active1: #41BFD6;
+$list: 1,2,3,4;
+
+@mixin theme($type: color, $size:1px) {
+	@each $player in $list {
+	    .turn-#{$player} & {
+	    	@if $type == "bg" {
+	    		@if $player == 1 {
+	    			background: $player1;
+	    		} @else if $player == 2 {
+	    			background: $player2;
+	    		} @else if $player == 3 {
+	    			background: $player3;
+	    		} @else if $player == 4 {
+	    			background: $player4;
+	    		}
+	    	} @else if $type == "clr" {
+	    		@if $player == 1 {
+	    			color: $player1;
+	    		} @else if $player == 2 {
+	    			color: $player2;
+	    		} @else if $player == 3 {
+	    			color: $player3;
+	    		} @else if $player == 4 {
+	    			color: $player4;
+	    		}
+	    	} @else if $type == "bt" {
+	    		@if $player == 1 {
+	    			border-top: $size $player1 solid;
+	    		} @else if $player == 2 {
+	    			border-top: $size $player2 solid;
+	    		} @else if $player == 3 {
+	    			border-top: $size $player3 solid;
+	    		} @else if $player == 4 {
+	    			border-top: $size $player4 solid;
+	    		}
+	    	} @else if $type == "bb" {
+	    		@if $player == 1 {
+	    			border-bottom: $size $player1 solid;
+	    		} @else if $player == 2 {
+	    			border-bottom: $size $player2 solid;
+	    		} @else if $player == 3 {
+	    			border-bottom: $size $player3 solid;
+	    		} @else if $player == 4 {
+	    			border-bottom: $size $player4 solid;
+	    		}
+	    	} @else if $type == "br" {
+	    		@if $player == 1 {
+	    			border-right: $size $player1 solid;
+	    		} @else if $player == 2 {
+	    			border-right: $size $player2 solid;
+	    		} @else if $player == 3 {
+	    			border-right: $size $player3 solid;
+	    		} @else if $player == 4 {
+	    			border-right: $size $player4 solid;
+	    		}
+	    	} @else {
+	    		color: $player1;
+	    	}
+	    	@content;
+	    }
+	}
+}
+//     .turn-2 & {
+//     	@if $type == "bg" {
+//     		background: $player2;
+//     	} @else if $type == "bt" {
+//     		border-top: 70px $player2 solid;
+//     	} @else {
+//     		color: $player2;
+//     	}
+//     	@content;
+//     }
+//     .turn-3 & {
+//     	@if $type == "bg" {
+//     		background: $player3;
+//     	} @else if $type == "bt" {
+//     		border-top: 70px $player3 solid;
+//     	} @else {
+//     		color: $player3;
+//     	}
+//     	@content;
+//     }
+//     .turn-4 & {
+//     	@if $type == "bg" {
+//     		background: $player1;
+//     	} @else if $type == "bt" {
+//     		border-top: 70px $player4 solid;
+//     	} @else {
+//     		color: $player4;
+//     	}
+//     	@content;
+//     }
+// }
 
 // font sizes
 $big: 32px;

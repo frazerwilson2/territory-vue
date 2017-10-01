@@ -11,6 +11,7 @@ body {
 
 .button.is-primary {
     background: $active1;
+    @include theme('bg');
 }
 
 // overwrites

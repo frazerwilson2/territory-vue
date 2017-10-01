@@ -51,6 +51,13 @@ var game = new Vue({
     switchWChampMsg: false,
     prospectWChamp: null,
     prospectWChampHolder: null,
+    // trades
+    tradeRoster: false,
+    AllianceTurn: 0,
+    AllianceRosterTurn: 0,
+    SwapRosterTab: false,
+    tempSwap: null,
+    tradeProposeList: [],
     // menu
     expandedRoster: false,
     expandedGimmick: false,
@@ -181,6 +188,8 @@ var game = new Vue({
       this.game.champLoan = this.tempIndex;
       this.game.players[this.tempIndex].cash -= 10;
       this.loanWChampTravels(true);
+      this.voteCard = [];
+      game.$forceUpdate();
     },
     loanWChampTravels: function loanWChampTravels(loan, changeover) {
       if (loan) {
@@ -203,6 +212,8 @@ var game = new Vue({
     },
     voteRejected: function voteRejected() {
       this.voteRejectedMsg = true;
+      this.voteCard = [];
+      game.$forceUpdate();
     },
     checkForChamp: function checkForChamp(player) {
       this.setChampNow = false;
@@ -1037,6 +1048,40 @@ var game = new Vue({
     },
     removeTempMission: function removeTempMission() {
       this.tempMission = false;
+    },
+    openRosterTrade: function openRosterTrade() {
+      this.tradeRoster = true;
+      this.SwapRosterTab = false;
+      this.AllianceRosterTurn = this.AllianceTurn == 0 ? 1 : 0;
+    },
+    switchAllianceRoster: function switchAllianceRoster(i) {
+      this.AllianceRosterTurn = i;
+    },
+    closeRosterTrade: function closeRosterTrade() {
+      this.tradeRoster = false;
+      this.SwapRosterTab = false;
+      this.tempSwap = null;
+    },
+    tradeRequest: function tradeRequest(w) {
+      console.log('switch ' + w);
+      this.tempSwap = w;
+      this.SwapRosterTab = true;
+    },
+    completeSwapPropose: function completeSwapPropose(w) {
+      console.log('swap player ' + this.AllianceTurn + ' (' + this.findWrestler(w).Name + ') with player ' + this.AllianceRosterTurn + ' (' + this.findWrestler(this.tempSwap).Name);
+      var newSwap = { terr1: this.AllianceTurn, swap1: w, terr2: this.AllianceRosterTurn, swap2: this.tempSwap };
+      console.log(newSwap);
+      this.tradeProposeList.push(newSwap);
+      this.closeRosterTrade();
+    },
+    removeSwap: function removeSwap(i) {
+      this.tradeProposeList.splice(i, 1);
+    },
+    closeSwapRosterTab: function closeSwapRosterTab() {
+      this.closeRosterTrade();
+    },
+    nxtPlrTrn: function nxtPlrTrn() {
+      this.AllianceTurn++;
     }
   }
 });

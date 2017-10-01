@@ -1,71 +1,107 @@
 [
-	{
-		"Name":"title change",
-		"Id":1,
-		"type":"TITLECHANGE",
-		"description": "Swap the territory championship for a big reaction",
-		"setupnum": 3,
-		"affect":"true",
-		"bonus":false
-		},
-	{
-		"Name":"Character turn",
-		"Id":2,
-		"type":"HEELFACE",
-		"description": "Turn your character heel or face, a heel turn gets bigger response",
-		"setupnum": 3,
-		"affect":"true",
-		"bonus": {
-			"type": "heelface",
-			"value": "F"
-		}
-		},
-	{
-		"Name":"cage",
-		"Id":3,
-		"type":"CAGE",
-		"description": "A solid. steel. CAAAGE! bonus for a wrestler with power style",
-		"setupnum": 10,
-		"affect":"false",
-		"bonus": {
-			"type": "style",
-			"value": "power"
-		}
-		},
-	{
-		"Name":"Ladder",
-		"Id":4,
-		"type":"LADDER",
-		"description": "Put on an exciting battle where winner climbs the ladder. Bonus for high flyers",
-		"setupnum": 10,
-		"affect":"false",
-		"bonus": {
-			"type": "theme",
-			"value": "high-flying"
-		}
-		},
-	{
-		"Name":"No dq",
-		"Id":5,
-		"type":"WEAPONS",
-		"description": "An anything goes no DQ match. Bonus if brawlers included",
-		"setupnum": 10,
-		"affect":"false",
-		"bonus": {
-			"type": "style",
-			"value": "brawler"
-		}
-		},
-	{
-		"Name":"table",
-		"Id":6,
-		"type":"TABLE",
-		"description": "A violent table match. Bonus for violent superstars included",
-		"setupnum": 10,
-		"affect":"false",
-		"bonus": {
-			"type": "theme",
-			"value": "violent"
-		}
-		}
+  {
+    "Name": "title change",
+    "Id": 1,
+    "type": "TITLECHANGE",
+    "description": "Swap the territory championship for a big reaction",
+    "setupnum": 5,
+    "affect": "true",
+    "bonus": false
+  },
+  {
+    "Name": "Character turn",
+    "Id": 2,
+    "type": "HEELFACE",
+    "description": "Turn your character heel or face, a heel turn gets bigger response",
+    "setupnum": 5,
+    "affect": "true",
+    "bonus": {
+      "type": "heelface",
+      "value": "F"
+    }
+  },
+  {
+    "Name": "cage",
+    "Id": 3,
+    "type": "CAGE",
+    "description": "A solid. steel. CAAAGE! bonus for a wrestler with power style",
+    "setupnum": 8,
+    "affect": "false",
+    "bonus": {
+      "type": "style",
+      "value": "power"
+    }
+  },
+  {
+    "Name": "Ladder",
+    "Id": 4,
+    "type": "LADDER",
+    "description": "Put on an exciting battle where winner climbs the ladder. Bonus for high flyers",
+    "setupnum": 8,
+    "affect": "false",
+    "bonus": {
+      "type": "theme",
+      "value": "high-flying"
+    }
+  },
+  {
+    "Name": "No dq",
+    "Id": 5,
+    "type": "WEAPONS",
+    "description": "An anything goes no DQ match. Bonus if brawlers included",
+    "setupnum": 8,
+    "affect": "false",
+    "bonus": {
+      "type": "style",
+      "value": "brawler"
+    }
+  },
+  {
+    "Name": "table",
+    "Id": 6,
+    "type": "TABLE",
+    "description": "A violent table match. Bonus for violent superstars included",
+    "setupnum": 8,
+    "affect": "false",
+    "bonus": {
+      "type": "theme",
+      "value": "violent"
+    }
+  },
+  {
+    "Name": "submission",
+    "Id": 7,
+    "type": "SUBMISSION",
+    "description": "A dangourous submission based match. Bonus for submission stars included",
+    "setupnum": 8,
+    "affect": "false",
+    "bonus": {
+      "type": "style",
+      "value": "submission"
+    }
+  },
+  {
+    "Name": "iron man",
+    "Id": 8,
+    "type": "IRONMAN",
+    "description": "An endurance battle to the death. Bonus for technical style wrestlers",
+    "setupnum": 8,
+    "affect": "false",
+    "bonus": {
+      "type": "style",
+      "value": "technical"
+    }
+  },
+  {
+    "Name": "casket",
+    "Id": 9,
+    "type": "CASKET",
+    "description": "A death match settled in the grave. Bonus for mystical themed superstars",
+    "setupnum": 3,
+    "affect": "false",
+    "bonus": {
+      "type": "theme",
+      "value": "mystical"
+    }
+  }
 ]

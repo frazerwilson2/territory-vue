@@ -63,6 +63,14 @@ body {
   position: absolute;
   z-index: 5;
   left: 10%; }
+  .turn-1 .store-link {
+    border-top: 70px #94ea94 solid; }
+  .turn-2 .store-link {
+    border-top: 70px #be94ea solid; }
+  .turn-3 .store-link {
+    border-top: 70px #e27070 solid; }
+  .turn-4 .store-link {
+    border-top: 70px #84c4ff solid; }
   .store-link div {
     position: relative;
     top: -60px;
@@ -92,6 +100,14 @@ body {
       background: rgba(0, 0, 0, 0.35);
       border-bottom: 1px #41BFD6 solid;
       height: 80px; }
+      .turn-1 .matchcard .match .competitor {
+        border-bottom: 1px #94ea94 solid; }
+      .turn-2 .matchcard .match .competitor {
+        border-bottom: 1px #be94ea solid; }
+      .turn-3 .matchcard .match .competitor {
+        border-bottom: 1px #e27070 solid; }
+      .turn-4 .matchcard .match .competitor {
+        border-bottom: 1px #84c4ff solid; }
       .matchcard .match .competitor .profile {
         border-radius: 100%;
         width: 110px;
@@ -227,6 +243,14 @@ body {
   background: #2C2C2C;
   padding: 15px;
   font-size: 22px; }
+  .turn-1 .actions {
+    border-bottom: 1px #94ea94 solid; }
+  .turn-2 .actions {
+    border-bottom: 1px #be94ea solid; }
+  .turn-3 .actions {
+    border-bottom: 1px #e27070 solid; }
+  .turn-4 .actions {
+    border-bottom: 1px #84c4ff solid; }
   .actions .button {
     margin-top: 15px; }
     .actions .button.is-primary {
@@ -240,6 +264,14 @@ body {
     top: -102px;
     height: 140px;
     margin-bottom: -150px; }
+    .turn-1 .actions .listed-champ {
+      border-right: 1px #94ea94 solid; }
+    .turn-2 .actions .listed-champ {
+      border-right: 1px #be94ea solid; }
+    .turn-3 .actions .listed-champ {
+      border-right: 1px #e27070 solid; }
+    .turn-4 .actions .listed-champ {
+      border-right: 1px #84c4ff solid; }
   .actions .column > div {
     display: inline-block;
     text-overflow: ellipsis;
@@ -249,14 +281,25 @@ body {
     padding: 0 10px; }
     .actions .column > div img {
       width: 20px; }
-    .actions .column > div.fed img {
-      width: 50px;
-      float: left; }
-    .actions .column > div.fed h4 {
-      position: absolute;
-      top: 20px;
-      font-size: 32px;
-      color: #41BFD6; }
+    .actions .column > div.fed {
+      position: relative;
+      top: 7px; }
+      .actions .column > div.fed img {
+        width: 50px;
+        float: left; }
+      .actions .column > div.fed h4 {
+        position: absolute;
+        top: 5px;
+        font-size: 32px;
+        color: #41BFD6; }
+        .turn-1 .actions .column > div.fed h4 {
+          color: #94ea94; }
+        .turn-2 .actions .column > div.fed h4 {
+          color: #be94ea; }
+        .turn-3 .actions .column > div.fed h4 {
+          color: #e27070; }
+        .turn-4 .actions .column > div.fed h4 {
+          color: #84c4ff; }
     .actions .column > div.world-champion {
       width: 100%; }
       .actions .column > div.world-champion h2 {
@@ -280,6 +323,14 @@ body {
     right: 40px; }
   .store h3 {
     color: #fff; }
+  .turn-1 .store {
+    background: #94ea94; }
+  .turn-2 .store {
+    background: #be94ea; }
+  .turn-3 .store {
+    background: #e27070; }
+  .turn-4 .store {
+    background: #84c4ff; }
   .store.is-fullheight {
     height: initial;
     overflow: auto;
@@ -296,13 +347,36 @@ body {
     left: 0;
     font-size: 20px;
     color: #41BFD6; }
+    .turn-1 .store .card a {
+      color: #94ea94; }
+    .turn-2 .store .card a {
+      color: #be94ea; }
+    .turn-3 .store .card a {
+      color: #e27070; }
+    .turn-4 .store .card a {
+      color: #84c4ff; }
 
 .wchamp-round {
   padding: 50px;
   color: #fff; }
   .wchamp-round .territory {
     min-height: 200px;
-    padding: 40px; }
+    padding: 40px;
+    position: relative;
+    opacity: 0.5; }
+    .wchamp-round .territory:after {
+      content: "";
+      width: 100%;
+      display: block;
+      height: 100%;
+      background: transparent;
+      position: absolute;
+      top: 0;
+      box-sizing: inherit; }
+    .wchamp-round .territory.current-turn {
+      opacity: 1; }
+      .wchamp-round .territory.current-turn:after {
+        display: none; }
   .wchamp-round .vote-card {
     background: rgba(0, 0, 0, 0.5);
     padding: 30px;
@@ -310,6 +384,58 @@ body {
     margin-bottom: 10px; }
   .wchamp-round h2 {
     font-size: 32px; }
+
+.trade-roster {
+  position: absolute;
+  width: 80%;
+  left: 10%;
+  top: 20%;
+  padding: 10px;
+  background: #ccc;
+  box-sizing: content-box;
+  display: none; }
+  .trade-roster.show {
+    display: block; }
+  .trade-roster .tab-heading {
+    display: inline-block;
+    padding: 0 10px;
+    margin-bottom: 10px; }
+    .trade-roster .tab-heading.active {
+      border: 1px red solid; }
+  .trade-roster .card a {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    text-align: center;
+    left: 0;
+    font-size: 20px;
+    color: #41BFD6; }
+    .turn-1 .trade-roster .card a {
+      color: #94ea94; }
+    .turn-2 .trade-roster .card a {
+      color: #be94ea; }
+    .turn-3 .trade-roster .card a {
+      color: #e27070; }
+    .turn-4 .trade-roster .card a {
+      color: #84c4ff; }
+  .trade-roster .swap-roster {
+    background: #2d2d2d;
+    position: absolute;
+    width: calc(100% + -20px);
+    padding: 10px;
+    box-sizing: border-box; }
+
+.turn-1 .player-title {
+  color: #94ea94; }
+
+.turn-2 .player-title {
+  color: #be94ea; }
+
+.turn-3 .player-title {
+  color: #e27070; }
+
+.turn-4 .player-title {
+  color: #84c4ff; }
 
 .summary {
   padding: 50px;
