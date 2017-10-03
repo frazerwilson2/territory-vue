@@ -425,6 +425,12 @@ body {
     padding: 10px;
     box-sizing: border-box; }
 
+.trade-proposals li div {
+  display: inline-block; }
+
+.trade-proposals li .fa {
+  margin: 5px; }
+
 .turn-1 .player-title {
   color: #94ea94; }
 

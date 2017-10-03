@@ -390,6 +390,7 @@
   <p v-if="tstStory">Puchased Story</p>
   <p v-if="tstLegend">Purchased one time legend appearance</p>
   <p v-if="tstRoster">Purchased new roster member</p>
+  <p v-if="tstBadSwap">Swap could not be completed</p>
 </div>
 
 <!-- /////////////////SUMMARY///////////////////// -->
@@ -516,9 +517,13 @@
           </div>
         </div>
       </div>
-      <ul>
+      <ul class="trade-proposals">
         <li v-for="(swap, index) in tradeProposeList">
-          {{game.players[swap.terr2].name}} Swap {{findWrestler(swap.swap2).Name}} ({{findWrestler(swap.swap2).val + findWrestler(swap.swap2).inc}}) for {{findWrestler(swap.swap1).Name}} ({{findWrestler(swap.swap1).val + findWrestler(swap.swap1).inc}}) ({{game.players[swap.terr1].name}})? <a><i class="fa fa-check" aria-hidden="true"></i> <a @click="removeSwap(index)"><i class="fa fa-times" aria-hidden="true"></i></a>
+          {{game.players[swap.terr2].name}} Swap {{findWrestler(swap.swap2).Name}} ({{findWrestler(swap.swap2).val + findWrestler(swap.swap2).inc}}) for {{findWrestler(swap.swap1).Name}} ({{findWrestler(swap.swap1).val + findWrestler(swap.swap1).inc}}) ({{game.players[swap.terr1].name}})?
+          <div v-if="AllianceTurn == game.players.length">
+            <a @click="enactSwap(index)"><i class="fa fa-check" aria-hidden="true"></i> 
+            <a @click="removeSwap(index)"><i class="fa fa-times" aria-hidden="true"></i></a>
+          </div> 
         </li>
       </ul>
       <div class="align-right">

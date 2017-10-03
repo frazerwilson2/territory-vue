@@ -71,7 +71,8 @@ var game = new Vue({
     tstTv: false,
     tstStory: false,
     tstLegend: false,
-    tstRoster: false
+    tstRoster: false,
+    tstBadSwap: false
   },
   mounted: function mounted() {
     this.loadRoster();
@@ -1031,6 +1032,9 @@ var game = new Vue({
         case 'roster':
           this.tstRoster = true;
           break;
+        case 'badSwap':
+          this.tstBadSwap = true;
+          break;
       }
       this.toastShowing = true;
       setTimeout(function () {
@@ -1041,6 +1045,7 @@ var game = new Vue({
         this.tstStory = false;
         this.tstLegend = false;
         this.tstRoster = false;
+        this.tstBadSwap = false;
       }.bind(this), 1500);
     },
     viewGoal: function viewGoal(p) {
@@ -1076,6 +1081,32 @@ var game = new Vue({
     },
     removeSwap: function removeSwap(i) {
       this.tradeProposeList.splice(i, 1);
+    },
+    enactSwap: function enactSwap(i) {
+      var complete = false;
+      var swapRecord = this.tradeProposeList[i];
+      // console.log(swapRecord);
+      // debugger;
+      this.game.players[swapRecord.terr1].roster.forEach(function (w, i) {
+        if (w == swapRecord.swap1) {
+          var index1 = i;
+          game.game.players[swapRecord.terr2].roster.forEach(function (w2, i2) {
+            if (w2 == swapRecord.swap2) {
+              game.game.players[swapRecord.terr2].roster.splice(i2, 1);
+              game.game.players[swapRecord.terr1].roster.push(swapRecord.swap2);
+
+              game.game.players[swapRecord.terr1].roster.splice(index1, 1);
+              game.game.players[swapRecord.terr2].roster.push(swapRecord.swap1);
+              complete = true;
+            }
+          });
+        }
+      });
+      if (complete) {
+        this.removeSwap(i);
+      } else {
+        this.ShowToast('badSwap');
+      }
     },
     closeSwapRosterTab: function closeSwapRosterTab() {
       this.closeRosterTrade();

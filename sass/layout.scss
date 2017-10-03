@@ -473,6 +473,16 @@ body {
     }
 }
 
+.trade-proposals li {
+    div {
+        display: inline-block;
+    }
+
+    .fa {
+        margin: 5px;
+    }
+}
+
 .player-title {
     @include theme('clr');
 }
