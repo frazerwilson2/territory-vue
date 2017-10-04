@@ -409,6 +409,10 @@ var game = new Vue({
             }
           }
           if(matchSum > 30){notes += ', a MOTY contender';};
+          if(matchSum > game.game.topMatch.val) {
+            game.game.topMatch.val = matchSum;
+            game.game.topMatch.detail = `${game.findWrestler(match.competitors[0]).Name} vs ${game.findWrestler(match.competitors[1]).Name} - Round ${game.game.round}`;
+          }
           game.summaryValues[index].matches.push(matchSum);
           game.summaryValues[index].notes.push(notes);
           totalGain += matchSum;

@@ -24,7 +24,11 @@ var app = new Vue({
       arena:4,
       legends:[],
       round: 1,
-      champLoan: null
+      champLoan: null,
+      topMatch: {
+        val: 0,
+        detail: ""
+      }
     },
     currentPlayer:0,
     loading: false,

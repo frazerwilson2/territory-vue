@@ -539,7 +539,7 @@
   <div class="summary">
     
   <h2>And we're done..</h2>
-  
+  <p>Match of the year - {{game.topMatch.detail}} (${{game.topMatch.val}})</p>
 <div class="columns">
   <div class="column" v-for="(player, index) in game.players"
   v-bind:class="{'turn-1': index == 0, 'turn-2': index == 1, 'turn-3': index == 2, 'turn-4': index == 3}">
